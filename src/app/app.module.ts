@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { IonicApp, IonicErrorHandler, IonicModule, NavController } from 'ionic-angular';
 
 //*********** ionic Native **************/
 import { StatusBar } from '@ionic-native/status-bar';
@@ -10,15 +10,15 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { MyApp } from './app.component';
 
 //***********  Angularfire2 v5 **************/
-
 import { AngularFireModule } from 'angularfire2';
 // New imports to update based on AngularFire2 version 4
 import { AngularFireDatabaseModule } from 'angularfire2/database-deprecated';
+//import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+// Firebase Config
+import { FIREBASE_CONFIG } from "./app.firebase.config";
 
-//***********  Facebook **************/
 import { Facebook } from '@ionic-native/facebook';
-//***********  Google plus **************/
 import { GooglePlus } from '@ionic-native/google-plus';
 
 //*********** Provider **************/
@@ -27,37 +27,25 @@ import { RadioPlayer } from '../providers/radio-service';
 
 
 //************** import image gallery *********************//
-
 import * as ionicGalleryModal from 'ionic-gallery-modal';
 import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 
-
-//********** firebase configuration  ************ */
-export const config = { 
-  apiKey: 'your-key',
-  authDomain: 'your-project-authdomain', 
-  databaseURL: 'your-database-URL', 
-  projectId: 'your-project-id', 
-  storageBucket: 'your-storage-bucket', 
-  messagingSenderId: 'your-messaging-sender-id' 
-};
-  
 @NgModule({
   declarations: [
-    MyApp
+    MyApp,
   ],
   imports: [
     BrowserModule,
     ionicGalleryModal.GalleryModalModule,
     IonicModule.forRoot(MyApp),
   
-    AngularFireModule.initializeApp(config),
+    AngularFireModule.initializeApp(FIREBASE_CONFIG),
     AngularFireDatabaseModule,
     AngularFireAuthModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp
+    MyApp,
   ],
   providers: [
     StatusBar,
