@@ -43,30 +43,18 @@ export class LoginPage {
       });
   }
 
-  ionViewWillLoad(){
+  ionViewWillEnter(){
     let ion = this;
-    let app_name = APP_CONFIG.Constants.APP_NAME;
-
-    ion.AuthSubscription = ion.afAuth.authState.subscribe(userAuth => {
-      if (userAuth && userAuth.email && userAuth.uid) {
-        ion.AuthSubscription.unsubscribe();
-        ion.navCtrl.setRoot('DashboardPage');
-        console.log("auth true!")
-        ion.toast.create({
-          message: 'Welcome to '+ app_name +'!, '+ userAuth.email,
-          duration: 3000
-        }).present();
-        console.log(userAuth);
-      } else {
-        ion.AuthSubscription.unsubscribe();
-        console.log("auth false, continue login");
-        // ion.toast.create({
-        //   message: 'Couldnt find your user data.',
-        //   duration: 3000
-        // }).present();
-      }
-
-    });
+       ion.AuthSubscription = ion.afAuth.authState.subscribe(userAuth => {
+        if (userAuth && userAuth.email && userAuth.uid) {
+          console.log('auth true login, moving dashboard');
+          ion.AuthSubscription.unsubscribe();
+          ion.navCtrl.setRoot('DashboardPage');
+        } else {
+          ion.AuthSubscription.unsubscribe();
+          console.log("auth false, continue login!")
+       }
+        });
 }
 
   login(){

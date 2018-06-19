@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, NavController } from 'ionic-angular';
+import { Nav, Platform } from 'ionic-angular';
 
 //***********  ionic-native **************/
 import { StatusBar } from '@ionic-native/status-bar';
@@ -19,8 +19,7 @@ export class MyApp {
   constructor(public platform: Platform, 
     public statusBar: StatusBar, 
     public splashScreen: SplashScreen,
-    public authDataModule: AuthData,
-    public navCtrl: NavController) {
+    public authDataModule: AuthData) {
     let ion = this;
     ion.initializeApp();
 
@@ -126,14 +125,20 @@ export class MyApp {
       
       ion.statusBar.styleDefault();
       ion.splashScreen.hide();
+
+      if (ion.authDataModule.isAuth()) {
+        console.log('auth true ini');
+        
+        ion.nav.setRoot('DashboardPage');
+      } else {
+        console.log('auth false ini');
+        ion.nav.setRoot('LoginPage');
+      }
     });
 
-    if (ion.authDataModule.isAuth()) {
-      ion.navCtrl.setRoot('DashboardPage');
-    } else {
-      ion.navCtrl.setRoot('LoginPage');
-    } 
+    
   }
+
   toggleDetails(menu) {
     if (menu.showDetails) {
         menu.showDetails = false;
@@ -150,7 +155,14 @@ export class MyApp {
     // we wouldn't want the back button to show in this scenario
     // page.component = item array.component --> 
     //this.nav.setRoot(page.component);
-    ion.nav.setRoot(page.component);
+    if (ion.authDataModule.isAuth()) {
+      console.log('auth true pagechange');
+      
+      ion.nav.setRoot(page.component);
+    } else {
+      console.log('auth false pagechange');
+      ion.nav.setRoot('LoginPage');
+    } 
   }
 
 }

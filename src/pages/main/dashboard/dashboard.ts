@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, LoadingController, AlertController ,ToastController} from 'ionic-angular';
+import { IonicPage, NavController, LoadingController, AlertController , ToastController} from 'ionic-angular';
 import { AuthData } from '../../../providers/auth-data';
 
 import { AngularFireDatabase, FirebaseObjectObservable} from 'angularfire2/database-deprecated';
 import { AngularFireAuth } from 'angularfire2/auth';
+
+import { APP_CONFIG } from "./../../../app/app.config";
 
 import md5 from 'crypto-md5'; // dependencies:"crypto-md5"
 import { Subscription } from 'rxjs/Subscription';
@@ -20,7 +22,6 @@ export class DashboardPage {
     profileArray : any=[]; 
     profile: FirebaseObjectObservable<any[]>;
     uid:any;
-    afAuthSubscription:any;
     AuthSubscription: Subscription;
     ProfileSubscription: Subscription;
 
@@ -33,31 +34,39 @@ export class DashboardPage {
     public afDb: AngularFireDatabase) {
     
   }
-  ionViewWillLoad(){
-    this.AuthSubscription = this.afAuth.authState.subscribe(userAuth => {
-     
-        if(userAuth) {
-          console.log("auth true!")
-          this.uid = userAuth.uid;     
-          this.email = userAuth.email;
-          this.profilePicture = "https://www.gravatar.com/avatar/" + md5(this.email.toLowerCase(), 'hex');
 
-          let loadingPopup = this.loadingCtrl.create({
+  ionViewWillLoad(){
+    let ion = this;
+    let app_name = APP_CONFIG.Constants.APP_NAME;
+
+    ion.AuthSubscription = ion.afAuth.authState.subscribe(userAuth => {
+        if(userAuth) {
+          console.log("auth true! dashboard")
+          ion.toastCtrl.create({
+            message: 'Welcome to '+ app_name +'!, '+ userAuth.email,
+            duration: 3000
+          }).present();
+          ion.uid = userAuth.uid;     
+          ion.email = userAuth.email;
+          ion.profilePicture = "https://www.gravatar.com/avatar/" + md5(ion.email.toLowerCase(), 'hex');
+
+          let loadingPopup = ion.loadingCtrl.create({
             spinner: 'crescent', 
             content: '',
             duration: 15000
           });
           loadingPopup.present();
 
-          this.profile = this.afDb.object('/userProfile/'+this.uid );
-          this.ProfileSubscription = this.profile.subscribe(profile => {
-              this.profileArray = profile;
+          ion.profile = ion.afDb.object('/userProfile/'+ion.uid );
+          ion.ProfileSubscription = ion.profile.subscribe(profile => {
+            ion.profileArray = profile;
               loadingPopup.dismiss();
           })
 
         } else {
-          console.log("auth false");
-          this.navCtrl.setRoot('LoginPage');
+          ion.AuthSubscription.unsubscribe();
+          console.log("auth false dashboard, moving login");
+          ion.navCtrl.setRoot('LoginPage');
         }
 
       });
@@ -66,9 +75,9 @@ export class DashboardPage {
   logout(){
         this.authData.logoutUser()
         .then( authData => {
+          this.afAuth.auth.signOut();
           this.AuthSubscription.unsubscribe();
           this.ProfileSubscription.unsubscribe();
-          this.afAuth.auth.signOut();
           console.log("Logged out");
           // toast message
           this.presentToast('bottom','You are now logged out');

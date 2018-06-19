@@ -98,7 +98,19 @@ signInWithGoogle(): Promise<any> {
   isAuth() {
     return firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
+        console.log('logged auth module');
          return true;
+      } else {
+        console.log('Not logged auth module');
+        return false;
+      }
+    });
+  }
+
+  getAuthUser() {
+    return firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+         return user;
       } else {
         return false;
       }
