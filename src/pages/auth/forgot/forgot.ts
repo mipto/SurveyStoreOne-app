@@ -1,7 +1,7 @@
 import { IonicPage, NavController,LoadingController, AlertController } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { AuthData } from '../../../../providers/auth-data';
+import { AuthData } from '../../../providers/auth-data';
 
 
 @IonicPage()
