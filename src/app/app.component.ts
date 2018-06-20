@@ -21,6 +21,7 @@ export class MyApp {
     public splashScreen: SplashScreen,
     public authDataModule: AuthData) {
     let ion = this;
+
     ion.initializeApp();
 
     ion.menu = [          

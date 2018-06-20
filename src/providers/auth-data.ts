@@ -10,10 +10,22 @@ import { Facebook } from '@ionic-native/facebook';
 //***********  Google plus **************/
 import { GooglePlus } from '@ionic-native/google-plus';
 
+import { AngularFirestoreDocument } from 'angularfire2/firestore';
+import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestoreCollection } from 'angularfire2/firestore';
+
+import { Observable } from 'rxjs';
+import { User } from '../models/user';
+
 @Injectable()
 export class AuthData {
+  userscollection: AngularFirestoreCollection<User>;
+  users: Observable<User[]>;
   userData: any;
-  constructor(public afAuth: AngularFireAuth, private platform: Platform,private facebook: Facebook,private googleplus: GooglePlus) {
+  constructor(public afAuth: AngularFireAuth, 
+    private platform: Platform, private facebook: Facebook,
+    private googleplus: GooglePlus, 
+    public afsModule: AngularFirestore) {
   }
 
 
@@ -95,6 +107,40 @@ signInWithGoogle(): Promise<any> {
     });
   }
 
+   // Obtein user Data for profile
+  getUserProfile(): Promise<any> {
+    let ion = this;
+    return new Promise((resolve, reject) => {
+      try {
+        let authUser = ion.getAuthUser();
+        ion.afsModule.collection('/users/').doc(authUser.uid).ref.get().then(function(Userdoc) {
+          if (Userdoc.exists) {
+              resolve(Userdoc.data());
+          } else {
+              console.log("No such document!, Error in register");
+          };
+        }).catch(function(error) {
+          console.log("Error getting document:", error);
+      });
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  updateProfile(user) {
+    let ion = this;
+    return new Promise((resolve, reject) => {
+      try {
+        let authUser = ion.getAuthUser();
+        ion.afsModule.collection('/users/').doc(authUser.uid).ref.update(user);
+        resolve(true);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
   isAuth() {
     return firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
@@ -108,13 +154,12 @@ signInWithGoogle(): Promise<any> {
   }
 
   getAuthUser() {
-    return firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-         return user;
-      } else {
-        return false;
-      }
-    });
+    if (firebase.auth().currentUser) {
+      let user = firebase.auth().currentUser;
+      return user;
+    } else {
+      return null;
+    }
   }
 
 }
