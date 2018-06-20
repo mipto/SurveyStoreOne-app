@@ -46,12 +46,12 @@ signInWithGoogle(): Promise<any> {
 
 
  updateUserProfile(uid,displayName,email,photo,phone){
-  firebase.database().ref('/userProfile').child(uid).once('value', function(snapshot) {
+  firebase.database().ref('/usersProfile').child(uid).once('value', function(snapshot) {
     var exists = (snapshot.val() !== null);
    
       if (exists) {
         console.log('user ' + uid + ' exists!');
-        firebase.database().ref('userProfile/'+uid).update({ 
+        firebase.database().ref('usersProfile/'+uid).update({ 
           name: displayName,
           email: email,
           photo: photo,
@@ -60,7 +60,7 @@ signInWithGoogle(): Promise<any> {
        
       } else {
         console.log('user ' + uid + ' does not exist!');
-        firebase.database().ref('/userProfile').child(uid).set({  
+        firebase.database().ref('/usersProfile').child(uid).set({  
           name: displayName,
           email: email,
           photo: photo,
@@ -87,11 +87,33 @@ signInWithGoogle(): Promise<any> {
   
   registerUser(name: string, email: string, password: string,phone: number): Promise<any> {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password).then((newUser) => {
-      firebase.database().ref('/userProfile').child(newUser.uid).set({
+      firebase.database().ref('/usersProfile').child(newUser.uid).set({
           email: email,
           name: name,
           phone: phone
       });
+    });
+  }
+
+  isAuth() {
+    return firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        console.log('logged auth module');
+         return true;
+      } else {
+        console.log('Not logged auth module');
+        return false;
+      }
+    });
+  }
+
+  getAuthUser() {
+    return firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+         return user;
+      } else {
+        return false;
+      }
     });
   }
 
