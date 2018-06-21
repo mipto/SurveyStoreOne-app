@@ -127,7 +127,7 @@ export class MyApp {
       ion.splashScreen.hide();
 
       if (ion.authDataModule.isAuth()) {
-        console.log('auth true ini');
+        console.log('auth true ini ');
         
         ion.nav.setRoot('DashboardPage');
       } else {
