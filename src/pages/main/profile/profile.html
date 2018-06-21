@@ -1,0 +1,108 @@
+<ion-header>
+  <ion-navbar color="white" class="white-text">
+    <button ion-button menuToggle class="TopLMenu">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Profile</ion-title>
+    <ion-buttons right>
+      <button color="light" ion-button icon-only>
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <button ion-button outline item-end icon-start (click)="edit()" *ngIf="!this.onEdit">
+        <ion-icon name="arrow-dropdown"></ion-icon>
+        Editar
+      </button>
+      <button ion-button outline item-end icon-start (click)="edit()" *ngIf="this.onEdit">
+        <ion-icon name="arrow-dropdown"></ion-icon>
+        Volver
+      </button>
+    </ion-item>
+  </ion-list>
+  <div id="profile1-info" class="test-class" padding>
+
+    <img id="profile1-image" class="pop-in" src="https://www.pnliafi.com.ar/wp-content/uploads/2016/01/avatar-user.png" />
+    <h3 id="profile1-name">{{(profile | async)?.name}}</h3>
+    <!--<p>{{(profile2 | async)?.company}} &bull; {{(profile2 | async)?.position}}</p> -->
+    <p class="profile1-description">Developer</p>
+  </div>
+
+
+  <!--***********  About  ***********-->
+
+  <ion-list no-lines text-wrap *ngIf="!this.onEdit">
+    <ion-list-header>
+      <h2> About</h2>
+    </ion-list-header>
+    <ion-item>
+      <p>Me gustas los delfines</p>
+    </ion-item>
+  </ion-list>
+
+  <!--***********  Contact  ***********-->
+  <ion-list no-lines *ngIf="!this.onEdit">
+
+    <ion-list-header>
+      <h2>Contact</h2>
+    </ion-list-header>
+    <ion-item>
+      <ion-icon name="ios-mail" item-left></ion-icon>
+      <h2>{{user.first_name}}</h2>
+      <p>Email</p>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="person" item-left></ion-icon>
+      <h2>{{user.first_name}}</h2>
+      <p>First Name</p>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="person" item-left></ion-icon>
+      <h2>{{user.last_name}}</h2>
+      <p>Last Name</p>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="ios-call" item-left></ion-icon>
+      <h2>{{user.phone}}</h2>
+      <p>mobile phone</p>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="logo-skype" item-left></ion-icon>
+      <h2>cemo@outlook.com</h2>
+      <p>skype</p>
+    </ion-item>
+
+
+  </ion-list>
+
+  <ion-list no-lines *ngIf="this.onEdit">
+    <ion-list-header>
+      <h2>Edit Perfil</h2>
+    </ion-list-header>
+
+    <ion-item>
+      <ion-icon name="ios-mail" item-left></ion-icon>
+      <ion-input type="text" [(ngModel)]="user.first_name"> </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="person" item-left></ion-icon>
+      <ion-input type="text" [(ngModel)]="user.last_name"> </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="ios-call" item-left></ion-icon>
+      <ion-input type="text" [(ngModel)]="user.phone"> </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="logo-skype" item-left></ion-icon>
+      <h2>cemo@outlook.com</h2>
+      <p>skype</p>
+    </ion-item>
+  </ion-list>
+  <button ion-button block (click)="save(user)" *ngIf="this.onEdit">Guardar</button>
+
+</ion-content>

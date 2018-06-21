@@ -15,6 +15,8 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database-deprecated';
 //import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+//Firestore Imports
+import { AngularFirestoreModule } from 'angularfire2/firestore';
 // Firebase Config
 import { FIREBASE_CONFIG } from "./app.firebase.config";
 
@@ -41,7 +43,8 @@ import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
   
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    AngularFirestoreModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
