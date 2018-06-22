@@ -8,6 +8,8 @@ import { GooglePlus } from '@ionic-native/google-plus';
 // Authenticated User Data
 import { AuthData } from '../../../providers/auth-data';
 
+import { Globals } from '../../../providers/globals';
+
 import { AngularFireDatabase, FirebaseObjectObservable} from 'angularfire2/database-deprecated';
 import { AngularFireAuth } from 'angularfire2/auth';
 
@@ -26,6 +28,7 @@ export class LoginPage {
   public backgroundImage: any = "./assets/bg1.jpg";
   public imgLogo: any = "./assets/medium_150.70391061453px_1202562_easyicon.net.png";
   public AuthSubscription: Subscription;
+  appIcon: string;
 
   constructor(public navCtrl: NavController, public authData: AuthData, public fb: FormBuilder, 
     public alertCtrl: AlertController,
@@ -35,12 +38,16 @@ export class LoginPage {
     private platform: Platform,
     public afAuth: AngularFireAuth, 
     public afDb: AngularFireDatabase,
-    private toast: ToastController,) {
+    private toast: ToastController,
+    public globals: Globals) {
+      let ion = this;
       let EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
-      this.loginForm = fb.group({
+      ion.loginForm = fb.group({
             email: ['', Validators.compose([Validators.required, Validators.pattern(EMAIL_REGEXP)])],
             password: ['', Validators.compose([Validators.minLength(6), Validators.required])]
       });
+
+      ion.appIcon = APP_CONFIG.Constants.APP_ICON;
   }
 
   ionViewWillEnter(){
