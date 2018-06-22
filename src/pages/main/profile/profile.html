@@ -5,26 +5,18 @@
     </button>
     <ion-title>Profile</ion-title>
     <ion-buttons right>
-      <button color="light" ion-button icon-only>
-        <ion-icon name="more"></ion-icon>
+      <button ion-button icon-end (click)="edit()" *ngIf="!this.onEdit">
+        <ion-icon name="brush"></ion-icon>
+      </button>
+      <button ion-button icon-end (click)="edit()" *ngIf="this.onEdit">
+        <ion-icon name="close"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <ion-list>
-    <ion-item>
-      <button ion-button outline item-end icon-start (click)="edit()" *ngIf="!this.onEdit">
-        <ion-icon name="arrow-dropdown"></ion-icon>
-        Editar
-      </button>
-      <button ion-button outline item-end icon-start (click)="edit()" *ngIf="this.onEdit">
-        <ion-icon name="arrow-dropdown"></ion-icon>
-        Volver
-      </button>
-    </ion-item>
-  </ion-list>
+
   <div id="profile1-info" class="test-class" padding>
 
     <img id="profile1-image" class="pop-in" src="https://www.pnliafi.com.ar/wp-content/uploads/2016/01/avatar-user.png" />
@@ -34,17 +26,6 @@
   </div>
 
 
-  <!--***********  About  ***********-->
-
-  <ion-list no-lines text-wrap *ngIf="!this.onEdit">
-    <ion-list-header>
-      <h2> About</h2>
-    </ion-list-header>
-    <ion-item>
-      <p>Me gustas los delfines</p>
-    </ion-item>
-  </ion-list>
-
   <!--***********  Contact  ***********-->
   <ion-list no-lines *ngIf="!this.onEdit">
 
@@ -53,7 +34,7 @@
     </ion-list-header>
     <ion-item>
       <ion-icon name="ios-mail" item-left></ion-icon>
-      <h2>{{user.first_name}}</h2>
+      <h2>{{user.email}}</h2>
       <p>Email</p>
     </ion-item>
     <ion-item>
@@ -71,38 +52,52 @@
       <h2>{{user.phone}}</h2>
       <p>mobile phone</p>
     </ion-item>
-    <ion-item>
-      <ion-icon name="logo-skype" item-left></ion-icon>
-      <h2>cemo@outlook.com</h2>
-      <p>skype</p>
-    </ion-item>
 
 
   </ion-list>
 
-  <ion-list no-lines *ngIf="this.onEdit">
-    <ion-list-header>
-      <h2>Edit Perfil</h2>
-    </ion-list-header>
+  <!-- Editar perfil -->
+  <form [formGroup]="profileForm" novalidate>
+    <ion-list no-lines *ngIf="this.onEdit">
+      <ion-list-header>
+        <h2>Edit Perfil</h2>
+      </ion-list-header>
+      <div class="item-inner">
+        <ion-item>
+          <ion-label stacked>First Name</ion-label>
+          <ion-input type="text" [(ngModel)]="user.first_name" formControlName="first_name" [class.invalid]="!profileForm.controls.first_name.valid && profileForm.controls.first_name.dirty"
+            (change)="findInvalidControls()">
+          </ion-input>
+        </ion-item>
+      </div>
+      <div class="item-inner">
+        <ion-item>
+          <ion-label stacked>Last Name</ion-label>
+          <ion-input type="text" [(ngModel)]="user.last_name" formControlName="last_name" [class.invalid]="!profileForm.controls.last_name.valid && profileForm.controls.last_name.dirty"
+            (change)="findInvalidControls()">
+          </ion-input>
+        </ion-item>
+      </div>
+      <div class=" item-inner ">
+        <ion-item>
+          <ion-label stacked>Phone</ion-label>
+          <ion-input type="text" [(ngModel)]="user.phone" formControlName="phone" [class.invalid]="!profileForm.controls.phone.valid
+            && profileForm.controls.phone.dirty" (change)="findInvalidControls()">
+          </ion-input>
+        </ion-item>
+      </div>
+    </ion-list>
+  </form>
 
-    <ion-item>
-      <ion-icon name="ios-mail" item-left></ion-icon>
-      <ion-input type="text" [(ngModel)]="user.first_name"> </ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-icon name="person" item-left></ion-icon>
-      <ion-input type="text" [(ngModel)]="user.last_name"> </ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-icon name="ios-call" item-left></ion-icon>
-      <ion-input type="text" [(ngModel)]="user.phone"> </ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-icon name="logo-skype" item-left></ion-icon>
-      <h2>cemo@outlook.com</h2>
-      <p>skype</p>
-    </ion-item>
-  </ion-list>
-  <button ion-button block (click)="save(user)" *ngIf="this.onEdit">Guardar</button>
+  <div class="validation-errors">
+    <p *ngIf="!profileForm.controls.first_name.valid  && profileForm.controls.first_name.dirty">*Please enter a valid First Name.</p>
+    <p *ngIf="!profileForm.controls.last_name.valid  && profileForm.controls.last_name.dirty">*Please enter correct Last Name.</p>
+    <p *ngIf="!profileForm.controls.phone.valid  && profileForm.controls.phone.dirty">*Please enter a valid Phone.</p>
+
+  </div>
+
+
+
+  <button ion-button block (click)="save(user)" *ngIf="this.onEdit && this.validEdit">Guardar</button>
 
 </ion-content>

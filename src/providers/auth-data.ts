@@ -22,73 +22,74 @@ export class AuthData {
   userscollection: AngularFirestoreCollection<User>;
   users: Observable<User[]>;
   userData: any;
-  constructor(public afAuth: AngularFireAuth, 
+  constructor(public afAuth: AngularFireAuth,
     private platform: Platform, private facebook: Facebook,
-    private googleplus: GooglePlus, 
+    private googleplus: GooglePlus,
     public afsModule: AngularFirestore) {
   }
 
 
-signInWithPopupFacebook(): Promise<any> {
-  return this.afAuth.auth
-    .signInWithPopup(new firebase.auth.FacebookAuthProvider())
-    .then(res => console.log(res));
-}
+  signInWithPopupFacebook(): Promise<any> {
+    return this.afAuth.auth
+      .signInWithPopup(new firebase.auth.FacebookAuthProvider())
+      .then(res => console.log(res));
+  }
 
-signInWithFacebook(): Promise<any> {
-  
+  signInWithFacebook(): Promise<any> {
+
     return this.facebook.login(['email', 'public_profile']).then(res => {
       const facebookCredential = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
       return firebase.auth().signInWithCredential(facebookCredential);
     })
-    
-     
-}
 
-signInWithGoogle(): Promise<any> {
+
+  }
+
+  signInWithGoogle(): Promise<any> {
 
     return this.googleplus.login({
       // ***** Don't forgot to change webClientId ******//
-      'webClientId':'134053776757-rj2vajjm340t2bilpencqq4hh1j76sv5.apps.googleusercontent.com',
-      'offline': true}).then(res =>{
-      return firebase.auth().signInWithCredential(firebase.auth.GoogleAuthProvider.credential(res.idToken)) 
+      'webClientId': '134053776757-rj2vajjm340t2bilpencqq4hh1j76sv5.apps.googleusercontent.com',
+      'offline': true
+    }).then(res => {
+      return firebase.auth().signInWithCredential(firebase.auth.GoogleAuthProvider.credential(res.idToken))
     })
-  
-}
 
-
- updateUserProfile(uid,displayName,email,photo,phone){
-  firebase.database().ref('/usersProfile').child(uid).once('value', function(snapshot) {
-    var exists = (snapshot.val() !== null);
-   
-      if (exists) {
-        console.log('user ' + uid + ' exists!');
-        firebase.database().ref('usersProfile/'+uid).update({ 
-          name: displayName,
-          email: email,
-          photo: photo,
-          phone:phone
-        });
-       
-      } else {
-        console.log('user ' + uid + ' does not exist!');
-        firebase.database().ref('/usersProfile').child(uid).set({  
-          name: displayName,
-          email: email,
-          photo: photo,
-          phone:phone
-        });
- 
-      }
-  });
-
- }
-
-  loginUser(newEmail: string, newPassword: string): Promise<any> {
-    return this.afAuth.auth.signInWithEmailAndPassword(newEmail,newPassword)
   }
 
-  resetPassword(email: string):Promise<any> {
+
+  updateUserProfile(uid, displayName, email, photo, phone) {
+    firebase.database().ref('/usersProfile').child(uid).once('value', function (snapshot) {
+      var exists = (snapshot.val() !== null);
+
+      if (exists) {
+        console.log('user ' + uid + ' exists!');
+        firebase.database().ref('usersProfile/' + uid).update({
+          name: displayName,
+          email: email,
+          photo: photo,
+          phone: phone
+        });
+
+      } else {
+        console.log('user ' + uid + ' does not exist!');
+        firebase.database().ref('/usersProfile').child(uid).set({
+          name: displayName,
+          email: email,
+          photo: photo,
+          phone: phone
+        });
+
+      }
+    });
+
+  }
+
+  loginUser(newEmail: string, newPassword: string): Promise<any> {
+    return this.afAuth.auth.signInWithEmailAndPassword(newEmail, newPassword)
+  }
+
+  resetPassword(email: string): Promise<any> {
     return this.afAuth.auth.sendPasswordResetEmail(email);
   }
 
@@ -96,32 +97,32 @@ signInWithGoogle(): Promise<any> {
     return this.afAuth.auth.signOut();
   }
 
-  
-  registerUser(name: string, email: string, password: string,phone: number): Promise<any> {
+
+  registerUser(name: string, email: string, password: string, phone: number): Promise<any> {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password).then((newUser) => {
       firebase.database().ref('/usersProfile').child(newUser.uid).set({
-          email: email,
-          name: name,
-          phone: phone
+        email: email,
+        name: name,
+        phone: phone
       });
     });
   }
 
-   // Obtein user Data for profile
+  // Obtein user Data for profile
   getUserProfile(): Promise<any> {
     let ion = this;
     return new Promise((resolve, reject) => {
       try {
         let authUser = ion.getAuthUser();
-        ion.afsModule.collection('/users/').doc(authUser.uid).ref.get().then(function(Userdoc) {
+        ion.afsModule.collection('/users/').doc(authUser.uid).ref.get().then(function (Userdoc) {
           if (Userdoc.exists) {
-              resolve(Userdoc.data());
+            resolve(Userdoc.data());
           } else {
-              console.log("No such document!, Error in register");
+            console.log("No such document!, Error in register");
           };
-        }).catch(function(error) {
+        }).catch(function (error) {
           console.log("Error getting document:", error);
-      });
+        });
       } catch (error) {
         reject(error);
       }
@@ -142,10 +143,10 @@ signInWithGoogle(): Promise<any> {
   }
 
   isAuth() {
-    return firebase.auth().onAuthStateChanged(function(user) {
+    return firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         console.log('logged auth module');
-         return true;
+        return true;
       } else {
         console.log('Not logged auth module');
         return false;
