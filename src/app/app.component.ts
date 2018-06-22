@@ -1,10 +1,16 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform  } from 'ionic-angular';
 
 //***********  ionic-native **************/
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthData } from "./../providers/auth-data";
+import { Helpers } from './../providers/helpers';
+import { Globals } from './../providers/globals';
+
+import { APP_LANG } from "./../app/app.lang";
+
+import { APP_CONFIG } from "./../app/app.config";
 
 @Component({
   templateUrl: 'app.html'
@@ -15,14 +21,22 @@ export class MyApp {
   rootPage: string = 'LoginPage';
   menu:Array<any> = [];
   pages: Array<any>;
+  appName: string;
+  appDesc: string;
+  appIcon: string;
 
   constructor(public platform: Platform, 
     public statusBar: StatusBar, 
     public splashScreen: SplashScreen,
-    public authDataModule: AuthData) {
+    public authDataModule: AuthData,
+    public helpers: Helpers,
+    public globals: Globals) {
     let ion = this;
 
     ion.initializeApp();
+    ion.appName = APP_CONFIG.Constants.APP_NAME;
+    ion.appDesc = APP_CONFIG.Constants.APP_DESC;
+    ion.appIcon = APP_CONFIG.Constants.APP_ICON;
 
     ion.menu = [          
 
@@ -123,21 +137,39 @@ export class MyApp {
     ion.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      
+
       ion.statusBar.styleDefault();
       ion.splashScreen.hide();
 
-      if (ion.authDataModule.isAuth()) {
-        console.log('auth true ini ');
-        
-        ion.nav.setRoot('DashboardPage');
-      } else {
-        console.log('auth false ini');
-        ion.nav.setRoot('LoginPage');
-      }
+     ion.changueLanguage();
+     ion.checkAuth();
     });
-
     
+   
+  }
+
+  changueLanguage(){
+    let ion = this;
+    if (ion.helpers.checkNavigatorLanguage() == 'es') {
+      ion.globals.LANG = APP_LANG.Constants.SPANISH;
+     } else if (ion.helpers.checkNavigatorLanguage() == 'en'){
+      ion.globals.LANG = APP_LANG.Constants.ENGLISH;
+     } else if (ion.helpers.checkNavigatorLanguage() == 'fr'){
+      ion.globals.LANG = APP_LANG.Constants.FRENCH;
+     } else {
+      ion.globals.LANG = APP_LANG.Constants.ENGLISH;
+     }
+  }
+
+  checkAuth(){
+    let ion = this;
+    if (ion.authDataModule.isAuth()) {
+      console.log('auth true ini ');    
+      ion.nav.setRoot('DashboardPage');
+    } else {
+      console.log('auth false ini');
+      ion.nav.setRoot('LoginPage');
+    }
   }
 
   toggleDetails(menu) {
