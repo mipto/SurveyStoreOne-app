@@ -3,6 +3,8 @@ import { IonicPage, NavController, NavParams, LoadingController, ToastController
 import { AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2/database-deprecated';
 import { User } from "../../../models/user";
 import { AuthData } from '../../../providers/auth-data';
+import { audit } from 'rxjs/operators';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @IonicPage()
 @Component({
@@ -11,22 +13,33 @@ import { AuthData } from '../../../providers/auth-data';
 })
 export class ProfilePage {
 
+  public profileForm: any;
   user = {} as User;
   onEdit: boolean;
-  constructor(public navCtrl: NavController, 
+  validEdit: boolean;
+  constructor(public navCtrl: NavController,
+    public fb: FormBuilder, 
     public navParams: NavParams, 
     public loadingCtrl: LoadingController, 
     private toastCtrl: ToastController, 
     public authData: AuthData) {
+
     let ion = this;
     ion.onEdit = false;
+
+    ion.profileForm = fb.group({
+      first_name: ['', Validators.required],
+      last_name: ['', Validators.required],
+      phone: ['', Validators.required],
+    });
+
   }
 
   ionViewWillEnter(){
     let ion = this;
     ion.authData.getUserProfile().then(userProfileData => {
       ion.user = userProfileData;
-      console.log("this is profile", ion.user);
+      ion.user.email = ion.authData.getAuthUser().email;
     });
    }
 
@@ -42,13 +55,32 @@ export class ProfilePage {
   save(user) {
     let ion = this;
     console.log(user);
-    ion.authData.updateProfile(user)
-    .then(function() {
-        console.log('Saved successfully');
-        ion.edit();
-    }).catch(error => {
-      console.log("Error updating data:", error);
-  });
+    if (!ion.profileForm.valid) {
+      ion.presentToast("top", "no sirvio");
+      console.log("error");
+    }
+    else {
+      ion.authData.updateProfile(user)
+        .then(function () {
+          console.log('Saved successfully');
+          ion.edit();
+        }).catch(error => {
+          console.log("Error updating data:", error);
+        });
+    }
+  }
+
+  public findInvalidControls() {
+    const invalid = [];
+    const controls = this.profileForm.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        invalid.push(name);
+      }
+    }
+    this.validEdit = invalid.length > 0 ? false : true;
+    console.log(this.validEdit);
+    return this.validEdit;
   }
 
 
