@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, LoadingController, AlertController , ToastController} from 'ionic-angular';
 import { AuthData } from '../../../providers/auth-data';
+import { Globals } from '../../../providers/globals';
 
-import { AngularFireDatabase, FirebaseObjectObservable} from 'angularfire2/database-deprecated';
+import { AngularFireDatabase} from 'angularfire2/database-deprecated';
 import { AngularFireAuth } from 'angularfire2/auth';
 
 import { APP_CONFIG } from "./../../../app/app.config";
 
-import md5 from 'crypto-md5'; // dependencies:"crypto-md5"
 import { Subscription } from 'rxjs/Subscription';
+
+import { User } from "../../../models/user";
 
 @IonicPage()
 @Component({
@@ -17,13 +19,11 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class DashboardPage {
 
-    email: any;
-    profilePicture: any = "https://www.gravatar.com/avatar/"
-    profileArray : any=[]; 
-    profile: FirebaseObjectObservable<any[]>;
-    uid:any;
+    email: string;
+    uid: string;
+    profilePicture: any;
+    user = {} as User;
     AuthSubscription: Subscription;
-    ProfileSubscription: Subscription;
 
   constructor(public navCtrl: NavController, 
     public authData: AuthData,
@@ -31,7 +31,8 @@ export class DashboardPage {
     public loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
     public afAuth: AngularFireAuth, 
-    public afDb: AngularFireDatabase) {
+    public afDb: AngularFireDatabase,
+    public globals: Globals) {
     
   }
 
@@ -43,12 +44,9 @@ export class DashboardPage {
         if(userAuth) {
           console.log("auth true! dashboard")
           ion.toastCtrl.create({
-            message: 'Welcome to '+ app_name +'!, '+ userAuth.email,
+            message: ion.globals.LANG.WELCOME_TO + ' ' + app_name +'!, '+ userAuth.email,
             duration: 3000
           }).present();
-          ion.uid = userAuth.uid;     
-          ion.email = userAuth.email;
-          ion.profilePicture = "https://www.gravatar.com/avatar/" + md5(ion.email.toLowerCase(), 'hex');
 
           let loadingPopup = ion.loadingCtrl.create({
             spinner: 'crescent', 
@@ -57,11 +55,14 @@ export class DashboardPage {
           });
           loadingPopup.present();
 
-          ion.profile = ion.afDb.object('/userProfile/'+ion.uid );
-          ion.ProfileSubscription = ion.profile.subscribe(profile => {
-            ion.profileArray = profile;
-              loadingPopup.dismiss();
-          })
+          ion.profilePicture = "https://www.gravatar.com/avatar/";
+  
+          ion.authData.getUserProfile().then(userProfileData => {
+            ion.user = userProfileData;
+            ion.email = userAuth.email;
+            ion.uid = userAuth.uid;   
+          });
+
 
         } else {
           ion.AuthSubscription.unsubscribe();
@@ -73,19 +74,19 @@ export class DashboardPage {
   }
 
   logout(){
-        this.authData.logoutUser()
+    let ion = this;
+        ion.authData.logoutUser()
         .then( authData => {
-          this.afAuth.auth.signOut();
-          this.AuthSubscription.unsubscribe();
-          this.ProfileSubscription.unsubscribe();
+          ion.AuthSubscription.unsubscribe();
+          ion.afAuth.auth.signOut();
           console.log("Logged out");
           // toast message
-          this.presentToast('bottom','You are now logged out');
-          this.navCtrl.setRoot('LoginPage');
+          ion.presentToast('bottom', ion.globals.LANG.LOGGED_OUT);
+          ion.navCtrl.setRoot('LoginPage');
         }, error => {
           var errorMessage: string = error.message;
           console.log(errorMessage);
-          //this.presentAlert(errorMessage);
+          //ion.presentAlert(errorMessage);
         });
   }
 

@@ -12,20 +12,22 @@ import { FormBuilder, Validators } from '@angular/forms';
   templateUrl: 'profile.html'
 })
 export class ProfilePage {
+
   public profileForm: any;
   user = {} as User;
   onEdit: boolean;
   validEdit: boolean;
   constructor(public navCtrl: NavController,
-    public fb: FormBuilder,
-    public navParams: NavParams,
-    public loadingCtrl: LoadingController,
-    private toastCtrl: ToastController,
+    public fb: FormBuilder, 
+    public navParams: NavParams, 
+    public loadingCtrl: LoadingController, 
+    private toastCtrl: ToastController, 
     public authData: AuthData) {
+
     let ion = this;
     ion.onEdit = false;
 
-    this.profileForm = fb.group({
+    ion.profileForm = fb.group({
       first_name: ['', Validators.required],
       last_name: ['', Validators.required],
       phone: ['', Validators.required],

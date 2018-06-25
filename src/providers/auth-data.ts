@@ -57,14 +57,13 @@ export class AuthData {
 
   }
 
-
-  updateUserProfile(uid, displayName, email, photo, phone) {
-    firebase.database().ref('/usersProfile').child(uid).once('value', function (snapshot) {
-      var exists = (snapshot.val() !== null);
-
+ updateUserProfile(uid,displayName,email,photo,phone){
+  firebase.database().ref('/users').child(uid).once('value', function(snapshot) {
+    var exists = (snapshot.val() !== null);
+   
       if (exists) {
         console.log('user ' + uid + ' exists!');
-        firebase.database().ref('usersProfile/' + uid).update({
+        firebase.database().ref('users/'+uid).update({ 
           name: displayName,
           email: email,
           photo: photo,
@@ -73,7 +72,7 @@ export class AuthData {
 
       } else {
         console.log('user ' + uid + ' does not exist!');
-        firebase.database().ref('/usersProfile').child(uid).set({
+        firebase.database().ref('/users').child(uid).set({  
           name: displayName,
           email: email,
           photo: photo,
@@ -100,10 +99,10 @@ export class AuthData {
 
   registerUser(name: string, email: string, password: string, phone: number): Promise<any> {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password).then((newUser) => {
-      firebase.database().ref('/usersProfile').child(newUser.uid).set({
-        email: email,
-        name: name,
-        phone: phone
+      firebase.database().ref('/users').child(newUser.uid).set({
+          email: email,
+          name: name,
+          phone: phone
       });
     });
   }
