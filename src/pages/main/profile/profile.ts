@@ -6,7 +6,6 @@ import { AuthData } from '../../../providers/auth-data';
 import { audit } from 'rxjs/operators';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Globals } from '../../../providers/globals';
-import { IonicNativePlugin } from '@ionic-native/core';
 
 @IonicPage()
 @Component({
