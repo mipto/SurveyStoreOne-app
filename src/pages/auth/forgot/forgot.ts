@@ -2,6 +2,7 @@ import { IonicPage, NavController,LoadingController, AlertController } from 'ion
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthData } from '../../../providers/auth-data';
+import { Globals } from '../../../providers/globals';
 
 
 @IonicPage()
@@ -13,7 +14,11 @@ export class ForgotPage {
   public resetPasswordForm;
   public backgroundImage: any = "./assets/bg3.jpg"; 
 
-  constructor(public authData: AuthData, public fb: FormBuilder, public nav: NavController, public loadingCtrl: LoadingController, public alertCtrl: AlertController) {
+  constructor(public authData: AuthData, public fb: FormBuilder, 
+    public nav: NavController, 
+    public loadingCtrl: LoadingController, 
+    public alertCtrl: AlertController,
+    public globals: Globals) {
 
       let EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
       this.resetPasswordForm = fb.group({

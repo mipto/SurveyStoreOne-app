@@ -1,3 +1,4 @@
+
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -25,8 +26,9 @@ import { GooglePlus } from '@ionic-native/google-plus';
 
 //*********** Provider **************/
 import { AuthData } from '../providers/auth-data';
+import { Globals } from '../providers/globals';
+import { Helpers } from '../providers/helpers';
 import { RadioPlayer } from '../providers/radio-service';
-
 
 //************** import image gallery *********************//
 import * as ionicGalleryModal from 'ionic-gallery-modal';
@@ -59,7 +61,9 @@ import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
       useClass: ionicGalleryModal.GalleryModalHammerConfig,
     },
     {provide: ErrorHandler, useClass: IonicErrorHandler},
+    Globals,
     AuthData,
+    Helpers,
     Facebook,
     RadioPlayer,
     Facebook,
