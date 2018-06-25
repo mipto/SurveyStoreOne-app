@@ -1,5 +1,5 @@
 export class APP_LANG {
-  static get Constants():any {
+  static get Constants(): any {
     return {
       ENGLISH: {
         EMAIL: 'Email',
@@ -15,9 +15,12 @@ export class APP_LANG {
         BACK: 'Back',
         YOUR_EMAIL: 'Your email address',
         RESET_PASSWORD: 'Reset your password',
-        LOGGED_OUT: 'You are now logged out'
-    },
-    SPANISH: {
+        LOGGED_OUT: 'You are now logged out',
+        LAST_NAME: 'Last Name',
+        SAVE: 'Save',
+        PROFILE: 'Profile',
+      },
+      SPANISH: {
         EMAIL: 'Email',
         PASSWORD: 'Contraseña',
         LOG_IN: 'Iniciar sesión',
@@ -31,11 +34,14 @@ export class APP_LANG {
         BACK: 'Atras',
         YOUR_EMAIL: 'Tu dirección de email',
         RESET_PASSWORD: 'Reestablece tu contraseña',
-        LOGGED_OUT: 'Estas ahora deslogeado'
-    },
-    FRENCH: {
+        LOGGED_OUT: 'Estas ahora deslogeado',
+        LAST_NAME: 'Apellido',
+        SAVE: 'Guardar',
+        PROFILE: 'Perfil',
+      },
+      FRENCH: {
 
+      }
     }
-     }
   }
 }
