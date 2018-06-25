@@ -3,7 +3,7 @@
     <button ion-button menuToggle class="TopLMenu">
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Profile</ion-title>
+    <ion-title>{{globals.LANG.PROFILE}}</ion-title>
     <ion-buttons right>
       <button ion-button icon-end (click)="edit()" *ngIf="!this.onEdit">
         <ion-icon name="brush"></ion-icon>
@@ -40,17 +40,17 @@
     <ion-item>
       <ion-icon name="person" item-left></ion-icon>
       <h2>{{user.first_name}}</h2>
-      <p>First Name</p>
+      <p>{{globals.LANG.NAME}}</p>
     </ion-item>
     <ion-item>
       <ion-icon name="person" item-left></ion-icon>
       <h2>{{user.last_name}}</h2>
-      <p>Last Name</p>
+      <p>{{globals.LANG.LAST_NAME}}</p>
     </ion-item>
     <ion-item>
       <ion-icon name="ios-call" item-left></ion-icon>
       <h2>{{user.phone}}</h2>
-      <p>mobile phone</p>
+      <p>{{globals.LANG.MOBILE_PHONE}}</p>
     </ion-item>
 
 
@@ -64,7 +64,7 @@
       </ion-list-header>
       <div class="item-inner">
         <ion-item>
-          <ion-label stacked>First Name</ion-label>
+          <ion-label stacked>{{globals.LANG.NAME}}</ion-label>
           <ion-input type="text" [(ngModel)]="user.first_name" formControlName="first_name" [class.invalid]="!profileForm.controls.first_name.valid && profileForm.controls.first_name.dirty"
             (change)="findInvalidControls()">
           </ion-input>
@@ -72,7 +72,7 @@
       </div>
       <div class="item-inner">
         <ion-item>
-          <ion-label stacked>Last Name</ion-label>
+          <ion-label stacked>{{globals.LANG.LAST_NAME}}</ion-label>
           <ion-input type="text" [(ngModel)]="user.last_name" formControlName="last_name" [class.invalid]="!profileForm.controls.last_name.valid && profileForm.controls.last_name.dirty"
             (change)="findInvalidControls()">
           </ion-input>
@@ -80,7 +80,7 @@
       </div>
       <div class=" item-inner ">
         <ion-item>
-          <ion-label stacked>Phone</ion-label>
+          <ion-label stacked>{{globals.LANG.MOBILE_PHONE}}</ion-label>
           <ion-input type="text" [(ngModel)]="user.phone" formControlName="phone" [class.invalid]="!profileForm.controls.phone.valid
             && profileForm.controls.phone.dirty" (change)="findInvalidControls()">
           </ion-input>
@@ -90,14 +90,11 @@
   </form>
 
   <div class="validation-errors">
-    <p *ngIf="!profileForm.controls.first_name.valid  && profileForm.controls.first_name.dirty">*Please enter a valid First Name.</p>
-    <p *ngIf="!profileForm.controls.last_name.valid  && profileForm.controls.last_name.dirty">*Please enter correct Last Name.</p>
-    <p *ngIf="!profileForm.controls.phone.valid  && profileForm.controls.phone.dirty">*Please enter a valid Phone.</p>
-
+    <p *ngIf="!profileForm.controls.first_name.valid  && profileForm.controls.first_name.dirty">*Please enter a valid First Name least 2 characters long, and contain only a letters.</p>
+    <p *ngIf="!profileForm.controls.last_name.valid  && profileForm.controls.last_name.dirty">*Please enter a valid Last Name least 2 characters long, and contain only a letters.</p>
+    <p *ngIf="!profileForm.controls.phone.valid  && profileForm.controls.phone.dirty">*Please enter a valid Phone least 6 characters long, and contain a number.</p>
   </div>
 
-
-
-  <button ion-button block (click)="save(user)" *ngIf="this.onEdit && this.validEdit">Guardar</button>
+  <button ion-button block (click)="save(user)" *ngIf="this.onEdit && this.validEdit">{{globals.LANG.SAVE}}</button>
 
 </ion-content>

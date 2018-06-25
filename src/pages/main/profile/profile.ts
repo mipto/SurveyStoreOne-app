@@ -5,6 +5,7 @@ import { User } from "../../../models/user";
 import { AuthData } from '../../../providers/auth-data';
 import { audit } from 'rxjs/operators';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Globals } from '../../../providers/globals';
 
 @IonicPage()
 @Component({
@@ -18,19 +19,20 @@ export class ProfilePage {
   onEdit: boolean;
   validEdit: boolean;
   constructor(public navCtrl: NavController,
-    public fb: FormBuilder, 
-    public navParams: NavParams, 
-    public loadingCtrl: LoadingController, 
-    private toastCtrl: ToastController, 
+    public fb: FormBuilder,
+    public navParams: NavParams,
+    public loadingCtrl: LoadingController,
+    private toastCtrl: ToastController,
+    public globals: Globals,
     public authData: AuthData) {
 
     let ion = this;
     ion.onEdit = false;
 
     ion.profileForm = fb.group({
-      first_name: ['', Validators.required],
-      last_name: ['', Validators.required],
-      phone: ['', Validators.required],
+      first_name: ['', [Validators.required, Validators.minLength(2), Validators.pattern('[a-z A-Z]*')]],
+      last_name: ['', [Validators.required, Validators.minLength(2), Validators.pattern('[a-z A-Z]*')]],
+      phone: ['', [Validators.required, Validators.pattern('[0-9]*')]],
     });
 
   }

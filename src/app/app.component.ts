@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform  } from 'ionic-angular';
+import { Nav, Platform } from 'ionic-angular';
 
 //***********  ionic-native **************/
 import { StatusBar } from '@ionic-native/status-bar';
@@ -19,14 +19,14 @@ export class MyApp {
 
   @ViewChild(Nav) nav: Nav;
   rootPage: string = 'LoginPage';
-  menu:Array<any> = [];
+  menu: Array<any> = [];
   pages: Array<any>;
   appName: string;
   appDesc: string;
   appIcon: string;
 
-  constructor(public platform: Platform, 
-    public statusBar: StatusBar, 
+  constructor(public platform: Platform,
+    public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     public authDataModule: AuthData,
     public helpers: Helpers,
@@ -38,96 +38,97 @@ export class MyApp {
     ion.appDesc = APP_CONFIG.Constants.APP_DESC;
     ion.appIcon = APP_CONFIG.Constants.APP_ICON;
 
-    ion.menu = [          
+    ion.menu = [
 
       {
         title: 'Layout with firebase',
-        myicon:'',
+        myicon: '',
         iconLeft: 'ios-filing',
         icon: 'ios-add-outline',
         showDetails: false,
-        items:  [
-             
-            {name:'Authentication(Login)',component:'LoginPage'},
-            {name:'Authentication(Register)',component:'RegisterPage'},
-            {name:'Authentication(Forgot)',component:'ForgotPage'},
-            {name:'Dashboard',component:'DashboardPage'},
-            {name:'Chart',component:'ChartPage'},
+        items: [
 
-            {name:'City guide', component: 'Category1Page'},// app1 folder
-            {name:'Shopping',component:'Category2Page'},// app2 folder
-            {name:'Restaurant',component:'Category3Page'}, // app3 folder
-            {name:'Google map',component: 'MapPage'},
-            {name:'Image gallery',component: 'GalleryPage'},
-            {name:'Feed',component: 'FeedPage'},
-            {name:'Form',component: 'FormResultPage'},
+          { name: 'Authentication(Login)', component: 'LoginPage' },
+          { name: 'Authentication(Register)', component: 'RegisterPage' },
+          { name: 'Authentication(Forgot)', component: 'ForgotPage' },
+          { name: 'Dashboard', component: 'DashboardPage' },
+          { name: 'Chart', component: 'ChartPage' },
+
+          { name: 'City guide', component: 'Category1Page' },// app1 folder
+          { name: 'Shopping', component: 'Category2Page' },// app2 folder
+          { name: 'Restaurant', component: 'Category3Page' }, // app3 folder
+          { name: 'Google map', component: 'MapPage' },
+          { name: 'Image gallery', component: 'GalleryPage' },
+          { name: 'Feed', component: 'FeedPage' },
+          { name: 'Form', component: 'FormResultPage' },
 
 
-            {name:'Intro', component:'IntroPage'},
+          { name: 'Intro', component: 'IntroPage' },
 
-            {name:'Pinterest(Masonry)',component: 'MasonryPage'},
-            {name:'Profile1',component: 'ProfilePage'},
-            {name:'Profile2',component: 'Profile2Page'},
-            {name:'Profile3',component: 'Profile3Page'},
-            {name:'Profile4', component: 'Profile4Page'},
-            {name:'Radio player',component:'RadioListPage'},
+          { name: 'Pinterest(Masonry)', component: 'MasonryPage' },
+          { name: 'Profile1', component: 'ProfilePage' },
+          { name: 'Profile2', component: 'Profile2Page' },
+          { name: 'Profile3', component: 'Profile3Page' },
+          { name: 'Profile4', component: 'Profile4Page' },
+          { name: 'Radio player', component: 'RadioListPage' },
 
-            {name:'Search',component:'SearchPage'},
-            {name:'Timeline',component: 'TimelinePage'}
+          { name: 'Search', component: 'SearchPage' },
+          { name: 'Timeline', component: 'TimelinePage' }
         ]
       }, {
         title: 'Components',
         iconLeft: 'ios-copy',
         icon: 'ios-add-outline',
         showDetails: false,
-        items:  [
-              {name:'Accordion',component:'AccordionPage'},
+        items: [
+          { name: 'Accordion', component: 'AccordionPage' },
 
-              {name:'Action sheet',component:'ActionsheetPage'},
-              {name:'Alert',component:'AlertPage'},
-              {name:'Animation',component:'AnimationsPage'},
+          { name: 'Action sheet', component: 'ActionsheetPage' },
+          { name: 'Alert', component: 'AlertPage' },
+          { name: 'Animation', component: 'AnimationsPage' },
 
-              {name:'Button',component:'ButtonPage'},
-              {name:'Datetime',component:'DatetimePage'},
-              {name:'Fab', component:'FabPage'},
-              {name:'Fading header',component:'FadingHeaderPage' },
-              {name:'Grid', component:'GridPage'},
-              {name:'Header',component:'HeaderPage'},
-              {name:'Input',component:'InputPage'},
-              {name:'Item',component:'ItemPage'},
-              {name:'Item sliding',component:'ItemSlidingPage'},
-              {name:'Label',component:'LabelPage'},
-              {name:'Radio button',component:'RadioButtonPage'},
-              {name:'Rating',component:'RatingPage'},
-             
-              {name:'Range',component:'RangePage'},
-              {name:'Search bar', component:'SearchBarPage'},
-              {name:'Select option',component:'SelectOptionPage'},
-              {name:'Segment',component:'SegmentPage'},
-              {name:'Shrinking',component:'ShrinkingPage'},
+          { name: 'Button', component: 'ButtonPage' },
+          { name: 'Datetime', component: 'DatetimePage' },
+          { name: 'Fab', component: 'FabPage' },
+          { name: 'Fading header', component: 'FadingHeaderPage' },
+          { name: 'Grid', component: 'GridPage' },
+          { name: 'Header', component: 'HeaderPage' },
+          { name: 'Input', component: 'InputPage' },
+          { name: 'Item', component: 'ItemPage' },
+          { name: 'Item sliding', component: 'ItemSlidingPage' },
+          { name: 'Label', component: 'LabelPage' },
+          { name: 'Radio button', component: 'RadioButtonPage' },
+          { name: 'Rating', component: 'RatingPage' },
 
-              {name:'Tag',component:'TagPage'},
-              {name:'Table',component:'TablePage'},
-              {name:'Transparent header',component:'TransparentHeaderPage'},
-              {name:'Toast',component:'ToastPage'}
+          { name: 'Range', component: 'RangePage' },
+          { name: 'Search bar', component: 'SearchBarPage' },
+          { name: 'Select option', component: 'SelectOptionPage' },
+          { name: 'Segment', component: 'SegmentPage' },
+          { name: 'Shrinking', component: 'ShrinkingPage' },
 
-          ]
-      },{
+          { name: 'Tag', component: 'TagPage' },
+          { name: 'Table', component: 'TablePage' },
+          { name: 'Transparent header', component: 'TransparentHeaderPage' },
+          { name: 'Toast', component: 'ToastPage' }
+
+        ]
+      }, {
         title: 'Theme',
         iconLeft: 'md-color-palette',
         icon: 'ios-add-outline',
         showDetails: false,
-        items:  [
+        items: [
           {
-          name:'Color',
-          component:'ThemePage'
+            name: 'Color',
+            component: 'ThemePage'
           }
         ]
       }
-  ];
+    ];
 
-    ion.pages = [ 
-      { icon:'bookmark', title:'Login', component: 'LoginPage' }    
+    ion.pages = [
+      { icon: 'bookmark', title: 'Login', component: 'LoginPage' },
+      { icon: 'person', title: 'Profile', component: 'ProfilePage' },
     ];
 
   }
@@ -141,30 +142,30 @@ export class MyApp {
       ion.statusBar.styleDefault();
       ion.splashScreen.hide();
 
-     ion.changueLanguage();
-     ion.checkAuth();
+      ion.changueLanguage();
+      ion.checkAuth();
     });
-    
-   
+
+
   }
 
-  changueLanguage(){
+  changueLanguage() {
     let ion = this;
     if (ion.helpers.checkNavigatorLanguage() == 'es') {
       ion.globals.LANG = APP_LANG.Constants.SPANISH;
-     } else if (ion.helpers.checkNavigatorLanguage() == 'en'){
+    } else if (ion.helpers.checkNavigatorLanguage() == 'en') {
       ion.globals.LANG = APP_LANG.Constants.ENGLISH;
-     } else if (ion.helpers.checkNavigatorLanguage() == 'fr'){
+    } else if (ion.helpers.checkNavigatorLanguage() == 'fr') {
       ion.globals.LANG = APP_LANG.Constants.FRENCH;
-     } else {
+    } else {
       ion.globals.LANG = APP_LANG.Constants.ENGLISH;
-     }
+    }
   }
 
-  checkAuth(){
+  checkAuth() {
     let ion = this;
     if (ion.authDataModule.isAuth()) {
-      console.log('auth true ini ');    
+      console.log('auth true ini ');
       ion.nav.setRoot('DashboardPage');
     } else {
       console.log('auth false ini');
@@ -174,11 +175,11 @@ export class MyApp {
 
   toggleDetails(menu) {
     if (menu.showDetails) {
-        menu.showDetails = false;
-        menu.icon = 'ios-add-outline';
+      menu.showDetails = false;
+      menu.icon = 'ios-add-outline';
     } else {
-        menu.showDetails = true;
-        menu.icon = 'ios-remove-outline';
+      menu.showDetails = true;
+      menu.icon = 'ios-remove-outline';
     }
   }
 
@@ -190,12 +191,12 @@ export class MyApp {
     //this.nav.setRoot(page.component);
     if (ion.authDataModule.isAuth()) {
       console.log('auth true pagechange');
-      
+
       ion.nav.setRoot(page.component);
     } else {
       console.log('auth false pagechange');
       ion.nav.setRoot('LoginPage');
-    } 
+    }
   }
 
 }
