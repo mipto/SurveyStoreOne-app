@@ -6,6 +6,7 @@ import { AuthData } from '../../../providers/auth-data';
 import { audit } from 'rxjs/operators';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Globals } from '../../../providers/globals';
+import { IonicNativePlugin } from '@ionic-native/core';
 
 @IonicPage()
 @Component({
@@ -65,6 +66,7 @@ export class ProfilePage {
       ion.authData.updateProfile(user)
         .then(function () {
           console.log('Saved successfully');
+          ion.validEdit = false;
           ion.edit();
         }).catch(error => {
           console.log("Error updating data:", error);
