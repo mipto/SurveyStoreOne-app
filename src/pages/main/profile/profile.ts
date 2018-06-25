@@ -65,6 +65,7 @@ export class ProfilePage {
       ion.authData.updateProfile(user)
         .then(function () {
           console.log('Saved successfully');
+          ion.validEdit = false;
           ion.edit();
         }).catch(error => {
           console.log("Error updating data:", error);
