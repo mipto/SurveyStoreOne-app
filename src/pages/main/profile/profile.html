@@ -20,7 +20,7 @@
   <div id="profile1-info" class="test-class" padding>
 
     <img id="profile1-image" class="pop-in" src="https://www.pnliafi.com.ar/wp-content/uploads/2016/01/avatar-user.png" />
-    <h3 id="profile1-name">{{(profile | async)?.name}}</h3>
+    <h3 id="profile1-name">{{userData.user.name}}</h3>
     <!--<p>{{(profile2 | async)?.company}} &bull; {{(profile2 | async)?.position}}</p> -->
     <p class="profile1-description">Developer</p>
   </div>
@@ -34,22 +34,22 @@
     </ion-list-header>
     <ion-item>
       <ion-icon name="ios-mail" item-left></ion-icon>
-      <h2>{{user.email}}</h2>
+      <h2>{{userData.user.email}}</h2>
       <p>Email</p>
     </ion-item>
     <ion-item>
       <ion-icon name="person" item-left></ion-icon>
-      <h2>{{user.first_name}}</h2>
+      <h2>{{userData.user.first_name}}</h2>
       <p>{{globals.LANG.NAME}}</p>
     </ion-item>
     <ion-item>
       <ion-icon name="person" item-left></ion-icon>
-      <h2>{{user.last_name}}</h2>
+      <h2>{{userData.user.last_name}}</h2>
       <p>{{globals.LANG.LAST_NAME}}</p>
     </ion-item>
     <ion-item>
       <ion-icon name="ios-call" item-left></ion-icon>
-      <h2>{{user.phone}}</h2>
+      <h2>{{userData.user.phone}}</h2>
       <p>{{globals.LANG.MOBILE_PHONE}}</p>
     </ion-item>
 
@@ -65,7 +65,7 @@
       <div class="item-inner">
         <ion-item>
           <ion-label stacked>{{globals.LANG.NAME}}</ion-label>
-          <ion-input type="text" [(ngModel)]="user.first_name" formControlName="first_name" [class.invalid]="!profileForm.controls.first_name.valid && profileForm.controls.first_name.dirty"
+          <ion-input type="text" [(ngModel)]="userData.user.first_name" formControlName="first_name" [class.invalid]="!profileForm.controls.first_name.valid && profileForm.controls.first_name.dirty"
             (change)="findInvalidControls()">
           </ion-input>
         </ion-item>
@@ -73,7 +73,7 @@
       <div class="item-inner">
         <ion-item>
           <ion-label stacked>{{globals.LANG.LAST_NAME}}</ion-label>
-          <ion-input type="text" [(ngModel)]="user.last_name" formControlName="last_name" [class.invalid]="!profileForm.controls.last_name.valid && profileForm.controls.last_name.dirty"
+          <ion-input type="text" [(ngModel)]="userData.user.last_name" formControlName="last_name" [class.invalid]="!profileForm.controls.last_name.valid && profileForm.controls.last_name.dirty"
             (change)="findInvalidControls()">
           </ion-input>
         </ion-item>
@@ -81,7 +81,7 @@
       <div class=" item-inner ">
         <ion-item>
           <ion-label stacked>{{globals.LANG.MOBILE_PHONE}}</ion-label>
-          <ion-input type="text" [(ngModel)]="user.phone" formControlName="phone" [class.invalid]="!profileForm.controls.phone.valid
+          <ion-input type="text" [(ngModel)]="userData.user.phone" formControlName="phone" [class.invalid]="!profileForm.controls.phone.valid
             && profileForm.controls.phone.dirty" (change)="findInvalidControls()">
           </ion-input>
         </ion-item>
@@ -95,6 +95,6 @@
     <p *ngIf="!profileForm.controls.phone.valid  && profileForm.controls.phone.dirty">*Please enter a valid Phone least 6 characters long, and contain a number.</p>
   </div>
 
-  <button ion-button block (click)="save(user)" *ngIf="this.onEdit && this.validEdit">{{globals.LANG.SAVE}}</button>
+  <button ion-button block (click)="save(userData.user)" *ngIf="this.onEdit && this.validEdit">{{globals.LANG.SAVE}}</button>
 
 </ion-content>

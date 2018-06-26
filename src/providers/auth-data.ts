@@ -17,6 +17,8 @@ import { AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
 import { User } from '../models/user';
 
+import { UserService } from '../services/user.service';
+
 @Injectable()
 export class AuthData {
   userscollection: AngularFirestoreCollection<User>;
@@ -25,7 +27,8 @@ export class AuthData {
   constructor(public afAuth: AngularFireAuth,
     private platform: Platform, private facebook: Facebook,
     private googleplus: GooglePlus,
-    public afsModule: AngularFirestore) {
+    public afsModule: AngularFirestore,
+    public userService: UserService) {
   }
 
 
@@ -62,7 +65,6 @@ export class AuthData {
     var exists = (snapshot.val() !== null);
    
       if (exists) {
-        console.log('user ' + uid + ' exists!');
         firebase.database().ref('users/'+uid).update({ 
           name: displayName,
           email: email,
@@ -71,7 +73,6 @@ export class AuthData {
         });
 
       } else {
-        console.log('user ' + uid + ' does not exist!');
         firebase.database().ref('/users').child(uid).set({  
           name: displayName,
           email: email,
@@ -84,8 +85,8 @@ export class AuthData {
 
   }
 
-  loginUser(newEmail: string, newPassword: string): Promise<any> {
-    return this.afAuth.auth.signInWithEmailAndPassword(newEmail, newPassword)
+  loginUser(credentials): Promise<any> {
+    return this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password)
   }
 
   resetPassword(email: string): Promise<any> {
@@ -107,6 +108,20 @@ export class AuthData {
     });
   }
 
+  setUserData(): Promise<any> {
+    let ion = this;
+    return new Promise((resolve, reject) => {
+      try {
+        ion.getUserProfile().then(userProfileData => {
+          ion.userService.user = userProfileData;
+          resolve();
+        });
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
   // Obtein user Data for profile
   getUserProfile(): Promise<any> {
     let ion = this;
@@ -117,10 +132,10 @@ export class AuthData {
           if (Userdoc.exists) {
             resolve(Userdoc.data());
           } else {
-            console.log("No such document!, Error in register");
+            console.error("No such document!, Error in register");
           };
         }).catch(function (error) {
-          console.log("Error getting document:", error);
+          console.error("Error getting document:", error);
         });
       } catch (error) {
         reject(error);
@@ -144,10 +159,8 @@ export class AuthData {
   isAuth() {
     return firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
-        console.log('logged auth module');
         return true;
       } else {
-        console.log('Not logged auth module');
         return false;
       }
     });
