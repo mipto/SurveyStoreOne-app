@@ -25,10 +25,12 @@ import { GooglePlus } from '@ionic-native/google-plus';
 
 //*********** Provider **************/
 import { AuthData } from '../providers/auth-data';
-import { UserService } from '../services/user.service';
-import { Globals } from '../services/globals.service';
 import { Helpers } from '../providers/helpers';
 import { RadioPlayer } from '../providers/radio-service';
+
+//*********** Services ****************/
+import { UserService } from '../services/user.service';
+import { Globals } from '../services/globals.service';
 
 //************** import image gallery *********************//
 import * as ionicGalleryModal from 'ionic-gallery-modal';

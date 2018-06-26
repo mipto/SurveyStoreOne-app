@@ -5,17 +5,17 @@ import { Platform } from 'ionic-angular';
 import { Facebook } from '@ionic-native/facebook';
 import { GooglePlus } from '@ionic-native/google-plus';
 
-// Authenticated User Data
+import { Subscription } from 'rxjs/Subscription';
+
 import { AuthData } from '../../../providers/auth-data';
 import { UserService } from '../../../services/user.service';
-
 import { Globals } from '../../../services/globals.service';
+import { APP_CONFIG } from "./../../../app/app.config";
 
 import { AngularFireDatabase, FirebaseObjectObservable} from 'angularfire2/database-deprecated';
 import { AngularFireAuth } from 'angularfire2/auth';
 
-import { APP_CONFIG } from "./../../../app/app.config";
-import { Subscription } from 'rxjs/Subscription';
+
 
 //Auth Pages
 

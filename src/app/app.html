@@ -5,9 +5,9 @@
 <!--***********  Side menu for android ***********-->
       <div id="menu-material" showWhen="android">
           <ion-header class="menu-header">      
-            <img class="user-avatar round" src =  "https://pbs.twimg.com/profile_images/834457277830541312/bYMCvtHD.jpg"/>
-            <p class="name">{{appName}}</p>
-            <p class="email">{{appDesc}}</p>
+            <img class="user-avatar round" src="{{appConfig.APP_ICON}}"/>
+            <p class="name">{{appConfig.APP_NAME}}</p>
+            <p class="email">{{appConfig.APP_DESC}}</p>
           </ion-header>
       <!--***********  Menu for android  ***********-->
           <div class="list-box">
@@ -46,9 +46,9 @@
     <div id="menu-ios" showWhen="ios" class="sideMenu-header"  color="gray">
         <div class="menu-header">
   
-                <img class="user-avatar round" src = "https://pbs.twimg.com/profile_images/834457277830541312/bYMCvtHD.jpg"/>
-                <p class="name">{{appName}}</p>
-                <p class="email">{{appDesc}}</p>            
+                <img class="user-avatar round" src="{{appConfig.APP_ICON}}"/>
+                <p class="name">{{appConfig.APP_NAME}}</p>
+            <p class="email">{{appConfig.APP_DESC}}</p>           
           
         </div>
       <!--***********  menu ***********-->
@@ -80,9 +80,9 @@
       <div id="menu-pwa" hideWhen="android,ios">
         <div class="menu-header">
   
-                <img class="user-avatar round" src = "{{appIcon}}"/>
-                <p class="name">{{appName}}</p>
-                <p class="email">{{appDesc}}</p>           
+                <img class="user-avatar round" src ="{{appConfig.APP_ICON}}"/>
+                <p class="name">{{appConfig.APP_NAME}}</p>
+                <p class="email">{{appConfig.APP_DESC}}</p>           
           
         </div>
           <div class="list-box">

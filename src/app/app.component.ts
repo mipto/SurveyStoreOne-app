@@ -1,15 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
-
-//***********  ionic-native **************/
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthData } from "./../providers/auth-data";
 import { Helpers } from './../providers/helpers';
 import { Globals } from '../services/globals.service';
-
 import { APP_LANG } from "./../app/app.lang";
-
 import { APP_CONFIG } from "./../app/app.config";
 
 @Component({
@@ -21,9 +17,7 @@ export class MyApp {
   rootPage: string = 'LoginPage';
   menu: Array<any> = [];
   pages: Array<any>;
-  appName: string;
-  appDesc: string;
-  appIcon: string;
+  appConfig: any = APP_CONFIG.Constants;
 
   constructor(public platform: Platform,
     public statusBar: StatusBar,
@@ -34,9 +28,6 @@ export class MyApp {
     let ion = this;
 
     ion.initializeApp();
-    ion.appName = APP_CONFIG.Constants.APP_NAME;
-    ion.appDesc = APP_CONFIG.Constants.APP_DESC;
-    ion.appIcon = APP_CONFIG.Constants.APP_ICON;
 
     ion.pages = [
       { icon: 'bookmark', title: 'Dashboard', component: 'DashboardPage' },
@@ -141,14 +132,17 @@ export class MyApp {
 
   changueLanguage() {
     let ion = this;
-    if (ion.helpers.checkNavigatorLanguage() == 'es' || ion.helpers.checkNavigatorLanguage() == 'es-ES') {
-      ion.globals.LANG = APP_LANG.Constants.SPANISH;
-    } else if (ion.helpers.checkNavigatorLanguage() == 'en' || ion.helpers.checkNavigatorLanguage() == 'en-EN') {
-      ion.globals.LANG = APP_LANG.Constants.ENGLISH;
-    } else if (ion.helpers.checkNavigatorLanguage() == 'fr' || ion.helpers.checkNavigatorLanguage() == 'fr-FR') {
-      ion.globals.LANG = APP_LANG.Constants.FRENCH;
+    let navLang = ion.helpers.checkNavigatorLanguage();
+    let langs = APP_LANG.Constants;
+
+    if (navLang == 'es' || navLang == 'es-ES') {
+      ion.globals.LANG = langs.SPANISH;
+    } else if (navLang == 'en' || navLang == 'en-EN') {
+      ion.globals.LANG = langs.ENGLISH;
+    } else if (navLang == 'fr' || navLang == 'fr-FR') {
+      ion.globals.LANG = langs.FRENCH;
     } else {
-      ion.globals.LANG = APP_LANG.Constants.ENGLISH;
+      ion.globals.LANG = langs.ENGLISH;
     }
   }
 
