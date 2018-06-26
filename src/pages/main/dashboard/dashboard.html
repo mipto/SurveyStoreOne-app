@@ -20,7 +20,7 @@
         <ion-list no-lines >
             <ion-item>
                 <ion-icon name="ios-mail" item-left></ion-icon>
-                <h2>{{email}}</h2>
+                <h2>{{user.email}}</h2>
                 <p>{{globals.LANG.EMAIL}}</p>
             </ion-item>
 
@@ -31,15 +31,15 @@
             </ion-item>
 
             <ion-item>
-              <ion-icon name="ios-call" item-left></ion-icon>
-              <h2>{{user.phone}}</h2>
-              <p>{{globals.LANG.MOBILE_PHONE}}</p>
+              <ion-icon name="ios-card" item-left></ion-icon>
+              <h2>{{user.last_name}}</h2>
+              <p>{{globals.LANG.LAST_NAME}}</p>
             </ion-item>
 
             <ion-item>
-              <ion-icon name="md-finger-print"  item-left></ion-icon>
-              <h2>{{uid}}</h2>
-              <p>Firebase uid</p>
+              <ion-icon name="ios-call" item-left></ion-icon>
+              <h2>{{user.phone}}</h2>
+              <p>{{globals.LANG.MOBILE_PHONE}}</p>
             </ion-item>
         </ion-list>
 

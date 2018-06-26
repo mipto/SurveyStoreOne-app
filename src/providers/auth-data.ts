@@ -84,8 +84,8 @@ export class AuthData {
 
   }
 
-  loginUser(newEmail: string, newPassword: string): Promise<any> {
-    return this.afAuth.auth.signInWithEmailAndPassword(newEmail, newPassword)
+  loginUser(credentials): Promise<any> {
+    return this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password)
   }
 
   resetPassword(email: string): Promise<any> {

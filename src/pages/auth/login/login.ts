@@ -26,7 +26,6 @@ import { Subscription } from 'rxjs/Subscription';
 export class LoginPage {
   public loginForm: any;
   public backgroundImage: any = "./assets/bg1.jpg";
-  public imgLogo: any = "./assets/medium_150.70391061453px_1202562_easyicon.net.png";
   public AuthSubscription: Subscription;
   appIcon: string;
 
@@ -66,24 +65,27 @@ export class LoginPage {
 
   login(){
     let ion = this;
+
+    let LoginCredentials = ion.loginForm.value;
+
+    let loadingPopupLogin = ion.loadingCtrl.create({
+      spinner: 'crescent', 
+      content: ''
+    });
+
       if (!ion.loginForm.valid){
-          //ion.presentAlert('Username password can not be blank')
+          ion.presentAlert('Username password can not be blank')
           console.log("error");
       } else {
-        let loadingPopup = ion.loadingCtrl.create({
-          spinner: 'crescent', 
-          content: ''
-        });
-        loadingPopup.present();
-
-        ion.authData.loginUser(ion.loginForm.value.email, ion.loginForm.value.password)
+        loadingPopupLogin.present();
+        ion.authData.loginUser(LoginCredentials)
         .then( authData => {
-          console.log("Auth pass");
-          loadingPopup.dismiss();
+          console.log("Auth pass", authData);
+          loadingPopupLogin.dismiss();
           ion.navCtrl.setRoot('DashboardPage');
         }, error => {
           var errorMessage: string = error.message;
-          loadingPopup.dismiss().then( () => {
+          loadingPopupLogin.dismiss().then( () => {
             ion.presentAlert(errorMessage)
           });
         });

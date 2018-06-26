@@ -18,10 +18,6 @@ import { User } from "../../../models/user";
   templateUrl: 'dashboard.html'
 })
 export class DashboardPage {
-
-    email: string;
-    uid: string;
-    profilePicture: any;
     user = {} as User;
     AuthSubscription: Subscription;
 
@@ -40,29 +36,30 @@ export class DashboardPage {
     let ion = this;
     let app_name = APP_CONFIG.Constants.APP_NAME;
 
-    ion.AuthSubscription = ion.afAuth.authState.subscribe(userAuth => {
+    let viewDataLaoding = ion.loadingCtrl.create({
+      spinner: 'crescent', 
+      content: '',
+      duration: 15000
+    });
+
+    viewDataLaoding.present().then( () => {
+      ion.AuthSubscription = ion.afAuth.authState.subscribe(userAuth => {
         if(userAuth) {
           console.log("auth true! dashboard")
-          ion.toastCtrl.create({
-            message: ion.globals.LANG.WELCOME_TO + ' ' + app_name +'!, '+ userAuth.email,
-            duration: 3000
-          }).present();
-
-          let loadingPopup = ion.loadingCtrl.create({
-            spinner: 'crescent', 
-            content: '',
-            duration: 15000
-          });
-          loadingPopup.present();
-
-          ion.profilePicture = "https://www.gravatar.com/avatar/";
-  
+          
           ion.authData.getUserProfile().then(userProfileData => {
+            console.log(userProfileData);
+            
             ion.user = userProfileData;
-            ion.email = userAuth.email;
-            ion.uid = userAuth.uid;   
-          });
 
+            //Dismiss loading Ctrl
+            viewDataLaoding.dismiss();
+            //Show bottom badge
+            ion.toastCtrl.create({
+              message: ion.globals.LANG.WELCOME_TO + ' ' + app_name +'!, '+ userAuth.email,
+              duration: 3000
+            }).present();
+          });
 
         } else {
           ion.AuthSubscription.unsubscribe();
@@ -71,6 +68,7 @@ export class DashboardPage {
         }
 
       });
+    });
   }
 
   logout(){

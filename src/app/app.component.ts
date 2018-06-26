@@ -143,7 +143,7 @@ export class MyApp {
       ion.splashScreen.hide();
 
       ion.changueLanguage();
-      ion.checkAuth();
+     // ion.checkAuth();
     });
 
 
