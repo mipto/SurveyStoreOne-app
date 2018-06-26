@@ -15,20 +15,25 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { AngularFirestoreCollection } from 'angularfire2/firestore';
 
 import { Observable } from 'rxjs';
-import { User } from '../models/user';
-
+//import { User } from '../models/user';import { UserService } from '../services/user.service';@Injectable()
 import { UserService } from '../services/user.service';
-
-@Injectable()
 export class AuthData {
-  userscollection: AngularFirestoreCollection<User>;
-  users: Observable<User[]>;
-  userData: any;
-  constructor(public afAuth: AngularFireAuth,
+  userscollection: AngularFirestoreCollection<any>;
+
+  //users: Observable<User[]>;
+
+  userData: any; constructor(public afAuth: AngularFireAuth,
+
     private platform: Platform, private facebook: Facebook,
+
     private googleplus: GooglePlus,
+
     public afsModule: AngularFirestore,
+
     public userService: UserService) {
+
+    this.userData = afsModule.collection<any>('users');
+
   }
 
 
@@ -60,12 +65,12 @@ export class AuthData {
 
   }
 
- updateUserProfile(uid,displayName,email,photo,phone){
-  firebase.database().ref('/users').child(uid).once('value', function(snapshot) {
-    var exists = (snapshot.val() !== null);
-   
+  updateUserProfile(uid, displayName, email, photo, phone) {
+    firebase.database().ref('/users').child(uid).once('value', function (snapshot) {
+      var exists = (snapshot.val() !== null);
+
       if (exists) {
-        firebase.database().ref('users/'+uid).update({ 
+        firebase.database().ref('users/' + uid).update({
           name: displayName,
           email: email,
           photo: photo,
@@ -73,7 +78,7 @@ export class AuthData {
         });
 
       } else {
-        firebase.database().ref('/users').child(uid).set({  
+        firebase.database().ref('/users').child(uid).set({
           name: displayName,
           email: email,
           photo: photo,
@@ -101,9 +106,9 @@ export class AuthData {
   registerUser(name: string, email: string, password: string, phone: number): Promise<any> {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password).then((newUser) => {
       firebase.database().ref('/users').child(newUser.uid).set({
-          email: email,
-          name: name,
-          phone: phone
+        email: email,
+        name: name,
+        phone: phone
       });
     });
   }
