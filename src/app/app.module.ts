@@ -1,4 +1,3 @@
-
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -26,6 +25,7 @@ import { GooglePlus } from '@ionic-native/google-plus';
 
 //*********** Provider **************/
 import { AuthData } from '../providers/auth-data';
+import { UserService } from '../services/user.service';
 import { Globals } from '../providers/globals';
 import { Helpers } from '../providers/helpers';
 import { RadioPlayer } from '../providers/radio-service';
@@ -63,6 +63,7 @@ import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     Globals,
     AuthData,
+    UserService,
     Helpers,
     Facebook,
     RadioPlayer,

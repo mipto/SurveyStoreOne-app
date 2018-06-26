@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
-import { AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2/database-deprecated';
-import { User } from "../../../models/user";
 import { AuthData } from '../../../providers/auth-data';
-import { audit } from 'rxjs/operators';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Globals } from '../../../providers/globals';
+import { UserService } from '../../../services/user.service';
 
 @IonicPage()
 @Component({
@@ -15,7 +13,6 @@ import { Globals } from '../../../providers/globals';
 export class ProfilePage {
 
   public profileForm: any;
-  user = {} as User;
   onEdit: boolean;
   validEdit: boolean;
   constructor(public navCtrl: NavController,
@@ -24,7 +21,8 @@ export class ProfilePage {
     public loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
     public globals: Globals,
-    public authData: AuthData) {
+    public authData: AuthData,
+    public userData: UserService) {
 
     let ion = this;
     ion.onEdit = false;
@@ -35,14 +33,6 @@ export class ProfilePage {
       phone: ['', [Validators.required, Validators.pattern('[0-9]*')]],
     });
 
-  }
-
-  ionViewWillEnter() {
-    let ion = this;
-    ion.authData.getUserProfile().then(userProfileData => {
-      ion.user = userProfileData;
-      ion.user.email = ion.authData.getAuthUser().email;
-    });
   }
 
   edit() {
@@ -56,10 +46,8 @@ export class ProfilePage {
 
   save(user) {
     let ion = this;
-    console.log(user);
     if (!ion.profileForm.valid) {
       ion.presentToast("top", "no sirvio");
-      console.log("error");
     }
     else {
       ion.authData.updateProfile(user)
@@ -74,21 +62,23 @@ export class ProfilePage {
   }
 
   public findInvalidControls() {
-    const invalid = [];
-    const controls = this.profileForm.controls;
-    for (const name in controls) {
+    let ion = this;
+    let invalid = [];
+    let controls = ion.profileForm.controls;
+    for (let name in controls) {
       if (controls[name].invalid) {
         invalid.push(name);
       }
     }
-    this.validEdit = invalid.length > 0 ? false : true;
-    console.log(this.validEdit);
-    return this.validEdit;
+    ion.validEdit = invalid.length > 0 ? false : true;
+    console.log(ion.validEdit);
+    return ion.validEdit;
   }
 
 
   presentToast(position: string, message: string) {
-    let toast = this.toastCtrl.create({
+    let ion = this;
+    let toast = ion.toastCtrl.create({
       message: message,
       position: position,
       duration: 1000

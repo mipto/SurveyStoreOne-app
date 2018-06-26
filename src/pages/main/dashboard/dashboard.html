@@ -10,9 +10,9 @@
 
     <div class="profile-box">
         <div text-center>
-            <img *ngIf="user.photo" src="{{user.photo}}" class="edit-avatar pop-in" alt="">
-            <img  *ngIf="!user.photo" src = "https://pbs.twimg.com/profile_images/834457277830541312/bYMCvtHD.jpg" class="edit-avatar pop-in" alt="">
-            <p class="name-text">{{user.first_name}}</p>
+            <img *ngIf="userData.user.photo" src="{{userData.user.photo}}" class="edit-avatar pop-in" alt="">
+            <img  *ngIf="!userData.user.photo" src = "https://pbs.twimg.com/profile_images/834457277830541312/bYMCvtHD.jpg" class="edit-avatar pop-in" alt="">
+            <p class="name-text">{{userData.user.first_name}}</p>
         </div>
     </div>
 
@@ -20,25 +20,25 @@
         <ion-list no-lines >
             <ion-item>
                 <ion-icon name="ios-mail" item-left></ion-icon>
-                <h2>{{user.email}}</h2>
+                <h2>{{userData.user.email}}</h2>
                 <p>{{globals.LANG.EMAIL}}</p>
             </ion-item>
 
             <ion-item>
               <ion-icon name="ios-card" item-left></ion-icon>
-              <h2>{{user.first_name}}</h2>
+              <h2>{{userData.user.first_name}}</h2>
               <p>{{globals.LANG.NAME}}</p>
             </ion-item>
 
             <ion-item>
               <ion-icon name="ios-card" item-left></ion-icon>
-              <h2>{{user.last_name}}</h2>
+              <h2>{{userData.user.last_name}}</h2>
               <p>{{globals.LANG.LAST_NAME}}</p>
             </ion-item>
 
             <ion-item>
               <ion-icon name="ios-call" item-left></ion-icon>
-              <h2>{{user.phone}}</h2>
+              <h2>{{userData.user.phone}}</h2>
               <p>{{globals.LANG.MOBILE_PHONE}}</p>
             </ion-item>
         </ion-list>

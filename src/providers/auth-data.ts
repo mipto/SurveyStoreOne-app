@@ -17,6 +17,8 @@ import { AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
 import { User } from '../models/user';
 
+import { UserService } from '../services/user.service';
+
 @Injectable()
 export class AuthData {
   userscollection: AngularFirestoreCollection<User>;
@@ -25,7 +27,8 @@ export class AuthData {
   constructor(public afAuth: AngularFireAuth,
     private platform: Platform, private facebook: Facebook,
     private googleplus: GooglePlus,
-    public afsModule: AngularFirestore) {
+    public afsModule: AngularFirestore,
+    public userService: UserService) {
   }
 
 
@@ -107,6 +110,20 @@ export class AuthData {
     });
   }
 
+  setUserData(): Promise<any> {
+    let ion = this;
+    return new Promise((resolve, reject) => {
+      try {
+        ion.getUserProfile().then(userProfileData => {
+          ion.userService.user = userProfileData;
+          resolve();
+        });
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
   // Obtein user Data for profile
   getUserProfile(): Promise<any> {
     let ion = this;
@@ -144,10 +161,8 @@ export class AuthData {
   isAuth() {
     return firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
-        console.log('logged auth module');
         return true;
       } else {
-        console.log('Not logged auth module');
         return false;
       }
     });

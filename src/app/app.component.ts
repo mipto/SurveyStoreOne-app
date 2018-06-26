@@ -38,8 +38,13 @@ export class MyApp {
     ion.appDesc = APP_CONFIG.Constants.APP_DESC;
     ion.appIcon = APP_CONFIG.Constants.APP_ICON;
 
-    ion.menu = [
+    ion.pages = [
+      { icon: 'bookmark', title: 'Dashboard', component: 'DashboardPage' },
+      { icon: 'person', title: 'Profile', component: 'ProfilePage' },
+    ];
 
+    ion.menu = [
+      
       {
         title: 'Layout with firebase',
         myicon: '',
@@ -51,7 +56,6 @@ export class MyApp {
           { name: 'Authentication(Login)', component: 'LoginPage' },
           { name: 'Authentication(Register)', component: 'RegisterPage' },
           { name: 'Authentication(Forgot)', component: 'ForgotPage' },
-          { name: 'Dashboard', component: 'DashboardPage' },
           { name: 'Chart', component: 'ChartPage' },
 
           { name: 'City guide', component: 'Category1Page' },// app1 folder
@@ -66,7 +70,6 @@ export class MyApp {
           { name: 'Intro', component: 'IntroPage' },
 
           { name: 'Pinterest(Masonry)', component: 'MasonryPage' },
-          { name: 'Profile1', component: 'ProfilePage' },
           { name: 'Profile2', component: 'Profile2Page' },
           { name: 'Profile3', component: 'Profile3Page' },
           { name: 'Profile4', component: 'Profile4Page' },
@@ -125,51 +128,27 @@ export class MyApp {
         ]
       }
     ];
-
-    ion.pages = [
-      { icon: 'bookmark', title: 'Login', component: 'LoginPage' },
-      { icon: 'person', title: 'Profile', component: 'ProfilePage' },
-    ];
-
   }
 
   initializeApp() {
     let ion = this;
     ion.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-
       ion.statusBar.styleDefault();
       ion.splashScreen.hide();
-
       ion.changueLanguage();
-     // ion.checkAuth();
     });
-
-
   }
 
   changueLanguage() {
     let ion = this;
-    if (ion.helpers.checkNavigatorLanguage() == 'es') {
+    if (ion.helpers.checkNavigatorLanguage() == 'es' || ion.helpers.checkNavigatorLanguage() == 'es-ES') {
       ion.globals.LANG = APP_LANG.Constants.SPANISH;
-    } else if (ion.helpers.checkNavigatorLanguage() == 'en') {
+    } else if (ion.helpers.checkNavigatorLanguage() == 'en' || ion.helpers.checkNavigatorLanguage() == 'en-EN') {
       ion.globals.LANG = APP_LANG.Constants.ENGLISH;
-    } else if (ion.helpers.checkNavigatorLanguage() == 'fr') {
+    } else if (ion.helpers.checkNavigatorLanguage() == 'fr' || ion.helpers.checkNavigatorLanguage() == 'fr-FR') {
       ion.globals.LANG = APP_LANG.Constants.FRENCH;
     } else {
       ion.globals.LANG = APP_LANG.Constants.ENGLISH;
-    }
-  }
-
-  checkAuth() {
-    let ion = this;
-    if (ion.authDataModule.isAuth()) {
-      console.log('auth true ini ');
-      ion.nav.setRoot('DashboardPage');
-    } else {
-      console.log('auth false ini');
-      ion.nav.setRoot('LoginPage');
     }
   }
 
@@ -185,16 +164,9 @@ export class MyApp {
 
   openPage(page) {
     let ion = this;
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
-    // page.component = item array.component --> 
-    //this.nav.setRoot(page.component);
     if (ion.authDataModule.isAuth()) {
-      console.log('auth true pagechange');
-
       ion.nav.setRoot(page.component);
     } else {
-      console.log('auth false pagechange');
       ion.nav.setRoot('LoginPage');
     }
   }
