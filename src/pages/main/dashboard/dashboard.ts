@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, LoadingController, AlertController , ToastController} from 'ionic-angular';
 import { AuthData } from '../../../providers/auth-data';
-import { Globals } from '../../../providers/globals';
+import { Globals } from '../../../services/globals.service';
 
 import { AngularFireDatabase} from 'angularfire2/database-deprecated';
 import { AngularFireAuth } from 'angularfire2/auth';

@@ -9,7 +9,7 @@ import { GooglePlus } from '@ionic-native/google-plus';
 import { AuthData } from '../../../providers/auth-data';
 import { UserService } from '../../../services/user.service';
 
-import { Globals } from '../../../providers/globals';
+import { Globals } from '../../../services/globals.service';
 
 import { AngularFireDatabase, FirebaseObjectObservable} from 'angularfire2/database-deprecated';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -28,8 +28,7 @@ export class LoginPage {
   public loginForm: any;
   public backgroundImage: any = "./assets/bg1.jpg";
   public AuthSubscription: Subscription;
-  appIcon: string;
-  appName: string;
+  appConfig: any = APP_CONFIG.Constants;
 
   constructor(public navCtrl: NavController, public authData: AuthData, public fb: FormBuilder, 
     public alertCtrl: AlertController,
@@ -48,9 +47,6 @@ export class LoginPage {
             email: ['', Validators.compose([Validators.required, Validators.pattern(EMAIL_REGEXP)])],
             password: ['', Validators.compose([Validators.minLength(6), Validators.required])]
       });
-
-      ion.appIcon = APP_CONFIG.Constants.APP_ICON;
-      ion.appName = APP_CONFIG.Constants.APP_NAME;
   }
 
   ionViewWillEnter(){
@@ -62,7 +58,7 @@ export class LoginPage {
             ion.AuthSubscription.unsubscribe();
           ion.navCtrl.setRoot('DashboardPage');
           ion.toast.create({
-            message: ion.globals.LANG.WELCOME_TO + ' ' + ion.appName +'!, '+ userAuth.email,
+            message: ion.globals.LANG.WELCOME_TO + ' ' + ion.appConfig.APP_NAME +'!, '+ userAuth.email,
                         duration: 3000
             }).present();
           });
@@ -94,7 +90,7 @@ export class LoginPage {
             
             ion.navCtrl.setRoot('DashboardPage');
             ion.toast.create({
-              message: ion.globals.LANG.WELCOME_TO + ' ' + ion.appName +'!, '+ authData.email,
+              message: ion.globals.LANG.WELCOME_TO + ' ' + ion.appConfig.APP_NAME +'!, '+ authData.email,
                           duration: 3000
               }).present();
           });

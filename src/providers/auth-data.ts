@@ -65,7 +65,6 @@ export class AuthData {
     var exists = (snapshot.val() !== null);
    
       if (exists) {
-        console.log('user ' + uid + ' exists!');
         firebase.database().ref('users/'+uid).update({ 
           name: displayName,
           email: email,
@@ -74,7 +73,6 @@ export class AuthData {
         });
 
       } else {
-        console.log('user ' + uid + ' does not exist!');
         firebase.database().ref('/users').child(uid).set({  
           name: displayName,
           email: email,
@@ -134,10 +132,10 @@ export class AuthData {
           if (Userdoc.exists) {
             resolve(Userdoc.data());
           } else {
-            console.log("No such document!, Error in register");
+            console.error("No such document!, Error in register");
           };
         }).catch(function (error) {
-          console.log("Error getting document:", error);
+          console.error("Error getting document:", error);
         });
       } catch (error) {
         reject(error);

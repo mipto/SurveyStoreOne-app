@@ -2,7 +2,7 @@ import { IonicPage, NavController,LoadingController, AlertController } from 'ion
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthData } from '../../../providers/auth-data';
-import { Globals } from '../../../providers/globals';
+import { Globals } from '../../../services/globals.service';
 
 
 @IonicPage()

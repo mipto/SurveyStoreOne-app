@@ -6,7 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthData } from "./../providers/auth-data";
 import { Helpers } from './../providers/helpers';
-import { Globals } from './../providers/globals';
+import { Globals } from '../services/globals.service';
 
 import { APP_LANG } from "./../app/app.lang";
 

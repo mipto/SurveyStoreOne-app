@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import { AuthData } from '../../../providers/auth-data';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Globals } from '../../../providers/globals';
+import { Globals } from '../../../services/globals.service';
 import { UserService } from '../../../services/user.service';
 
 @IonicPage()

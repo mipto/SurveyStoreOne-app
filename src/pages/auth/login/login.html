@@ -8,7 +8,7 @@
 
 <ion-content [ngStyle]="{'background-image': 'url(' + backgroundImage +')'}">
   <div class="login-container">
-    <img class="logo" src="{{appIcon}}" />
+    <img class="logo" src="{{appConfig.APP_ICON}}" />
     
     <!--*********** Form ***********-->
     <form [formGroup]="loginForm" (submit)="login()" novalidate>
