@@ -15,25 +15,17 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { AngularFirestoreCollection } from 'angularfire2/firestore';
 
 import { Observable } from 'rxjs';
-//import { User } from '../models/user';import { UserService } from '../services/user.service';@Injectable()
+
 import { UserService } from '../services/user.service';
+
+@Injectable()
 export class AuthData {
-  userscollection: AngularFirestoreCollection<any>;
-
-  //users: Observable<User[]>;
-
-  userData: any; constructor(public afAuth: AngularFireAuth,
-
+  userData: any;
+  constructor(public afAuth: AngularFireAuth,
     private platform: Platform, private facebook: Facebook,
-
     private googleplus: GooglePlus,
-
     public afsModule: AngularFirestore,
-
     public userService: UserService) {
-
-    this.userData = afsModule.collection<any>('users');
-
   }
 
 
@@ -181,4 +173,3 @@ export class AuthData {
   }
 
 }
-

@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import { AuthData } from '../../../providers/auth-data';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Globals } from '../../../providers/globals';
+import { UserService } from '../../../services/user.service';
+import { Globals } from '../../../services/globals.service';
 import { last } from 'rxjs/operator/last';
 
 @IonicPage()
@@ -11,9 +12,8 @@ import { last } from 'rxjs/operator/last';
   templateUrl: 'profile.html'
 })
 export class ProfilePage {
-
+  public form: object;
   public profileForm: any;
-  user = {} as User;
   firstNameEdit: string;
   lastNameEdit: string;
   phoneEdit: number;
@@ -30,6 +30,8 @@ export class ProfilePage {
 
     let ion = this;
     ion.onEdit = false;
+    /*Inicializando el objeto form */
+    this.form = Object.assign({}, userData.user);
 
     ion.profileForm = fb.group({
       first_name: ['', [Validators.required, Validators.minLength(2), Validators.pattern('[a-z A-Z]*')]],
@@ -40,17 +42,9 @@ export class ProfilePage {
   }
 
   ionViewWillEnter() {
-    let ion = this;
-    ion.authData.getUserProfile().then(userProfileData => {
-      ion.user = userProfileData;
-      ion.firstNameEdit = userProfileData.first_name;
-      ion.lastNameEdit = userProfileData.last_name;
-      ion.phoneEdit = userProfileData.phone;
-      ion.user.email = ion.authData.getAuthUser().email;
-    });
   }
 
-  edit() {
+  toggleEdit() {
     let ion = this;
     if (ion.onEdit == false) {
       ion.onEdit = true;
@@ -59,26 +53,20 @@ export class ProfilePage {
     }
   }
 
-  save(first_name, last_name, phone) {
+  save(user) {
     let ion = this;
 
     if (!ion.profileForm.valid) {
       ion.presentToast("top", "no sirvio");
     }
     else {
-      let user = {
-        first_name: first_name,
-        last_name: last_name,
-        phone: phone,
-      }
       ion.authData.updateProfile(user)
         .then(function () {
           console.log('Saved successfully');
           ion.validEdit = false;
-          ion.user.first_name = first_name;
-          ion.user.last_name = last_name;
-          ion.user.phone = phone;
-          ion.edit();
+          ion.userData.user = Object.assign({}, user);
+          ion.presentToast("top", "Perfil salvado Correctamente");
+          ion.toggleEdit();
         }).catch(error => {
           console.log("Error updating data:", error);
         });
