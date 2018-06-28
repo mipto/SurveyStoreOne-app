@@ -19,8 +19,11 @@ export class APP_LANG {
         LAST_NAME: 'Last Name',
         SAVE: 'Save',
         PROFILE: 'Profile',
-        CONTACT: 'CONCTACT',
-        EDIT_PROFILE: 'Edit Profile',
+        POSITION: 'Position',
+        COUNTRY: 'Country',
+        CITY: 'City',
+        BIRTHDAY: 'Birthday',
+        SEX: 'Sex',
       },
       SPANISH: {
         EMAIL: 'Email',
@@ -40,8 +43,11 @@ export class APP_LANG {
         LAST_NAME: 'Apellido',
         SAVE: 'Guardar',
         PROFILE: 'Perfil',
-        CONTACT: 'Contacto',
-        EDIT_PROFILE: 'Editar Perfil',
+        POSITION: 'Cargo',
+        COUNTRY: 'Pais',
+        CITY: 'Ciudad',
+        BIRTHDAY: 'Fecha Nacimiento',
+        SEX: 'Sexo',
       },
       FRENCH: {
 
