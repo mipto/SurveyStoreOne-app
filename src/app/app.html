@@ -5,13 +5,20 @@
 <!--***********  Side menu for android ***********-->
       <div id="menu-material" showWhen="android">
           <ion-header class="menu-header">      
-            <img class="user-avatar round" src =  "https://pbs.twimg.com/profile_images/834457277830541312/bYMCvtHD.jpg"/>
-            <p class="name">{{appName}}</p>
-            <p class="email">{{appDesc}}</p>
+            <img class="user-avatar round" src="{{appConfig.APP_ICON}}"/>
+            <p class="name">{{appConfig.APP_NAME}}</p>
+            <p class="email">{{appConfig.APP_DESC}}</p>
           </ion-header>
       <!--***********  Menu for android  ***********-->
           <div class="list-box">
             <ion-list  no-lines>
+
+                <div *ngFor="let p of pages">
+                    <ion-item menuClose (click)="openPage(p)">
+                      <ion-icon  [name]="p.icon" color="gray"item-left></ion-icon>
+                        {{p.title}}
+                    </ion-item>
+                  </div> 
 
               <div *ngFor="let d of menu">
                   <ion-item tappable  (click)="toggleDetails(d)">
@@ -25,14 +32,6 @@
                             </ion-item>
                       </div>
               </div> 
-
-              <div *ngFor="let p of pages">
-                  <ion-item menuClose (click)="openPage(p)">
-                    <ion-icon  [name]="p.icon" color="gray"item-left></ion-icon>
-                      {{p.title}}
-                  </ion-item>
-                </div> 
-
             </ion-list>
           </div>
       </div>
@@ -46,13 +45,20 @@
     <div id="menu-ios" showWhen="ios" class="sideMenu-header"  color="gray">
         <div class="menu-header">
   
-                <img class="user-avatar round" src = "https://pbs.twimg.com/profile_images/834457277830541312/bYMCvtHD.jpg"/>
-                <p class="name">{{appName}}</p>
-                <p class="email">{{appDesc}}</p>            
+                <img class="user-avatar round" src="{{appConfig.APP_ICON}}"/>
+                <p class="name">{{appConfig.APP_NAME}}</p>
+            <p class="email">{{appConfig.APP_DESC}}</p>           
           
         </div>
       <!--***********  menu ***********-->
         <ion-list no-lines>
+            <div *ngFor="let p of pages">
+                <ion-item menuClose (click)="openPage(p)">
+                  <ion-icon  [name]="p.icon" color="gray"item-left></ion-icon>
+                    {{p.title}}
+                </ion-item>
+            </div> 
+
           <div *ngFor="let d of menu">
             <ion-item tappable  (click)="toggleDetails(d)">
               <ion-icon  color="gray" [name]="d.iconLeft" item-left></ion-icon>
@@ -65,12 +71,7 @@
                       </ion-item>
                 </div>
           </div> 
-          <div *ngFor="let p of pages">
-              <ion-item menuClose (click)="openPage(p)">
-                <ion-icon  [name]="p.icon" color="gray"item-left></ion-icon>
-                  {{p.title}}
-              </ion-item>
-          </div> 
+          
         </ion-list>
     </div>
 
@@ -80,13 +81,20 @@
       <div id="menu-pwa" hideWhen="android,ios">
         <div class="menu-header">
   
-                <img class="user-avatar round" src = "{{appIcon}}"/>
-                <p class="name">{{appName}}</p>
-                <p class="email">{{appDesc}}</p>           
+                <img class="user-avatar round" src ="{{appConfig.APP_ICON}}"/>
+                <p class="name">{{appConfig.APP_NAME}}</p>
+                <p class="email">{{appConfig.APP_DESC}}</p>           
           
         </div>
           <div class="list-box">
             <ion-list  no-lines>
+
+                <div *ngFor="let p of pages">
+                    <ion-item menuClose (click)="openPage(p)">
+                      <ion-icon  [name]="p.icon" color="gray"item-left></ion-icon>
+                        {{p.title}}
+                    </ion-item>
+                  </div> 
 
               <div *ngFor="let d of menu">
                 <ion-item tappable  (click)="toggleDetails(d)">
@@ -100,14 +108,6 @@
                           </ion-item>
                     </div>
               </div> 
-
-             <div *ngFor="let p of pages">
-                <ion-item menuClose (click)="openPage(p)">
-                  <ion-icon  [name]="p.icon" color="gray"item-left></ion-icon>
-                    {{p.title}}
-                </ion-item>
-              </div> 
-
             </ion-list>
           </div>
       </div>
@@ -115,6 +115,12 @@
 
 
   </ion-content>
+
+  <ion-footer padding>
+    <button ion-button block mode="ios" color="blue2" (click)="logout()">
+      {{globals.LANG.LOGOUT}}
+    </button>
+  </ion-footer>
 
 
 </ion-menu>

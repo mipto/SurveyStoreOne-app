@@ -1,5 +1,5 @@
 export class APP_LANG {
-  static get Constants():any {
+  static get Constants(): any {
     return {
       ENGLISH: {
         EMAIL: 'Email',
@@ -15,9 +15,23 @@ export class APP_LANG {
         BACK: 'Back',
         YOUR_EMAIL: 'Your email address',
         RESET_PASSWORD: 'Reset your password',
-        LOGGED_OUT: 'You are now logged out'
-    },
-    SPANISH: {
+        LOGGED_OUT: 'You are now logged out',
+        LAST_NAME: 'Last Name',
+        SAVE: 'Save',
+        PROFILE: 'Profile',
+        CONTACT: 'CONCTACT',
+        EDIT_PROFILE: 'Edit Profile',
+        HI: 'Hi',
+        LAST_CONNECTION: 'Last connection',
+        VISITED_ESTABLISHMENT: 'Visited establishments',
+        ESTABLISHMENT_BY_SINCRONIZE: 'Establishments no synchronized',
+        TOTAL_FORMS_BY_FILL: 'Total forms to fill out',
+        TOTAL_FORMS_BY_SINCRONIZE: 'Total forms no synchronized',
+        TOTAL_SAVED_FORMS: 'Total saved forms',
+        FORM_AVERAGE_TIME: 'Forms average time',
+
+      },
+      SPANISH: {
         EMAIL: 'Email',
         PASSWORD: 'Contraseña',
         LOG_IN: 'Iniciar sesión',
@@ -31,11 +45,25 @@ export class APP_LANG {
         BACK: 'Atras',
         YOUR_EMAIL: 'Tu dirección de email',
         RESET_PASSWORD: 'Reestablece tu contraseña',
-        LOGGED_OUT: 'Estas ahora deslogeado'
-    },
-    FRENCH: {
+        LOGGED_OUT: 'Estas ahora deslogeado',
+        LAST_NAME: 'Apellido',
+        SAVE: 'Guardar',
+        PROFILE: 'Perfil',
+        CONTACT: 'Contacto',
+        EDIT_PROFILE: 'Editar Perfil',
+        HI: 'Hola',
+        LAST_CONNECTION: 'Ultima conexión',
+        VISITED_ESTABLISHMENT: 'Establecimientos visitados',
+        ESTABLISHMENT_BY_SINCRONIZE: 'Establecimientos por sincronizar',
+        TOTAL_FORMS_BY_FILL: 'Total formularios por llenar',
+        TOTAL_FORMS_BY_SINCRONIZE: 'Total formularios por sincronizar',
+        TOTAL_SAVED_FORMS: 'Total formularios guardados',
+        FORM_AVERAGE_TIME: 'Tiempo promedio formulario',
 
+      },
+      FRENCH: {
+
+      }
     }
-     }
   }
 }

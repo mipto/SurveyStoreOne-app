@@ -8,7 +8,7 @@
 
 <ion-content [ngStyle]="{'background-image': 'url(' + backgroundImage +')'}">
   <div class="login-container">
-    <img class="logo" src="{{appIcon}}" />
+    <img class="logo" src="{{appConfig.APP_ICON}}" />
     
     <!--*********** Form ***********-->
     <form [formGroup]="loginForm" (submit)="login()" novalidate>
@@ -30,7 +30,7 @@
         <p *ngIf="!loginForm.controls.password.valid  &&
                 loginForm.controls.password.dirty">*{{globals.LANG.VALID_PASSWORD}}.</p>
       </ion-item>
-     
+
       <div class="submit-box">
         <button ion-button mode="ios" block type="submit" color="blue2">{{globals.LANG.LOG_IN}}</button>
       </div>
