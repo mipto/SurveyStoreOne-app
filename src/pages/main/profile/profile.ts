@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import { AuthData } from '../../../providers/auth-data';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Globals } from '../../../services/globals.service';
 import { UserService } from '../../../services/user.service';
+import { Globals } from '../../../services/globals.service';
+import { last } from 'rxjs/operator/last';
 
 @IonicPage()
 @Component({
@@ -11,8 +12,11 @@ import { UserService } from '../../../services/user.service';
   templateUrl: 'profile.html'
 })
 export class ProfilePage {
-
+  public form: object;
   public profileForm: any;
+  firstNameEdit: string;
+  lastNameEdit: string;
+  phoneEdit: number;
   onEdit: boolean;
   validEdit: boolean;
   constructor(public navCtrl: NavController,
@@ -26,6 +30,8 @@ export class ProfilePage {
 
     let ion = this;
     ion.onEdit = false;
+    /*Inicializando el objeto form */
+    this.form = Object.assign({}, userData.user);
 
     ion.profileForm = fb.group({
       first_name: ['', [Validators.required, Validators.minLength(2), Validators.pattern('[a-z A-Z]*')]],
@@ -35,7 +41,10 @@ export class ProfilePage {
 
   }
 
-  edit() {
+  ionViewWillEnter() {
+  }
+
+  toggleEdit() {
     let ion = this;
     if (ion.onEdit == false) {
       ion.onEdit = true;
@@ -46,6 +55,7 @@ export class ProfilePage {
 
   save(user) {
     let ion = this;
+
     if (!ion.profileForm.valid) {
       ion.presentToast("top", "no sirvio");
     }
@@ -54,7 +64,9 @@ export class ProfilePage {
         .then(function () {
           console.log('Saved successfully');
           ion.validEdit = false;
-          ion.edit();
+          ion.userData.user = Object.assign({}, user);
+          ion.presentToast("top", "Perfil salvado Correctamente");
+          ion.toggleEdit();
         }).catch(error => {
           console.log("Error updating data:", error);
         });
