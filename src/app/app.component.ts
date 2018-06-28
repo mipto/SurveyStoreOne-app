@@ -25,6 +25,7 @@ export class MyApp {
     public splashScreen: SplashScreen,
     public authDataModule: AuthData,
     public helpers: Helpers,
+    public alertCtrl: AlertController,
     public afAuth: AngularFireAuth,
     private toastCtrl: ToastController,
     public globals: Globals) {
