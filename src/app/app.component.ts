@@ -1,10 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, ToastController, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthData } from "./../providers/auth-data";
 import { Helpers } from './../providers/helpers';
 import { Globals } from '../services/globals.service';
+import { AngularFireAuth } from 'angularfire2/auth';
 import { APP_LANG } from "./../app/app.lang";
 import { APP_CONFIG } from "./../app/app.config";
 
@@ -24,6 +25,9 @@ export class MyApp {
     public splashScreen: SplashScreen,
     public authDataModule: AuthData,
     public helpers: Helpers,
+    public alertCtrl: AlertController,
+    public afAuth: AngularFireAuth,
+    private toastCtrl: ToastController,
     public globals: Globals) {
     let ion = this;
 
@@ -146,6 +150,20 @@ export class MyApp {
     }
   }
 
+  logout(){
+    let ion = this;
+        ion.authDataModule.logoutUser()
+        .then( authData => {
+          ion.afAuth.auth.signOut();
+          console.log("Logged out");
+          // toast message
+          ion.presentToast('bottom', ion.globals.LANG.LOGGED_OUT);
+          ion.nav.setRoot('LoginPage');
+        }, error => {
+          ion.presentAlert(error);
+        });
+  }
+
   toggleDetails(menu) {
     if (menu.showDetails) {
       menu.showDetails = false;
@@ -163,6 +181,23 @@ export class MyApp {
     } else {
       ion.nav.setRoot('LoginPage');
     }
+  }
+
+  presentToast(position: string,message: string) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      position: position,
+      duration: 3000
+    });
+    toast.present();
+  }
+
+  presentAlert(title) {
+    let alert = this.alertCtrl.create({
+      title: title,
+      buttons: ['OK']
+    });
+    alert.present();
   }
 
 }
