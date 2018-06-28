@@ -21,6 +21,15 @@ export class APP_LANG {
         PROFILE: 'Profile',
         CONTACT: 'CONCTACT',
         EDIT_PROFILE: 'Edit Profile',
+        HI: 'Hi',
+        LAST_CONNECTION: 'Last connection',
+        VISITED_ESTABLISHMENT: 'Visited establishments',
+        ESTABLISHMENT_BY_SINCRONIZE: 'Establishments by sincronize',
+        TOTAL_FORMS_BY_FILL: 'Total forms by Fill',
+        TOTAL_FORMS_BY_SINCRONIZE: 'Total forms by sincronize',
+        TOTAL_SAVED_FORMS: 'Total saved forms',
+        FORM_AVERAGE_TIME: 'Forms average time',
+
       },
       SPANISH: {
         EMAIL: 'Email',
@@ -42,6 +51,15 @@ export class APP_LANG {
         PROFILE: 'Perfil',
         CONTACT: 'Contacto',
         EDIT_PROFILE: 'Editar Perfil',
+        HI: 'Hola',
+        LAST_CONNECTION: 'Ultima conexión',
+        VISITED_ESTABLISHMENT: 'Establecimientos visitados',
+        ESTABLISHMENT_BY_SINCRONIZE: 'Establecimientos por sincronizar',
+        TOTAL_FORMS_BY_FILL: 'Total formularios por llenar',
+        TOTAL_FORMS_BY_SINCRONIZE: 'Total formularios por sincronizar',
+        TOTAL_SAVED_FORMS: 'Total formularios guardados',
+        FORM_AVERAGE_TIME: 'Tiempo promedio formulario',
+
       },
       FRENCH: {
 
