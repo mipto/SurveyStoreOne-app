@@ -52,6 +52,30 @@
       <h2>{{userData.user.phone}}</h2>
       <p>{{globals.LANG.MOBILE_PHONE}}</p>
     </ion-item>
+<<<<<<< HEAD
+=======
+    <ion-item>
+      <ion-icon name="calendar" item-left></ion-icon>
+      <h2>{{userData.user.birthday}}</h2>
+      <p>{{globals.LANG.BIRTHDAY}}</p>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="male" item-left *ngIf="userData.user.sex == 'Masculine'"></ion-icon>
+      <ion-icon name="female" item-left *ngIf="userData.user.sex == 'Female'"></ion-icon>
+      <h2>{{userData.user.sex}}</h2>
+      <p>{{globals.LANG.SEX}}</p>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="flag" item-left></ion-icon>
+      <h2>{{userData.user.country}}</h2>
+      <p>{{globals.LANG.COUNTRY}}</p>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="home" item-left></ion-icon>
+      <h2>{{userData.user.city}}</h2>
+      <p>{{globals.LANG.CITY}}</p>
+    </ion-item>
+>>>>>>> 5ca3432fcfd6fa0551d61d3884c6c54d78ec09ac
 
 
   </ion-list>
@@ -62,6 +86,7 @@
       <ion-list-header>
         <h2>{{globals.LANG.EDIT_PROFILE}}</h2>
       </ion-list-header>
+<<<<<<< HEAD
       <div class="item-inner">
         <ion-item>
           <ion-label stacked>{{globals.LANG.NAME}}</ion-label>
@@ -78,6 +103,8 @@
           </ion-input>
         </ion-item>
       </div>
+=======
+>>>>>>> 5ca3432fcfd6fa0551d61d3884c6c54d78ec09ac
       <div class=" item-inner ">
         <ion-item>
           <ion-label stacked>{{globals.LANG.MOBILE_PHONE}}</ion-label>
