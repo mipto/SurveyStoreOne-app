@@ -1,0 +1,44 @@
+<ion-header no-border>
+  <ion-navbar transparent>
+    <!-- <button ion-button menuToggle>
+      <ion-icon name="menu" color="light"></ion-icon>
+    </button> -->
+  </ion-navbar>
+</ion-header>
+
+<ion-content [ngStyle]="{'background-image': 'url(' + backgroundImage +')'}">
+  <div class="login-container">
+    <img class="logo" src="{{appConfig.APP_ICON}}" />
+    
+    <!--*********** Form ***********-->
+    <form [formGroup]="loginForm" (submit)="login()" novalidate>
+      <ion-item>
+        <ion-label floating>{{globals.LANG.EMAIL}}</ion-label>
+        <ion-input tappable color="light" #email type="email" formControlName="email" [class.invalid]="!loginForm.controls.email.valid &&loginForm.controls.email.dirty">
+        </ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>{{globals.LANG.PASSWORD}}</ion-label>
+        <ion-input tappable #password type="password" formControlName="password" [class.invalid]="!loginForm.controls.password.valid &&loginForm.controls.password.dirty">
+        </ion-input>
+      </ion-item>
+
+      <ion-item class="error-message">
+        <p *ngIf="!loginForm.controls.email.valid  &&
+                loginForm.controls.email.dirty">*{{globals.LANG.VALID_EMAIL}}.</p>
+        <p *ngIf="!loginForm.controls.password.valid  &&
+                loginForm.controls.password.dirty">*{{globals.LANG.VALID_PASSWORD}}.</p>
+      </ion-item>
+
+      <div class="submit-box">
+        <button ion-button mode="ios" block type="submit" color="blue2">{{globals.LANG.LOG_IN}}</button>
+      </div>
+    </form>
+
+  </div>
+
+</ion-content>
+<ion-footer>
+  <button class="bottom" ion-button  mode="ios" type="button"  clear full color="light" (click)="forgot()">{{globals.LANG.FORGOT_PASSWORD}}? </button>
+</ion-footer>
