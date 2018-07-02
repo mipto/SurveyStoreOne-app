@@ -19,15 +19,12 @@ export class APP_LANG {
         LAST_NAME: 'Last Name',
         SAVE: 'Save',
         PROFILE: 'Profile',
-<<<<<<< HEAD
-=======
         POSITION: 'Position',
         COUNTRY: 'Country',
         CITY: 'City',
         BIRTHDAY: 'Birthday',
         SEX: 'Sex',
->>>>>>> 5ca3432fcfd6fa0551d61d3884c6c54d78ec09ac
-        CONTACT: 'CONCTACT',
+        CONTACT: 'Contact',
         EDIT_PROFILE: 'Edit Profile',
         HI: 'Hi',
         LAST_CONNECTION: 'Last connection',
@@ -37,10 +34,6 @@ export class APP_LANG {
         TOTAL_FORMS_BY_SINCRONIZE: 'Total forms no synchronized',
         TOTAL_SAVED_FORMS: 'Total saved forms',
         FORM_AVERAGE_TIME: 'Forms average time',
-<<<<<<< HEAD
-
-=======
->>>>>>> 5ca3432fcfd6fa0551d61d3884c6c54d78ec09ac
       },
       SPANISH: {
         EMAIL: 'Email',
@@ -60,14 +53,11 @@ export class APP_LANG {
         LAST_NAME: 'Apellido',
         SAVE: 'Guardar',
         PROFILE: 'Perfil',
-<<<<<<< HEAD
-=======
         POSITION: 'Cargo',
         COUNTRY: 'Pais',
         CITY: 'Ciudad',
         BIRTHDAY: 'Fecha Nacimiento',
         SEX: 'Sexo',
->>>>>>> 5ca3432fcfd6fa0551d61d3884c6c54d78ec09ac
         CONTACT: 'Contacto',
         EDIT_PROFILE: 'Editar Perfil',
         HI: 'Hola',
@@ -78,10 +68,6 @@ export class APP_LANG {
         TOTAL_FORMS_BY_SINCRONIZE: 'Total formularios por sincronizar',
         TOTAL_SAVED_FORMS: 'Total formularios guardados',
         FORM_AVERAGE_TIME: 'Tiempo promedio formulario',
-<<<<<<< HEAD
-
-=======
->>>>>>> 5ca3432fcfd6fa0551d61d3884c6c54d78ec09ac
       },
       FRENCH: {
 
