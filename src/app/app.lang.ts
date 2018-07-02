@@ -24,7 +24,7 @@ export class APP_LANG {
         CITY: 'City',
         BIRTHDAY: 'Birthday',
         SEX: 'Sex',
-        CONTACT: 'CONCTACT',
+        CONTACT: 'Contact',
         EDIT_PROFILE: 'Edit Profile',
         HI: 'Hi',
         LAST_CONNECTION: 'Last connection',
