@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, ToastController, AlertController } from 'ionic-angular';
+import { Nav, Platform, ToastController, AlertController, MenuController  } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthData } from "./../providers/auth-data";
@@ -28,6 +28,7 @@ export class MyApp {
     public alertCtrl: AlertController,
     public afAuth: AngularFireAuth,
     private toastCtrl: ToastController,
+    public menuCtrl: MenuController,
     public globals: Globals) {
     let ion = this;
 
@@ -158,6 +159,7 @@ export class MyApp {
           console.log("Logged out");
           // toast message
           ion.presentToast('bottom', ion.globals.LANG.LOGGED_OUT);
+          ion.menuCtrl.close();
           ion.nav.setRoot('LoginPage');
         }, error => {
           ion.presentAlert(error);
