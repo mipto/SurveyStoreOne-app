@@ -1,6 +1,6 @@
 page-profile {
 
-  $text-color:#fff;
+  $text-color:#fff; 
   profileHeader{
       color: #333;
       font-size: 18px;
@@ -11,7 +11,7 @@ page-profile {
     border-radius: 50%;
     width: auto;
     height: 110px;
-    margin: -10px auto 0;
+    margin: -15px auto 0;
     border-width: 2px;
     border-style: solid;
     border-color: rgba(255, 255, 255,0.1);
@@ -29,7 +29,7 @@ page-profile {
   .profile1-description {
     font-size: 15px;
     color: #888;
-    //margin: 0 auto 0;
+    margin: 0 auto -5px;
   }
 
  .profile1-numbers {
@@ -47,5 +47,4 @@ page-profile {
   .validation-errors{
     color:rgb(100, 0, 0)
   }
-  
 }
