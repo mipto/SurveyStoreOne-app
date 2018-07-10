@@ -29,8 +29,7 @@ $colors: (
   danger:     #f53d3d,
   light:      #f4f4f4,
   dark:       #222,
-darkGray:   #333333,
-
+  darkGray:   #333333,
  
 
   special-blue:(
@@ -55,6 +54,10 @@ darkGray:   #333333,
   ),
   pink:(
     base: #EA1E63,
+    contrast: #ffffff
+  ),
+  navbar-color:(
+    base: #2980b9,
     contrast: #ffffff
   ),
 
@@ -356,8 +359,6 @@ darkGray:   #333333,
 
 );
 $text-input-md-show-focus-highlight: false;
-
-
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
