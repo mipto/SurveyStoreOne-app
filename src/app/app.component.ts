@@ -37,6 +37,7 @@ export class MyApp {
     ion.pages = [
       { icon: 'bookmark', title: 'Dashboard', component: 'DashboardPage' },
       { icon: 'person', title: 'Profile', component: 'ProfilePage' },
+      { icon: 'person', title: 'Profile', component: 'FormsPage' },
     ];
 
     ion.menu = [

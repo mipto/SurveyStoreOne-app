@@ -35,6 +35,10 @@ import { Globals } from '../services/globals.service';
 //************** import image gallery *********************//
 import * as ionicGalleryModal from 'ionic-gallery-modal';
 import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+import { FormsProvider } from '../providers/forms/forms';
+
+/*HTTP CLIENT */
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -44,7 +48,7 @@ import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
     BrowserModule,
     ionicGalleryModal.GalleryModalModule,
     IonicModule.forRoot(MyApp),
-  
+    HttpClientModule,
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
@@ -70,7 +74,8 @@ import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
     Facebook,
     RadioPlayer,
     Facebook,
-    GooglePlus
+    GooglePlus,
+    FormsProvider
   ]
 })
 export class AppModule {}
