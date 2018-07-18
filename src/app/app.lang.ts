@@ -8,6 +8,7 @@ export class APP_LANG {
         FORGOT_PASSWORD: 'Forgot your Password',
         WELCOME_TO: 'Welcome to',
         NAME: 'Name',
+        FIRST_NAME: 'First Name',
         MOBILE_PHONE: 'Mobile Phone',
         LOGOUT: 'Logout',
         VALID_EMAIL: 'Please enter a valid email',
@@ -19,7 +20,12 @@ export class APP_LANG {
         LAST_NAME: 'Last Name',
         SAVE: 'Save',
         PROFILE: 'Profile',
-        CONTACT: 'CONCTACT',
+        POSITION: 'Position',
+        COUNTRY: 'Country',
+        CITY: 'City',
+        BIRTHDAY: 'Birthday',
+        SEX: 'Sex',
+        CONTACT: 'Contact',
         EDIT_PROFILE: 'Edit Profile',
         HI: 'Hi',
         LAST_CONNECTION: 'Last connection',
@@ -29,7 +35,6 @@ export class APP_LANG {
         TOTAL_FORMS_BY_SINCRONIZE: 'Total forms no synchronized',
         TOTAL_SAVED_FORMS: 'Total saved forms',
         FORM_AVERAGE_TIME: 'Forms average time',
-
       },
       SPANISH: {
         EMAIL: 'Email',
@@ -38,6 +43,7 @@ export class APP_LANG {
         FORGOT_PASSWORD: 'Olvidaste tu contraseña',
         WELCOME_TO: 'Bienvenido a',
         NAME: 'Nombre',
+        FIRST_NAME: 'Nombre',
         MOBILE_PHONE: 'Telefono Movil',
         LOGOUT: 'Cerrar sesión',
         VALID_EMAIL: 'Por favor introduce un email valido',
@@ -49,6 +55,11 @@ export class APP_LANG {
         LAST_NAME: 'Apellido',
         SAVE: 'Guardar',
         PROFILE: 'Perfil',
+        POSITION: 'Cargo',
+        COUNTRY: 'Pais',
+        CITY: 'Ciudad',
+        BIRTHDAY: 'Fecha Nacimiento',
+        SEX: 'Sexo',
         CONTACT: 'Contacto',
         EDIT_PROFILE: 'Editar Perfil',
         HI: 'Hola',
@@ -59,7 +70,6 @@ export class APP_LANG {
         TOTAL_FORMS_BY_SINCRONIZE: 'Total formularios por sincronizar',
         TOTAL_SAVED_FORMS: 'Total formularios guardados',
         FORM_AVERAGE_TIME: 'Tiempo promedio formulario',
-
       },
       FRENCH: {
 

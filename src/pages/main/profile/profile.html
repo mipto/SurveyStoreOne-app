@@ -1,12 +1,12 @@
 <ion-header>
-  <ion-navbar color="white" class="white-text">
+  <ion-navbar id="toolbar" class="white-text"> <!--color="#2980b9" color="navbar-color"-->
     <button ion-button menuToggle class="TopLMenu">
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>{{globals.LANG.PROFILE}}</ion-title>
     <ion-buttons right>
       <button ion-button icon-end (click)="toggleEdit()" *ngIf="!this.onEdit">
-        <ion-icon name="brush"></ion-icon>
+        <ion-icon name="more"></ion-icon>
       </button>
       <button ion-button icon-end (click)="toggleEdit()" *ngIf="this.onEdit">
         <ion-icon name="close"></ion-icon>
@@ -22,7 +22,7 @@
     <img id="profile1-image" class="pop-in" src="https://pickaface.net/gallery/avatar/By_3DGAR.1561e90832b518.png" />
     <h3 id="profile1-name">{{userData.user.name}}</h3>
     <!--<p>{{(profile2 | async)?.company}} &bull; {{(profile2 | async)?.position}}</p> -->
-    <p class="profile1-description">Developer</p>
+    <p class="profile1-description">{{userData.user.position}}</p>
   </div>
 
 
@@ -34,23 +34,44 @@
     </ion-list-header>
     <ion-item>
       <ion-icon name="ios-mail" item-left></ion-icon>
-      <h2>{{userData.user.email}}</h2>
       <p>Email</p>
+      <h2>{{userData.user.email}}</h2>
     </ion-item>
     <ion-item>
       <ion-icon name="person" item-left></ion-icon>
+      <p>{{globals.LANG.FIRST_NAME}}</p>
       <h2>{{userData.user.first_name}}</h2>
-      <p>{{globals.LANG.NAME}}</p>
     </ion-item>
     <ion-item>
       <ion-icon name="person" item-left></ion-icon>
-      <h2>{{userData.user.last_name}}</h2>
       <p>{{globals.LANG.LAST_NAME}}</p>
+      <h2>{{userData.user.last_name}}</h2>
     </ion-item>
     <ion-item>
       <ion-icon name="ios-call" item-left></ion-icon>
-      <h2>{{userData.user.phone}}</h2>
       <p>{{globals.LANG.MOBILE_PHONE}}</p>
+      <h2>{{userData.user.phone}}</h2>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="calendar" item-left></ion-icon>
+      <p>{{globals.LANG.BIRTHDAY}}</p>
+      <h2>{{userData.user.birthday}}</h2>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="male" item-left *ngIf="userData.user.sex == 'masculine'"></ion-icon>
+      <ion-icon name="female" item-left *ngIf="userData.user.sex == 'female'"></ion-icon>
+      <p>{{globals.LANG.SEX}}</p>
+      <h2>{{userData.user.sex}}</h2>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="flag" item-left></ion-icon>
+      <p>{{globals.LANG.COUNTRY}}</p>
+      <h2>{{userData.user.country}}</h2>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="home" item-left></ion-icon>
+      <p>{{globals.LANG.CITY}}</p>
+      <h2>{{userData.user.city}}</h2>
     </ion-item>
 
 
@@ -64,6 +85,7 @@
       </ion-list-header>
       <div class="item-inner">
         <ion-item>
+          <ion-icon name="person" item-left></ion-icon>
           <ion-label stacked>{{globals.LANG.NAME}}</ion-label>
           <ion-input type="text" [(ngModel)]="form.first_name" formControlName="first_name" [class.invalid]="!profileForm.controls.first_name.valid && profileForm.controls.first_name.dirty"
             (ionChange)="findInvalidControls()">
@@ -72,6 +94,7 @@
       </div>
       <div class="item-inner">
         <ion-item>
+          <ion-icon name="person" item-left></ion-icon>
           <ion-label stacked>{{globals.LANG.LAST_NAME}}</ion-label>
           <ion-input type="text" [(ngModel)]="form.last_name" formControlName="last_name" [class.invalid]="!profileForm.controls.last_name.valid && profileForm.controls.last_name.dirty"
             (ionChange)="findInvalidControls()">
@@ -80,6 +103,7 @@
       </div>
       <div class=" item-inner ">
         <ion-item>
+          <ion-icon name="ios-call" item-left></ion-icon>
           <ion-label stacked>{{globals.LANG.MOBILE_PHONE}}</ion-label>
           <ion-input type="text" [(ngModel)]="form.phone" formControlName="phone" [class.invalid]="!profileForm.controls.phone.valid
             && profileForm.controls.phone.dirty" (ionChange)="findInvalidControls()">

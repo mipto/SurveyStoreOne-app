@@ -134,3 +134,18 @@
 .round {
   border-radius: 50%;
 }
+
+#toolbar{
+  .toolbar-background {
+    background-color:#2980b9 !important;
+   }
+   .bar-button-default-md, 
+   .bar-button-clear-md-default, 
+   .bar-button-md-default, 
+   .toolbar-title.toolbar-title-md, 
+   .toolbar-title.toolbar-title-ios, 
+   .toolbar-title.toolbar-title-wp{
+    color: #ffffff !important;
+   } 
+}
+
