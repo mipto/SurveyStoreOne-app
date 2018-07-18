@@ -1,0 +1,65 @@
+<ion-header no-border>
+  <ion-navbar transparent color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu" color="light"></ion-icon>
+    </button>
+  </ion-navbar>
+</ion-header>
+
+<ion-content fullscreen="true" no-padding >
+
+    <div class="profile-box">
+        <div text-center>
+            <img *ngIf="userData.user.photo" src="{{userData.user.photo}}" class="edit-avatar pop-in" alt="">
+            <img  *ngIf="!userData.user.photo" src = "https://pbs.twimg.com/profile_images/834457277830541312/bYMCvtHD.jpg" class="edit-avatar pop-in" alt="">
+            <p class="name-text">{{globals.LANG.HI}}, {{userData.user.first_name}} {{userData.user.last_name}}</p>
+            <p class="last-connect-text">{{globals.LANG.LAST_CONNECTION}}: 25/04/2018</p>
+        </div>
+    </div>
+
+    <div padding>
+        <ion-list no-lines >
+            <ion-item>
+                <ion-label>Iniage</ion-label>
+                <ion-select [(ngModel)]="search.iniage">
+                  <ion-option value="nes">NES</ion-option>
+                  <ion-option value="n64">Nintendo64</ion-option>
+                  <ion-option value="ps">PlayStation</ion-option>
+                  <ion-option value="genesis">Sega Genesis</ion-option>
+                  <ion-option value="saturn">Sega Saturn</ion-option>
+                  <ion-option value="snes">SNES</ion-option>
+                </ion-select>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>Client</ion-label>
+                <ion-select [(ngModel)]="search.client">
+                  <ion-option value="nes">NES</ion-option>
+                  <ion-option value="n64">Nintendo64</ion-option>
+                  <ion-option value="ps">PlayStation</ion-option>
+                  <ion-option value="genesis">Sega Genesis</ion-option>
+                  <ion-option value="saturn">Sega Saturn</ion-option>
+                  <ion-option value="snes">SNES</ion-option>
+                </ion-select>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>Entity</ion-label>
+                <ion-select [(ngModel)]="search.entity">
+                  <ion-option value="nes">NES</ion-option>
+                  <ion-option value="n64">Nintendo64</ion-option>
+                  <ion-option value="ps">PlayStation</ion-option>
+                  <ion-option value="genesis">Sega Genesis</ion-option>
+                  <ion-option value="saturn">Sega Saturn</ion-option>
+                  <ion-option value="snes">SNES</ion-option>
+                </ion-select>
+            </ion-item>
+        </ion-list>
+    </div>
+</ion-content>
+
+<ion-footer padding>
+ <button ion-button block mode="ios" color="blue2" (click)="searchForm()">
+    Search
+  </button>
+</ion-footer>

@@ -35,9 +35,10 @@ export class MyApp {
     ion.initializeApp();
 
     ion.pages = [
-      { icon: 'bookmark', title: 'Dashboard', component: 'DashboardPage' },
+      { icon: 'home', title: 'Home', component: 'HomePage' },
+      { icon: 'apps', title: 'Dashboard', component: 'DashboardPage' },
       { icon: 'person', title: 'Profile', component: 'ProfilePage' },
-      { icon: 'person', title: 'Profile', component: 'FormsPage' },
+      { icon: 'person', title: 'Forms', component: 'FormsPage' },
     ];
 
     ion.menu = [
