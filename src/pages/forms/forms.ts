@@ -18,7 +18,11 @@ export class FormsPage {
   }
 
   ionViewWillEnter(){
-    console.log(this.FormsProvider.getAllDocuments());
+    this.FormsProvider.getAllDocuments().then(docs => {
+      console.log(docs);
+
+    })
+    //console.log(this.FormsProvider.getAllDocuments());
 }
   
 

@@ -36,6 +36,7 @@ import { Globals } from '../services/globals.service';
 import * as ionicGalleryModal from 'ionic-gallery-modal';
 import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { FormsProvider } from '../providers/forms/forms';
+import { CardsProvider } from '../providers/forms/cards-list';
 
 /*HTTP CLIENT */
 import { HttpClientModule } from '@angular/common/http';
@@ -75,7 +76,8 @@ import { HttpClientModule } from '@angular/common/http';
     RadioPlayer,
     Facebook,
     GooglePlus,
-    FormsProvider
+    FormsProvider,
+    CardsProvider
   ]
 })
 export class AppModule {}

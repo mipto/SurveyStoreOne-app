@@ -22,10 +22,10 @@ export class FormsProvider {
   getAllDocuments(): Promise<any> {
 
     return new Promise((resolve, reject) => {
-      var forms = this.db.collection("hierarchy_form");// Create a query against the collection.
-      var query = forms.where("Id_form", "==", '1');
+      var forms = this.db.collection("hierarchy_form")// Create a query against the collection.
+     
 
-      query
+      
         .get()
         .then((querySnapshot) => {
           let arr = [];

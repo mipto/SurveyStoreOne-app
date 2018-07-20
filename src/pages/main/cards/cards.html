@@ -7,17 +7,17 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-card>
+    <ion-card *ngFor="let form of forms">
         <ion-item>
             <ion-avatar item-start>
             <img src="assets/img/marty-avatar.png">
             </ion-avatar>
             <h2>Marty McFly</h2>
-            <p>November 5, 1955</p>
+            <p>{{form.Title}}</p>
         </ion-item>
         <img src="assets/img/advance-card-bttf.png">    
         <ion-card-content>
-            <p>Wait a minute. Wait a minute, Doc. Uhhh... Are you telling me that you built a time machine... out of a DeLorean?! Whoa. This is heavy.</p>
+            <p>{{form.Description}}</p>
         </ion-card-content>
         <ion-row>
             <ion-col>

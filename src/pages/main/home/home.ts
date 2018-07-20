@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, LoadingController, AlertController , ToastController} from 'ionic-angular';
 import { AuthData } from '../../../providers/auth-data';
+import { CardsProvider } from '../../../providers/forms/cards-list';
 import { Globals } from '../../../services/globals.service';
 
 import { AngularFireDatabase} from 'angularfire2/database-deprecated';
@@ -14,7 +15,13 @@ import { UserService } from '../../../services/user.service';
   templateUrl: 'home.html'
 })
 export class HomePage {
-  public search: object;
+  public search: object = {
+    client: '',
+    entity: ''
+  };
+
+  public clients: any;
+  public entities: any;
 
   constructor(public navCtrl: NavController, 
     public authData: AuthData,
@@ -24,19 +31,33 @@ export class HomePage {
     public afAuth: AngularFireAuth, 
     public afDb: AngularFireDatabase,
     public globals: Globals,
-    public userData: UserService) {
-
-      this.search = {
-        inigage: '',
-        client: '',
-        entity: ''
-      }
+    public userData: UserService,
+    public cardsList: CardsProvider) {
     
+  }
+
+  ionViewWillEnter(){
+    let ion = this;
+    ion.cardsList.getAllClients().then(Allclients => {
+      ion.clients = Allclients;
+    });
+    
+  }
+
+  onClientSelectChange(selectedValue: any) {
+    let ion = this;
+    ion.cardsList.getAllEntitiesByUser(selectedValue).then(AllEntities => {
+      ion.entities = AllEntities;
+    });
   }
 
   searchForm() {
     let ion = this;
-    ion.navCtrl.push('CardsPage');
+    console.log(this.search);
+    
+    ion.navCtrl.push('CardsPage', {
+      data: this.search
+    });
   }
 
   logout(){

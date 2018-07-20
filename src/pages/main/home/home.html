@@ -18,40 +18,18 @@
     </div>
 
     <div padding>
-        <ion-list no-lines >
-            <ion-item>
-                <ion-label>Iniage</ion-label>
-                <ion-select [(ngModel)]="search.iniage">
-                  <ion-option value="nes">NES</ion-option>
-                  <ion-option value="n64">Nintendo64</ion-option>
-                  <ion-option value="ps">PlayStation</ion-option>
-                  <ion-option value="genesis">Sega Genesis</ion-option>
-                  <ion-option value="saturn">Sega Saturn</ion-option>
-                  <ion-option value="snes">SNES</ion-option>
-                </ion-select>
-            </ion-item>
-
+        <ion-list>
             <ion-item>
                 <ion-label>Client</ion-label>
-                <ion-select [(ngModel)]="search.client">
-                  <ion-option value="nes">NES</ion-option>
-                  <ion-option value="n64">Nintendo64</ion-option>
-                  <ion-option value="ps">PlayStation</ion-option>
-                  <ion-option value="genesis">Sega Genesis</ion-option>
-                  <ion-option value="saturn">Sega Saturn</ion-option>
-                  <ion-option value="snes">SNES</ion-option>
+                <ion-select [(ngModel)]="search.client" (ionChange)="onClientSelectChange($event)">
+                    <ion-option *ngFor="let client of clients" value="{{client.$key}}">{{client.Name}}</ion-option>
                 </ion-select>
             </ion-item>
 
             <ion-item>
                 <ion-label>Entity</ion-label>
                 <ion-select [(ngModel)]="search.entity">
-                  <ion-option value="nes">NES</ion-option>
-                  <ion-option value="n64">Nintendo64</ion-option>
-                  <ion-option value="ps">PlayStation</ion-option>
-                  <ion-option value="genesis">Sega Genesis</ion-option>
-                  <ion-option value="saturn">Sega Saturn</ion-option>
-                  <ion-option value="snes">SNES</ion-option>
+                    <ion-option *ngFor="let entitie of entities" value="{{entitie.$key}}">{{entitie.Name}}</ion-option>
                 </ion-select>
             </ion-item>
         </ion-list>

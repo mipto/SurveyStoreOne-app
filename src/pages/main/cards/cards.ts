@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, LoadingController, AlertController , ToastController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController , ToastController} from 'ionic-angular';
 import { AuthData } from '../../../providers/auth-data';
+import { CardsProvider } from '../../../providers/forms/cards-list';
 import { Globals } from '../../../services/globals.service';
 
 import { AngularFireDatabase} from 'angularfire2/database-deprecated';
@@ -15,6 +16,12 @@ import { UserService } from '../../../services/user.service';
 })
 export class CardsPage {
 
+  public search: object = {
+    client: '',
+    entity: ''
+  };
+  public forms: any;
+
   constructor(public navCtrl: NavController, 
     public authData: AuthData,
     public alertCtrl: AlertController,
@@ -23,7 +30,22 @@ export class CardsPage {
     public afAuth: AngularFireAuth, 
     public afDb: AngularFireDatabase,
     public globals: Globals,
-    public userData: UserService) {
+    public userData: UserService,
+    public navParams: NavParams,
+    public cardsList: CardsProvider) {
+    
+      this.search = navParams.get('data');
+  }
+
+  ionViewWillEnter(){
+    let ion = this;
+   console.log('new view', this.search);
+   ion.cardsList.getAllFormsByClientAndEntitie(this.search).then(AllForms => {
+    ion.forms = AllForms;
+
+    console.log('new view forms', ion.forms);
+    
+  });
     
   }
 
