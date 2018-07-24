@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, LoadingController, AlertController , ToastController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController , ToastController} from 'ionic-angular';
 import { AuthData } from '../../../providers/auth-data';
 import { CardsProvider } from '../../../providers/forms/cards-list';
 import { Globals } from '../../../services/globals.service';
@@ -15,10 +15,7 @@ import { UserService } from '../../../services/user.service';
   templateUrl: 'home.html'
 })
 export class HomePage {
-  public search: object = {
-    client: '',
-    entity: ''
-  };
+  public search: any;
 
   public clients: any;
   public entities: any;
@@ -32,31 +29,82 @@ export class HomePage {
     public afDb: AngularFireDatabase,
     public globals: Globals,
     public userData: UserService,
+    public navParams: NavParams,
     public cardsList: CardsProvider) {
+
+      let ion = this;
+
+      ion.search = {
+        client: null,
+        entity: null
+      };
     
   }
 
   ionViewWillEnter(){
     let ion = this;
+    let loadingPopupHome = ion.loadingCtrl.create({
+      spinner: 'crescent', 
+      content: ''
+    });
+    if (this.navParams.get('data')) {
+      let data = this.navParams.get('data');
+      if (data.selectedEntity && data.selectedClient) {
+        console.log('home with selected entity', data.selectedEntity);
+        console.log('home with selected client', data.selectedClient);
+        
+        ion.search.client = data.selectedClient;
+        ion.onClientSelectChange(ion.search.client);
+        ion.search.entity = data.selectedEntity;
+      }
+    };
     ion.cardsList.getAllClients().then(Allclients => {
       ion.clients = Allclients;
+      loadingPopupHome.dismiss();
     });
     
   }
 
   onClientSelectChange(selectedValue: any) {
     let ion = this;
+    let loadingPopupHome = ion.loadingCtrl.create({
+      spinner: 'crescent', 
+      content: ''
+    });
+    console.log(ion.search);
+    
     ion.cardsList.getAllEntitiesByUser(selectedValue).then(AllEntities => {
       ion.entities = AllEntities;
+      loadingPopupHome.dismiss();
+    });
+  }
+
+  searchEntity() {
+    let ion = this;
+    
+    ion.navCtrl.push('SearchEntityPage', {
+      data: {
+        entities: ion.entities,
+        selectedClient: ion.search.client
+      }
     });
   }
 
   searchForm() {
     let ion = this;
-    console.log(this.search);
+    console.log(ion.search);
     
     ion.navCtrl.push('CardsPage', {
-      data: this.search
+      data: ion.search
+    });
+  }
+
+  goMapToEntity() {
+    let ion = this;
+    console.log(ion.search);
+    
+    ion.navCtrl.push('MapToEntityPage', {
+      data: ion.search
     });
   }
 

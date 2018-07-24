@@ -32,6 +32,11 @@
                     <ion-option *ngFor="let entitie of entities" value="{{entitie.$key}}">{{entitie.Name}}</ion-option>
                 </ion-select>
             </ion-item>
+            <ion-item *ngIf="entities">
+                    <ion-buttons right>
+                        <button ion-button small (click)="searchEntity()">Search Entity</button>
+                    </ion-buttons>
+            </ion-item>
         </ion-list>
     </div>
 </ion-content>
@@ -39,5 +44,5 @@
 <ion-footer padding>
  <button ion-button block mode="ios" color="blue2" (click)="searchForm()">
     Search
-  </button>
+</button>
 </ion-footer>

@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { AuthData } from '../../../providers/auth-data';
 import { UserService } from '../../../services/user.service';
 import { Globals } from '../../../services/globals.service';
-import { APP_CONFIG } from "./../../../app/app.config";
+import { APP_CONFIG } from '../../../app/app.config';
 
 import { AngularFireDatabase, FirebaseObjectObservable} from 'angularfire2/database-deprecated';
 import { AngularFireAuth } from 'angularfire2/auth';
