@@ -107,6 +107,7 @@ export class AuthData {
 
   setUserData(): Promise<any> {
     let ion = this;
+    let authUser = ion.getAuthUser();
     return new Promise((resolve, reject) => {
       try {
         ion.getUserProfile().then(userProfileData => {

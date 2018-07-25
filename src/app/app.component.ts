@@ -1,13 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, ToastController, AlertController } from 'ionic-angular';
+import { Nav, Platform, ToastController, AlertController, MenuController  } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { AuthData } from "./../providers/auth-data";
-import { Helpers } from './../providers/helpers';
+import { AuthData } from '../providers/auth-data';
+import { Helpers } from '../providers/helpers';
 import { Globals } from '../services/globals.service';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { APP_LANG } from "./../app/app.lang";
-import { APP_CONFIG } from "./../app/app.config";
+import { APP_LANG } from './app.lang';
+import { APP_CONFIG } from './app.config';
 
 @Component({
   templateUrl: 'app.html'
@@ -28,14 +28,17 @@ export class MyApp {
     public alertCtrl: AlertController,
     public afAuth: AngularFireAuth,
     private toastCtrl: ToastController,
+    public menuCtrl: MenuController,
     public globals: Globals) {
     let ion = this;
 
     ion.initializeApp();
 
     ion.pages = [
-      { icon: 'bookmark', title: 'Dashboard', component: 'DashboardPage' },
+      { icon: 'home', title: 'Home', component: 'HomePage' },
+      { icon: 'apps', title: 'Dashboard', component: 'DashboardPage' },
       { icon: 'person', title: 'Profile', component: 'ProfilePage' },
+      { icon: 'person', title: 'Forms', component: 'FormsPage' },
     ];
 
     ion.menu = [
@@ -158,6 +161,7 @@ export class MyApp {
           console.log("Logged out");
           // toast message
           ion.presentToast('bottom', ion.globals.LANG.LOGGED_OUT);
+          ion.menuCtrl.close();
           ion.nav.setRoot('LoginPage');
         }, error => {
           ion.presentAlert(error);

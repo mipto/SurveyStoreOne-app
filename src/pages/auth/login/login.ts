@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { AuthData } from '../../../providers/auth-data';
 import { UserService } from '../../../services/user.service';
 import { Globals } from '../../../services/globals.service';
-import { APP_CONFIG } from "./../../../app/app.config";
+import { APP_CONFIG } from '../../../app/app.config';
 
 import { AngularFireDatabase, FirebaseObjectObservable} from 'angularfire2/database-deprecated';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -56,7 +56,7 @@ export class LoginPage {
           console.log('auth true login, moving dashboard');
           ion.authData.setUserData().then( () => {
             ion.AuthSubscription.unsubscribe();
-          ion.navCtrl.setRoot('DashboardPage');
+          ion.navCtrl.setRoot('HomePage');
           ion.toast.create({
             message: ion.globals.LANG.WELCOME_TO + ' ' + ion.appConfig.APP_NAME +'!, '+ userAuth.email,
                         duration: 3000
@@ -88,7 +88,7 @@ export class LoginPage {
           ion.authData.setUserData().then( () => {
             loadingPopupLogin.dismiss();
             
-            ion.navCtrl.setRoot('DashboardPage');
+            ion.navCtrl.setRoot('HomePage');
             ion.toast.create({
               message: ion.globals.LANG.WELCOME_TO + ' ' + ion.appConfig.APP_NAME +'!, '+ authData.email,
                           duration: 3000

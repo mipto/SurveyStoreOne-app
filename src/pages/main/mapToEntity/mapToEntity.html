@@ -1,0 +1,33 @@
+<ion-header>
+    <ion-navbar color="primary">
+      <button ion-button menuToggle>
+        <ion-icon name="menu" color="light"></ion-icon>
+      </button>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <ion-card class="adv-map" *ngFor="let form of forms">
+        <div style="position: relative">
+            <img src="assets/img/farmatodo3.jpg">
+            <ion-fab right top>
+            <button ion-fab class="fab-map">
+                <ion-icon name='pin'></ion-icon>
+            </button>
+            </ion-fab>
+        </div>
+        <ion-item>
+            <ion-icon color="subtle" large item-start name='wine'></ion-icon>
+            <h2>{{form.Title}}</h2>
+            <p>{{form.Description}}</p>
+        </ion-item>
+        <ion-item actions>
+            <span ion-text item-start color="secondary" class="item-bold">18 min</span>
+            <span ion-text item-start color="subtle">(2.6 mi)</span>
+            <button ion-button color="primary" clear item-end icon-start>
+            <ion-icon name='navigate'></ion-icon>
+            Start
+            </button>
+        </ion-item>
+    </ion-card>
+</ion-content>

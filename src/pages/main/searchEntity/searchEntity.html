@@ -1,0 +1,23 @@
+<ion-header>
+    <ion-navbar color="primary">
+      <button ion-button menuToggle>
+        <ion-icon name="menu" color="light"></ion-icon>
+      </button>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-searchbar (ionInput)="getEntities($event)"></ion-searchbar>
+<ion-list radio-group [(ngModel)]="selectedEntity">
+  <ion-item *ngFor="let entitie of entities">
+      <ion-label>{{ entitie.Name }}</ion-label>
+      <ion-radio value="{{entitie.$key}}"></ion-radio>
+  </ion-item>
+</ion-list>
+</ion-content>
+
+<ion-footer padding>
+    <button ion-button block mode="ios" color="blue2" (click)="goFormWithEntity()">
+       Select
+   </button>
+   </ion-footer>
