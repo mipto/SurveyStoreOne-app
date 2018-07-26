@@ -135,17 +135,33 @@
   border-radius: 50%;
 }
 
-#toolbar{
+//Toolbar general
+.toolbar-background {
+  background-color:#2980b9 !important;
+ }
+
+.bar-button-default-wp, 
+.bar-button-clear-wp-default, 
+.bar-button-wp-default,
+.bar-button-default-ios, 
+.bar-button-clear-ios-default, 
+.bar-button-ios-default,
+.bar-button-default-md, 
+.bar-button-clear-md-default, 
+.bar-button-md-default{
+  color: #ffffff !important;
+} 
+
+.toolbar-title.toolbar-title-md, 
+.toolbar-title.toolbar-title-ios, 
+.toolbar-title.toolbar-title-wp{
+color: #ffffff !important;
+} 
+
+#transparent-toolbar{
   .toolbar-background {
-    background-color:#2980b9 !important;
+    background:transparent !important;
    }
-   .bar-button-default-md, 
-   .bar-button-clear-md-default, 
-   .bar-button-md-default, 
-   .toolbar-title.toolbar-title-md, 
-   .toolbar-title.toolbar-title-ios, 
-   .toolbar-title.toolbar-title-wp{
-    color: #ffffff !important;
-   } 
+   
 }
 
