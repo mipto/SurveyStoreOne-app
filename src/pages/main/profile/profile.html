@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar id="toolbar" class="white-text"> <!--color="#2980b9" color="navbar-color"-->
+  <ion-navbar> <!--color="#2980b9" color="navbar-color"-->
     <button ion-button menuToggle class="TopLMenu">
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -58,10 +58,11 @@
       <h2>{{userData.user.birthday}}</h2>
     </ion-item>
     <ion-item>
-      <ion-icon name="male" item-left *ngIf="userData.user.sex == 'masculine'"></ion-icon>
-      <ion-icon name="female" item-left *ngIf="userData.user.sex == 'female'"></ion-icon>
+      <ion-icon name="male" item-left *ngIf="userData.user.sex == 'M'"></ion-icon>
+      <ion-icon name="female" item-left *ngIf="userData.user.sex == 'F'"></ion-icon>
       <p>{{globals.LANG.SEX}}</p>
-      <h2>{{userData.user.sex}}</h2>
+      <h2 *ngIf="userData.user.sex == 'M'">{{globals.LANG.MALE}}</h2>
+      <h2 *ngIf="userData.user.sex == 'F'">{{globals.LANG.FEMALE}}</h2>
     </ion-item>
     <ion-item>
       <ion-icon name="flag" item-left></ion-icon>
