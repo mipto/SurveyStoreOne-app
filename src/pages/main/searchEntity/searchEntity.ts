@@ -9,21 +9,16 @@ import { AngularFireAuth } from 'angularfire2/auth';
 
 import { UserService } from '../../../services/user.service';
 
-//Geolocation
-import { Geolocation } from '@ionic-native/geolocation';
-
 @IonicPage()
 @Component({
-  selector: 'page-cards',
-  templateUrl: 'cards.html'
+  selector: 'page-searchEntity',
+  templateUrl: 'searchEntity.html'
 })
-export class CardsPage {
+export class SearchEntityPage {
 
-  public search: object = {
-    client: '',
-    entity: ''
-  };
-  public forms: any;
+  public entities: any;
+  public selectedEntity: any;
+  public selectedClient: any;
 
   constructor(public navCtrl: NavController, 
     public authData: AuthData,
@@ -35,33 +30,43 @@ export class CardsPage {
     public globals: Globals,
     public userData: UserService,
     public navParams: NavParams,
-    public cardsList: CardsProvider,
-    private geolocation: Geolocation) {
-    
-      this.search = navParams.get('data');
+    public cardsList: CardsProvider) {
+
+      this.initializeItems();
   }
 
-  ionViewWillEnter(){
+  initializeItems() {
     let ion = this;
-   console.log('new view', this.search);
-   ion.cardsList.getAllFormsByClientAndEntitie(this.search).then(AllForms => {
-    ion.forms = AllForms;
-
-    console.log('new view forms', ion.forms);
+    let data = ion.navParams.get('data');
     
-  });
+    ion.entities = data.entities;
+    ion.selectedClient = data.selectedClient;
+  }
 
-  //Test GeoLocation
+  getEntities(ev: any) {
+    // Reset items back to all of the items
+    this.initializeItems();
 
-  this.geolocation.getCurrentPosition().then((resp) => {
-    // resp.coords.latitude
-    // resp.coords.longitude
-    console.log(resp.coords);
-    
-   }).catch((error) => {
-     console.log('Error getting location', error);
-   });
-    
+    // set val to the value of the searchbar
+    const val = ev.target.value;
+
+    // if the value is an empty string don't filter the items
+    if (val && val.trim() != '') {
+      this.entities = this.entities.filter((entitie) => {
+        return (entitie.Name.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      })
+    }
+  }
+
+  goFormWithEntity() {
+    let ion = this;
+
+    ion.navCtrl.setRoot('HomePage', {
+      data: {
+        selectedEntity: ion.selectedEntity,
+        selectedClient: ion.selectedClient
+      }
+    });
   }
 
 

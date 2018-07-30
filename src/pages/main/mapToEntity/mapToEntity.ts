@@ -14,10 +14,10 @@ import { Geolocation } from '@ionic-native/geolocation';
 
 @IonicPage()
 @Component({
-  selector: 'page-cards',
-  templateUrl: 'cards.html'
+  selector: 'page-mapToEntity',
+  templateUrl: 'mapToEntity.html'
 })
-export class CardsPage {
+export class MapToEntityPage {
 
   public search: object = {
     client: '',

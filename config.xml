@@ -83,3 +83,6 @@
     <plugin name="cordova-plugin-ionic-webview" spec="^1.1.11" />
     <engine name="android" spec="~6.1.2" />
 </widget>
+<edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
+   <string>We want your location! Best regards NSA</string>
+</edit-config>
