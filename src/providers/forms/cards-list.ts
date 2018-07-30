@@ -64,8 +64,10 @@ export class CardsProvider {
                             EntitieArr.push(objEntitie);
                         });
                     });
+                    resolve(EntitieArr);
+                }).catch(err => {
+                    reject(err);
                 });
-                resolve(EntitieArr);
             } catch (error) {
                 reject(error);
             }
@@ -73,19 +75,24 @@ export class CardsProvider {
     }
 
     getAllFormsByClientAndEntitie(searchData): Promise<any> {
+        let arrForms = [];
         return new Promise((resolve, reject) => {
             try {
                 var forms = this.db.collection("forms")
                 .where("IdClient", "==", searchData.client).where("IdEntitie", "==", searchData.entity).get()
                 .then((formsSnapShot) => {
-                let arrForms = [];
                 formsSnapShot.forEach(function (doc) {
                     var objForm = JSON.parse(JSON.stringify(doc.data()));
                     objForm.$key = doc.id
                     arrForms.push(objForm);
-
-                    resolve(arrForms);
                 });
+                if (arrForms.length >= 1) {
+                    resolve(arrForms);
+                } else {
+                    reject();
+                }
+            }).catch(err => {
+                reject(err);
             });
                 
             } catch (error) {

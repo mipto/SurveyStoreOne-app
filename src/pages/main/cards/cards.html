@@ -7,6 +7,9 @@
 </ion-header>
 
 <ion-content>
+    <ion-item>
+        <h3 text-center>{{entityName}}</h3>
+    </ion-item>
     <ion-card class="adv-map" *ngFor="let form of forms">
         <div style="position: relative">
             <img src="assets/img/farmatodo3.jpg">
@@ -17,7 +20,7 @@
             </ion-fab>
         </div>
         <ion-item>
-            <ion-icon color="subtle" large item-start name='wine'></ion-icon>
+            <ion-icon color="subtle" large item-start name='home'></ion-icon>
             <h2>{{form.Title}}</h2>
             <p>{{form.Description}}</p>
         </ion-item>

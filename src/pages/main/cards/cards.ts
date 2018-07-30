@@ -23,6 +23,7 @@ export class CardsPage {
     client: '',
     entity: ''
   };
+  public entityName: any;
   public forms: any;
 
   constructor(public navCtrl: NavController, 
@@ -38,7 +39,11 @@ export class CardsPage {
     public cardsList: CardsProvider,
     private geolocation: Geolocation) {
     
-      this.search = navParams.get('data');
+      let data = navParams.get('data');
+
+      this.search = data.search;
+      this.entityName = data.entityName;
+
   }
 
   ionViewWillEnter(){
@@ -46,9 +51,12 @@ export class CardsPage {
    console.log('new view', this.search);
    ion.cardsList.getAllFormsByClientAndEntitie(this.search).then(AllForms => {
     ion.forms = AllForms;
-
     console.log('new view forms', ion.forms);
-    
+  }).catch(err => {
+    ion.toastCtrl.create({
+      message: 'This entity doesnt have any form, please select another.',
+      duration: 3000
+    }).present();
   });
 
   //Test GeoLocation
