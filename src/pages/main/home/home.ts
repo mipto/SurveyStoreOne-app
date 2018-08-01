@@ -76,6 +76,12 @@ export class HomePage {
     ion.cardsList.getAllEntitiesByUser(selectedValue).then(AllEntities => {
       ion.entities = AllEntities;
       loadingPopupHome.dismiss();
+    }).catch(err => {
+      ion.entities = null;
+      ion.toastCtrl.create({
+          message: 'This client doesnt have entities, please select another.',
+          duration: 3000
+        }).present();
     });
   }
 
@@ -93,9 +99,14 @@ export class HomePage {
   searchForm() {
     let ion = this;
     console.log(ion.search);
+
+    let entity = this.entities.find(x => x.$key === ion.search.entity);
     
     ion.navCtrl.push('CardsPage', {
-      data: ion.search
+      data: {
+        search: ion.search,
+        entityName: entity.Name
+      }
     });
   }
 
