@@ -2,12 +2,12 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, ToastController, AlertController, MenuController  } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { AuthData } from "./../providers/auth-data";
-import { Helpers } from './../providers/helpers';
+import { AuthData } from '../providers/auth-data';
+import { Helpers } from '../providers/helpers';
 import { Globals } from '../services/globals.service';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { APP_LANG } from "./../app/app.lang";
-import { APP_CONFIG } from "./../app/app.config";
+import { APP_LANG } from './app.lang';
+import { APP_CONFIG } from './app.config';
 
 @Component({
   templateUrl: 'app.html'

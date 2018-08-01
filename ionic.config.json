@@ -1,6 +1,5 @@
 {
   "name": "ionic3fullapp",
-  "app_id": "",
   "integrations": {
     "cordova": {}
   },
