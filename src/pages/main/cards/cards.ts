@@ -49,7 +49,7 @@ export class CardsPage {
   ionViewWillEnter(){
     let ion = this;
    console.log('new view', this.search);
-   ion.cardsList.getAllFormsByClientAndEntitie(this.search).then(AllForms => {
+   ion.cardsList.getAllFormsByUserClientAndEntity(this.search).then(AllForms => {
     ion.forms = AllForms;
     console.log('new view forms', ion.forms);
   }).catch(err => {
@@ -60,7 +60,6 @@ export class CardsPage {
   });
 
   //Test GeoLocation
-
   this.geolocation.getCurrentPosition().then((resp) => {
     // resp.coords.latitude
     // resp.coords.longitude

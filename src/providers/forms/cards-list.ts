@@ -101,4 +101,42 @@ export class CardsProvider {
         });
     }
 
+    getAllFormsByUserClientAndEntity(searchData): Promise<any> {
+        let ion = this;
+        let arr = [];
+        let FormArr = [];
+        
+        return new Promise((resolve, reject) => {
+            try {
+                let authUser = ion.authData.getAuthUser();
+                var forms_users = this.db.collection("forms_users");
+                forms_users.where("id_user", "==", authUser.uid).get()
+                .then((formsUsersSnapShot) => {
+                    formsUsersSnapShot.forEach(function (doc) {
+                        var obj = JSON.parse(JSON.stringify(doc.data()));
+                        obj.$key = doc.id
+                        arr.push(obj);
+                    });
+                    arr.forEach(element => {
+                        var forms = this.db.collection("forms").doc(element.id_form).get()
+                        .then(function(doc) {
+                            var objForm = JSON.parse(JSON.stringify(doc.data()));
+                            if (objForm.status == 1) {
+                            objForm.$key = doc.id
+                            objForm.userStatus = element.status
+                            
+                            FormArr.push(objForm);
+                            }
+                        });
+                    });
+                    resolve(FormArr);
+                }).catch(err => {
+                    reject(err);
+                });
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
 }
