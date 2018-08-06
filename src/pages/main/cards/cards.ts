@@ -50,8 +50,10 @@ export class CardsPage {
     let ion = this;
    console.log('new view', this.search);
    ion.cardsList.getAllFormsByUserClientAndEntity(this.search).then(AllForms => {
-    ion.forms = AllForms;
-    console.log('new view forms', ion.forms);
+    console.log('new view forms', AllForms);
+      ion.forms = AllForms;
+      console.log('resolved view', AllForms);
+      
   }).catch(err => {
     ion.toastCtrl.create({
       message: 'This entity doesnt have any form, please select another.',

@@ -107,6 +107,7 @@ export class CardsProvider {
         let FormArr = [];
         
         return new Promise((resolve, reject) => {
+            var itemsProcessed = 0;
             try {
                 let authUser = ion.authData.getAuthUser();
                 var forms_users = this.db.collection("forms_users");
@@ -120,16 +121,23 @@ export class CardsProvider {
                     arr.forEach(element => {
                         var forms = this.db.collection("forms").doc(element.id_form).get()
                         .then(function(doc) {
+                            itemsProcessed++;
                             var objForm = JSON.parse(JSON.stringify(doc.data()));
-                            if (objForm.status == 1) {
-                            objForm.$key = doc.id
-                            objForm.userStatus = element.status
-                            
-                            FormArr.push(objForm);
+                            if (objForm.status == 1 && objForm.IdClient==searchData.client && objForm.IdEntitie==searchData.entity) {
+                                objForm.$key = doc.id
+                                objForm.userStatus = element.status
+                                
+                                FormArr.push(objForm);
+                            } 
+                            if(itemsProcessed === arr.length) {
+                                if (FormArr.length >= 1) {
+                                 resolve(FormArr);
+                                } else {
+                                 reject();
+                                }
                             }
                         });
                     });
-                    resolve(FormArr);
                 }).catch(err => {
                     reject(err);
                 });
