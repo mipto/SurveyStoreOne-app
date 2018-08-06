@@ -37,6 +37,11 @@ export class APP_LANG {
         TOTAL_FORMS_BY_SINCRONIZE: 'Total forms no synchronized',
         TOTAL_SAVED_FORMS: 'Total saved forms',
         FORM_AVERAGE_TIME: 'Forms average time',
+        CLIENT: 'Client',
+        ENTITY: 'Entity',
+        SEARCH: 'Search',
+        SELECT: 'Select',
+        CANCEL: 'Cancel'
       },
       SPANISH: {
         EMAIL: 'Email',
@@ -74,6 +79,11 @@ export class APP_LANG {
         TOTAL_FORMS_BY_SINCRONIZE: 'Total formularios por sincronizar',
         TOTAL_SAVED_FORMS: 'Total formularios guardados',
         FORM_AVERAGE_TIME: 'Tiempo promedio formulario',
+        CLIENT: 'Cliente',
+        ENTITY: 'Entidad',
+        SEARCH: 'Buscar',
+        SELECT: 'Seleccionar',
+        CANCEL: 'Cancelar'
       },
       FRENCH: {
 

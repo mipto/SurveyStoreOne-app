@@ -1,4 +1,19 @@
 page-cards {
+    .image-bg .description_container{
+      position: absolute;
+      background-color: rgba(0, 0, 0, 0.63);
+      width: 100%;
+      height: 25%;
+      bottom: 0;
+      text-align: center;
+    }
+    .image-bg .description_container .description {
+      font-size: 1.0em !important;
+      position: absolute;
+      top: 20%;
+      width: 100%;
+      color: #fff;
+    }
     ion-card.adv-map p {
         font-size: 0.7em !important;
       }
