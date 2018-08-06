@@ -6,7 +6,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content fullscreen="true" no-padding >
+<ion-content fullscreen="true" no-padding>
 
     <div class="profile-box">
         <div text-center>
@@ -16,33 +16,42 @@
             <p class="last-connect-text">{{globals.LANG.LAST_CONNECTION}}: 25/04/2018</p>
         </div>
     </div>
-
-    <div padding>
-        <ion-list>
-            <ion-item>
-                <ion-label>Client</ion-label>
-                <ion-select [(ngModel)]="search.client" (ionChange)="onClientSelectChange($event)">
-                    <ion-option *ngFor="let client of clients" value="{{client.$key}}">{{client.Name}}</ion-option>
-                </ion-select>
-            </ion-item>
-
-            <ion-item>
-                <ion-label>Entity</ion-label>
-                <ion-select [(ngModel)]="search.entity">
-                    <ion-option *ngFor="let entitie of entities" value="{{entitie.$key}}">{{entitie.Name}}</ion-option>
-                </ion-select>
-            </ion-item>
-            <ion-item *ngIf="entities">
-                    <ion-buttons right>
-                        <button ion-button small (click)="searchEntity()">Search Entity</button>
-                    </ion-buttons>
-            </ion-item>
-        </ion-list>
+    <div class="select-box">
+        <ion-grid>
+            <ion-row>
+                <ion-col col-10>
+                <ion-item>
+                    <ion-label>{{globals.LANG.CLIENT}}</ion-label>
+                    <ion-select [(ngModel)]="search.client" (ionChange)="onClientSelectChange($event)" cancelText={{globals.LANG.CANCEL}}>
+                        <ion-option *ngFor="let client of clients" value="{{client.$key}}">{{client.Name}}</ion-option>
+                    </ion-select>
+                </ion-item>      
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col col-10>
+                <ion-item >
+                    <!-- Select -->
+                    <ion-label>{{globals.LANG.ENTITY}}</ion-label>
+                    <ion-select [(ngModel)]="search.entity" cancelText={{globals.LANG.CANCEL}}>
+                        <ion-option *ngFor="let entitie of entities" value="{{entitie.$key}}">{{entitie.Name}}</ion-option>
+                    </ion-select>
+                </ion-item>
+                </ion-col>
+                <ion-col>
+                    <!-- Button -->
+                    <button class="search-button" ion-button icon-only round *ngIf="entities" (click)="searchEntity()">
+                    <ion-icon name="search"></ion-icon>
+                </button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
     </div>
 </ion-content>
 
-<ion-footer padding>
- <button ion-button block mode="ios" color="blue2" (click)="searchForm()">
-    Search
+<ion-footer class="footer" padding>
+ <button class="footer-button" ion-button round mode="ios" (click)="searchForm()" icon-start>
+    <!-- <ion-icon name="search"></ion-icon> -->
+    {{globals.LANG.SEARCH}}
 </button>
 </ion-footer>
