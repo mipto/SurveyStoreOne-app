@@ -33,14 +33,14 @@
                 <ion-item >
                     <!-- Select -->
                     <ion-label>{{globals.LANG.ENTITY}}</ion-label>
-                    <ion-select [(ngModel)]="search.entity" cancelText={{globals.LANG.CANCEL}}>
+                    <ion-select [(ngModel)]="search.entity" cancelText={{globals.LANG.CANCEL}} [disabled]="!entities">
                         <ion-option *ngFor="let entitie of entities" value="{{entitie.$key}}">{{entitie.Name}}</ion-option>
                     </ion-select>
                 </ion-item>
                 </ion-col>
                 <ion-col>
                     <!-- Button -->
-                    <button class="search-button" ion-button icon-only round *ngIf="entities" (click)="searchEntity()">
+                    <button class="search-button" ion-button icon-only round [disabled]="!entities" (click)="searchEntity()">
                     <ion-icon name="search"></ion-icon>
                 </button>
                 </ion-col>

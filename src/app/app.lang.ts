@@ -37,11 +37,15 @@ export class APP_LANG {
         TOTAL_FORMS_BY_SINCRONIZE: 'Total forms no synchronized',
         TOTAL_SAVED_FORMS: 'Total saved forms',
         FORM_AVERAGE_TIME: 'Forms average time',
+        FORM: 'Forms',
         CLIENT: 'Client',
         ENTITY: 'Entity',
         SEARCH: 'Search',
         SELECT: 'Select',
-        CANCEL: 'Cancel'
+        CANCEL: 'Cancel',
+        START: 'Start',
+        NEW: 'New',
+        DRAFT:'Draft'
       },
       SPANISH: {
         EMAIL: 'Email',
@@ -53,7 +57,7 @@ export class APP_LANG {
         FIRST_NAME: 'Nombre',
         MOBILE_PHONE: 'Telefono Movil',
         LOGOUT: 'Cerrar sesión',
-        VALID_EMAIL: 'Por favor introduce un email valido',
+        VALID_EMAIL: 'Por favor introduce un email válido',
         VALID_PASSWORD: 'La contraseña necesita más de 6 caracteres',
         BACK: 'Atras',
         YOUR_EMAIL: 'Tu dirección de email',
@@ -63,7 +67,7 @@ export class APP_LANG {
         SAVE: 'Guardar',
         PROFILE: 'Perfil',
         POSITION: 'Cargo',
-        COUNTRY: 'Pais',
+        COUNTRY: 'País',
         CITY: 'Ciudad',
         BIRTHDAY: 'Fecha Nacimiento',
         SEX: 'Género',
@@ -79,11 +83,15 @@ export class APP_LANG {
         TOTAL_FORMS_BY_SINCRONIZE: 'Total formularios por sincronizar',
         TOTAL_SAVED_FORMS: 'Total formularios guardados',
         FORM_AVERAGE_TIME: 'Tiempo promedio formulario',
+        FORM: 'Formularios',
         CLIENT: 'Cliente',
         ENTITY: 'Entidad',
         SEARCH: 'Buscar',
         SELECT: 'Seleccionar',
-        CANCEL: 'Cancelar'
+        CANCEL: 'Cancelar',
+        START: 'Empezar',
+        NEW: 'Nuevo',
+        DRAFT:'Borrador'
       },
       FRENCH: {
 
