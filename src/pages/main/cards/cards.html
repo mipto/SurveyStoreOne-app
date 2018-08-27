@@ -30,7 +30,7 @@
             <span ion-text item-start color="secondary" class="item-bold"*ngIf="form.userStatus == 1">New</span>
             <span ion-text item-start color="secondary" class="item-bold"*ngIf="form.userStatus == 2">Draft</span>
             <span ion-text item-start color="subtle">01/08/2018</span>
-            <button ion-button color="primary" clear item-end icon-start>
+            <button ion-button color="primary" clear item-end icon-start (click)="goForm(form.$key, form.Title)">
             <ion-icon *ngIf="form.userStatus == 1" name='add-circle'></ion-icon>
             <ion-icon *ngIf="form.userStatus == 2" name='alert'></ion-icon>
             Start

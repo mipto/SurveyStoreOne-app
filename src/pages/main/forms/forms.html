@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{nameForm}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+    <ion-list>
+      <div *ngFor="let form of forms">
+          <ion-list-header *ngIf="form.Level == '1'" class="level-one-text">{{form.Name}}</ion-list-header>
+          <ion-list-header *ngIf="form.Level == '2'" class="level-two-text">{{form.Name}}</ion-list-header>
+          <ion-list-header *ngIf="form.Level == '3'" class="level-three-text">{{form.Name}}</ion-list-header>
+          <ion-item text-wrap *ngFor="let question of form.questions">
+              <ion-label fixed right>{{question.Question}}</ion-label>
+              <ion-input type="text"></ion-input>
+              <ion-checkbox color="blue" item-right></ion-checkbox>
+              <ion-label fixed right class="no-apply-text">N/A</ion-label>
+          </ion-item>
+      </div>
+    </ion-list>
+</ion-content>
+
+<ion-footer>
+  <button ion-button round mode="ios" icon-start>
+    Sincronize
+  </button>
+</ion-footer>
+
+
+        <!-- <div *ngFor="let form of forms">
+            <ion-item *ngIf="form.Level == '1'" class="level-one-text">{{form.Name}}</ion-item>
+            <ion-item *ngIf="form.Level == '2'">
+                <ion-list>
+                    <ion-item class="level-two-text">{{form.Name}}</ion-item>
+                </ion-list>
+            </ion-item>
+            <ion-item *ngIf="form.Level == '3'">
+                <ion-list>
+                    <ion-item>
+                        <ion-list>
+                            <ion-item class="level-three-text">{{form.Name}}</ion-item>
+                        </ion-list>
+                    </ion-item>
+                </ion-list>
+            </ion-item>
+        </div> -->
