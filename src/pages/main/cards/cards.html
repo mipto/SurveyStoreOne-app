@@ -1,15 +1,16 @@
 <ion-header>
-    <ion-navbar color="primary">
-      <button ion-button menuToggle (click)="goMapToEntity()">
+    <ion-navbar>
+        <ion-title>{{globals.LANG.FORM}}</ion-title>    
+        <button ion-button menuToggle (click)="goMapToEntity()">
         <ion-icon name="menu" color="light"></ion-icon>
-      </button>
+        </button>
     </ion-navbar>
 </ion-header>
 
 <ion-content>
-    <ion-item>
-        <h3 text-center>{{entityName}}</h3>
-    </ion-item>
+    <!-- <ion-item>
+        <h2 text-center>{{entityName}}</h2>
+    </ion-item> -->
     <ion-card class="adv-map" *ngFor="let form of forms">
         <ion-item>
             <h2>{{form.Title}}</h2>
@@ -21,20 +22,24 @@
             <button ion-fab class="fab-map">
                 <ion-icon name='pin'></ion-icon>
             </button>
-            </ion-fab> -->
-            <div class="description_container">
-                <p class="description">{{form.Description}}</p>
-            </div>
+            </ion-fab>-->
         </div>
+        <ion-card-content>
+            <p class="description">{{form.Description}}</p>
+        </ion-card-content>
         <ion-item actions>
-            <span ion-text item-start color="secondary" class="item-bold"*ngIf="form.userStatus == 1">New</span>
-            <span ion-text item-start color="secondary" class="item-bold"*ngIf="form.userStatus == 2">Draft</span>
-            <span ion-text item-start color="subtle">01/08/2018</span>
-            <button ion-button color="primary" clear item-end icon-start (click)="goForm(form.$key, form.Title)">
-            <ion-icon *ngIf="form.userStatus == 1" name='add-circle'></ion-icon>
-            <ion-icon *ngIf="form.userStatus == 2" name='alert'></ion-icon>
-            Start
+            <span ion-text item-start color="secondary" class="item-bold"*ngIf="form.userStatus == 1">{{globals.LANG.NEW}}</span>
+            <span ion-text item-start color="ios-orange" class="item-bold"*ngIf="form.userStatus == 2">{{globals.LANG.DRAFT}}</span>
+            <button ion-button item-end [color]="form.userStatus == 1 ? 'secondary' : 'ios-orange'" outline icon-start (click)="goForm(form.$key, form.Title)">
+                <ion-icon *ngIf="form.userStatus == 1" color="secondary" name='add-circle'></ion-icon>
+                <svg *ngIf="form.userStatus == 2" viewBox="0 0 24 24">
+                        <path fill="#ff9500" d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z" />
+                </svg>
+                {{globals.LANG.START}}
             </button>
         </ion-item>
+        <ion-card-content>
+            <ion-note item-start color="subtle">01/08/2018</ion-note>
+        </ion-card-content>
     </ion-card>
 </ion-content>

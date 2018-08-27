@@ -151,6 +151,9 @@
 .bar-button-md-default{
   color: #ffffff !important;
 } 
+.button{
+  background-color: #2980b9 !important;
+}
 
 .toolbar-title.toolbar-title-md, 
 .toolbar-title.toolbar-title-ios, 
@@ -168,9 +171,10 @@ color: #ffffff !important;
 .footer-button {
   font-size: 18px;
   width:49%;
-  background-color: color($colors, blue2) !important;
 }
 
 .footer {
   text-align: center;
+  align-content: center;
+  align-items: center;
 }
