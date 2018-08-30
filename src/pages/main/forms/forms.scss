@@ -1,0 +1,22 @@
+page-forms {
+    .level-one-text{
+        color: red;
+    }
+    .level-two-text{
+        color: blue;
+    }
+    .level-three-text{
+        color: violet;
+    }
+    .item-cover{
+        left: initial;
+        right: 0;
+        width: 15%;
+    }
+    .no-apply-text{
+        position: absolute;
+        right: 0;
+        margin-right: -62px;
+        margin-top: -19px;
+    }
+}

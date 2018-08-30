@@ -56,7 +56,7 @@ export class CardsProvider {
                         arr.push(obj);
                     });
                     arr[0].Id_entity.forEach(element => {
-                        var entitie = this.db.collection("entities").doc(element)
+                        var entitie = this.db.collection("entities").doc(element.entity_id)
                         entitie.get().then(function(doc) {
                             console.log(doc.data());
                             var objEntitie = JSON.parse(JSON.stringify(doc.data()));

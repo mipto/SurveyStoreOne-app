@@ -73,6 +73,17 @@ export class CardsPage {
     
   }
 
+  goForm(idForm, nameForm) {
+    let ion = this;
+    
+    ion.navCtrl.push('FormsPage', {
+      data: {
+        idForm: idForm,
+        nameForm: nameForm
+      }
+    });
+  }
+
 
   presentAlert(title) {
     let alert = this.alertCtrl.create({
