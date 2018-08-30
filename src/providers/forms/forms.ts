@@ -19,13 +19,12 @@ export class FormsProvider {
     this.array = [];
   }
 
-  getAllDocuments(): Promise<any> {
+  getAllDocuments(idForm): Promise<any> {
 
     return new Promise((resolve, reject) => {
-      var forms = this.db.collection("hierarchy_form")// Create a query against the collection.
-     
+      var forms = this.db.collection("hierarchy_form")
+      .where("Id_form", "==", idForm)// Create a query against the collection.
 
-      
         .get()
         .then((querySnapshot) => {
           let arr = [];
@@ -37,7 +36,9 @@ export class FormsProvider {
 
           if (arr.length > 0) {
             arr = arr.sort(function (a, b) { return (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0); });
+            
             arr = this.ordernaForm(arr);
+            this.array = [];
             resolve(arr);
           } else {
             console.log("No such document!");
@@ -68,10 +69,40 @@ export class FormsProvider {
           ion.ordernaForm(forms, form.$key);
         }
       }
+      
     });
     if (Parent_key = ion.array) {
+      ion.array = ion.getFormQuestions(ion.array);
       return (ion.array);
     }
+  }
+
+  getFormQuestions(forms) {
+    let ion = this;
+    let hierarchiesQuestions = ion.db.collection("hierarchies_questions");
+    var questions = this.db.collection("questions");
+    forms.forEach(function (form, i) {
+      forms[i].questions = [];
+      hierarchiesQuestions.where("Id_hierarchy_form", "==", form.$key).get()
+        .then((snapShot) => {
+          snapShot.forEach(function (doc) {
+            let objQuestion = JSON.parse(JSON.stringify(doc.data()));
+            objQuestion.$key = doc.id;
+
+            questions.doc(objQuestion.Id_question).get()
+            .then(function(doc) {
+                var objQuestion = JSON.parse(JSON.stringify(doc.data()));
+                objQuestion.$key = doc.id
+
+                if (!forms[i].questions.find(x => x.$key === objQuestion.$key)) {
+                  forms[i].questions.push(objQuestion);
+                }
+                
+            });
+          });
+        });
+    });
+    return forms
   }
 
   deleteParents(array, elem) {
@@ -80,7 +111,6 @@ export class FormsProvider {
   deleteChildrens(array, elem) {
     return array.filter(e => e.Parent_key !== elem.Parent_key);
   }
-
 
 
   /*getAllDocuments(node = null): Promise<any> {

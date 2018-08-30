@@ -30,7 +30,7 @@
         <ion-item actions>
             <span ion-text item-start color="secondary" class="item-bold"*ngIf="form.userStatus == 1">{{globals.LANG.NEW}}</span>
             <span ion-text item-start color="ios-orange" class="item-bold"*ngIf="form.userStatus == 2">{{globals.LANG.DRAFT}}</span>
-            <button ion-button item-end [color]="form.userStatus == 1 ? 'secondary' : 'ios-orange'" outline icon-start>
+            <button ion-button item-end [color]="form.userStatus == 1 ? 'secondary' : 'ios-orange'" outline icon-start (click)="goForm(form.$key, form.Title)">
                 <ion-icon *ngIf="form.userStatus == 1" color="secondary" name='add-circle'></ion-icon>
                 <svg *ngIf="form.userStatus == 2" viewBox="0 0 24 24">
                         <path fill="#ff9500" d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z" />
