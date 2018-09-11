@@ -4,14 +4,19 @@ page-dashboard {
     margin-top:0px !important;
     padding-top: 0px !important;
   }
+
   .profile-box{
-    height: 250px;
+    height: 280px;
     padding-top: 50px;
     background-size: cover;
     background-repeat: no-repeat;
     background-color: #dddddd;
-    background-image: url("https://unsplash.it/800/600?blur&image=206");
+    background-image: url(../../../assets/supermarket2.jpg);
   }
+  .dashboard-box{
+    margin-top:15px;
+  }
+
   .edit-avatar {
     border-radius: 100%;
     width: 25%;
@@ -21,10 +26,50 @@ page-dashboard {
   .name-text {
     font-size: 22px;
     color: #ffffff;
+    text-shadow: 2px 2px 4px #000000;
   }
 
   .last-connect-text {
-    color: #c7c5c5;
+    color: #ebebeb;
+    text-shadow: 2px 2px 4px #000000;
+  }
+
+  .form-icon {
+    background: url(../assets/icon/textbox.svg) no-repeat top left;
+    background-size: contain;
+    width: 24px;
+    height: 24px;
+    margin: 0 auto;
+    
   }
   
+  .cloud-check-icon {
+    background: url(../assets/icon/cloud-check.svg) no-repeat top left;
+    background-size: contain;
+    width: 24px;
+    height: 24px;
+    margin: 0px auto 0 auto;
+    
+
+  }
+
+  .cloud-sync-icon {
+    background: url(../assets/icon/cloud-sync.svg) no-repeat top left;
+    background-size: contain;
+    width: 24px;
+    height: 24px;
+    margin: 0px auto 0 auto;
+    
+
+  }
+
+  .cloud-upload-icon {
+    background: url(../assets/icon/cloud-upload.svg) no-repeat top left;
+    background-size: contain;
+    width: 24px;
+    height: 24px;
+    margin: 0px auto 0 auto;
+    
+
+  }
 }

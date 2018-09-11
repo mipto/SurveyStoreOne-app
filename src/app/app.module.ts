@@ -2,6 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
+//************** ionic ******************/
+import { IonicStorageModule } from '@ionic/storage';
+
 //*********** ionic Native **************/
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -40,6 +43,7 @@ import { CardsProvider } from '../providers/forms/cards-list';
 
 /*HTTP CLIENT */
 import { HttpClientModule } from '@angular/common/http';
+import { DashboardProvider } from '../providers/dashboard/dashboard';
 
 @NgModule({
   declarations: [
@@ -53,7 +57,8 @@ import { HttpClientModule } from '@angular/common/http';
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -77,7 +82,8 @@ import { HttpClientModule } from '@angular/common/http';
     Facebook,
     GooglePlus,
     FormsProvider,
-    CardsProvider
+    CardsProvider,
+    DashboardProvider
   ]
 })
 export class AppModule {}
