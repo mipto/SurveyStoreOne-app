@@ -15,5 +15,6 @@ export class UserService {
         country: '',
         city: '',
         birthday: '',
+        last_connection: ''
     }
 }

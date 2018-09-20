@@ -13,7 +13,7 @@
             <img *ngIf="userData.user.photo" src="{{userData.user.photo}}" class="edit-avatar pop-in" alt="">
             <img  *ngIf="!userData.user.photo" src = "https://pbs.twimg.com/profile_images/834457277830541312/bYMCvtHD.jpg" class="edit-avatar pop-in" alt="">
             <p class="name-text">{{globals.LANG.HI}}, {{userData.user.first_name}} {{userData.user.last_name}}</p>
-            <p class="last-connect-text">{{globals.LANG.LAST_CONNECTION}}: 25/04/2018</p>
+            <p class="last-connect-text">{{globals.LANG.LAST_CONNECTION}}: {{ lastConnect }}</p>
         </div>
     </div>
     <div class="select-box">

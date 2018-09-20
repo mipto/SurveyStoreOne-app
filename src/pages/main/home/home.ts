@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, LoadingController, AlertController
 import { AuthData } from '../../../providers/auth-data';
 import { CardsProvider } from '../../../providers/forms/cards-list';
 import { Globals } from '../../../services/globals.service';
+import { Storage } from '@ionic/storage';
 
 import { AngularFireDatabase} from 'angularfire2/database-deprecated';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -19,6 +20,7 @@ export class HomePage {
 
   public clients: any;
   public entities: any;
+  public lastConnect: string;
 
   constructor(public navCtrl: NavController, 
     public authData: AuthData,
@@ -30,7 +32,8 @@ export class HomePage {
     public globals: Globals,
     public userData: UserService,
     public navParams: NavParams,
-    public cardsList: CardsProvider) {
+    public cardsList: CardsProvider,
+    public storage: Storage) {
 
       let ion = this;
 
@@ -38,6 +41,13 @@ export class HomePage {
         client: null,
         entity: null
       };
+
+      storage.get('last_connection').then((last_con) => {
+        //console.log('ultima conexion: ', last_con);
+        this.lastConnect =  last_con;
+      }).catch((er) =>{
+          console.log(er);
+      });
     
   }
 
