@@ -131,13 +131,14 @@ export class DashboardProvider {
     getTotalNoSincEntities(): Promise<any> {
         
         let ion = this;
-        let entUser = [];
-        let noSyncEnt = [];
+        let entUser = []; //Entities by user
+        let noSyncEnt = []; //Entities no synchronize
         return new Promise((resolve, reject) => {
            
             try {
                 let authUser = ion.authData.getAuthUser();
                 var entities_users = this.db.collection("entities_users");
+                /* Obtain entities by User */
                 entities_users.where("IdUser", "==", authUser.uid)
                 .get().then((entitiesSnapShot) => {
                     entitiesSnapShot.forEach(function (ii) {
@@ -147,11 +148,10 @@ export class DashboardProvider {
                             entUser.push(jj);  
                             //console.log(jj);
                         })
-                        //entUser.push(ent.Id_entity);
                         
                     });
                     var itemsProcessed = 0;
-
+                    
                     entUser.forEach(ent => {
                         itemsProcessed++;
                         

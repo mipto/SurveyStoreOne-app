@@ -17,16 +17,80 @@
         </div>
     </div>
 
-    <div padding class="dashboard-box">
-        <ion-list no-lines>
+    <div padding class="dashboard-box" *ngIf="isDataAvailable">
+      <!-- Visited establishment -->
+      <ion-card>
+        <ion-card-header>
+         {{ globals.LANG.VISITED_ESTABLISHMENT }}
+        </ion-card-header>
+        <ion-card-content >
+          <canvas baseChart
+                  [data]="chartDataEnVis"
+                  [labels]="chartLabelsEnVis"
+                  [colors]="chartColor1"
+                  [options]="baseOptions"
+                  chartType="pie">
+          </canvas>
+        </ion-card-content>
+      </ion-card> 
+
+      <!-- Establishment by synchronize -->
+      <ion-card>
+        <ion-card-header>
+          {{ globals.LANG.ESTABLISHMENT_BY_SINCRONIZE }}
+        </ion-card-header>
+        <ion-card-content >
+          <canvas baseChart
+                  [data]="chartDataEnNoSyn"
+                  [labels]="chartLabelsEnNoSyn"
+                  [colors]="chartColor1"
+                  [options]="baseOptions"
+                  chartType="pie">
+          </canvas>
+        </ion-card-content>
+      </ion-card> 
+
+      <!-- Formularies by fill -->
+      <ion-card>
+        <ion-card-header>
+         {{ globals.LANG.TOTAL_FORMS_BY_FILL }}
+        </ion-card-header>
+        <ion-card-content >
+          <canvas baseChart
+                  [data]="chartDataForms"
+                  [labels]="chartLabelsForms"
+                  [colors]="chartColor1"
+                  [options]="baseOptions"
+                  chartType="pie">
+          </canvas>
+        </ion-card-content>
+      </ion-card>  
+      
+      <!-- Formularies by synchronize -->
+      <ion-card>
+        <ion-card-header>
+         {{ globals.LANG.TOTAL_FORMS_BY_SINCRONIZE }}
+        </ion-card-header>
+        <ion-card-content >
+          <canvas baseChart
+                  [data]="chartDataFormSyn"
+                  [labels]="chartLabelsFormSyn"
+                  [colors]="chartColor1"
+                  [options]="baseOptions"
+                  chartType="pie">
+          </canvas>
+        </ion-card-content>
+      </ion-card>  
+
+      <!-- <ion-list no-lines>
             <ion-item>
                 <ion-icon class="cloud-check-icon" item-left></ion-icon>
-                <h3>{{globals.LANG.VISITED_ESTABLISHMENT}}:</h3> <h3 ion-text [color]="entitiesVisitedPercentColor" *ngIf="entitiesVisitedPercent"> <b>{{ entitiesVisited }}</b> / <b>{{ entitiesVisitedPercent }}%</b></h3>
+                <h3>{{globals.LANG.VISITED_ESTABLISHMENT}}:</h3> <h3 ion-text  > <b>{{ entitiesVisited }}</b> / <b>{{ totalEntities }}</b></h3>
             </ion-item>
 
             <ion-item>
               <ion-icon class="cloud-sync-icon" item-left></ion-icon>
-              <h3>{{globals.LANG.ESTABLISHMENT_BY_SINCRONIZE}}: </h3> <h3 ion-text [color]="entitiesNoSincPercentColor" *ngIf="entitiesNoSincPercent" > <b>{{ entitiesNoSinc }}</b> / <b>{{ entitiesNoSincPercent }}%</b></h3>
+              <h3>{{globals.LANG.ESTABLISHMENT_BY_SINCRONIZE}}: </h3> <h3 ion-text > <b>{{ entitiesNoSinc }}</b> / <b>{{ totalEntities }}</b></h3>
             </ion-item>
 
             <ion-item>
@@ -42,11 +106,11 @@
               <ion-icon class="cloud-upload-icon" item-left></ion-icon>
               <h3>{{globals.LANG.TOTAL_SAVED_FORMS}}: <b>{{ totalF.formBySave }}</b></h3>
             </ion-item>
-            <!-- <ion-item>
+            <ion-item>
               <ion-icon name="ios-clock" item-left></ion-icon>
               <h3>{{globals.LANG.FORM_AVERAGE_TIME}}: 01:02:23</h3>
-            </ion-item> -->
-        </ion-list>
+            </ion-item> 
+        </ion-list> -->
     </div>
 </ion-content>
 

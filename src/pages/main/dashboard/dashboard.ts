@@ -17,15 +17,38 @@ import { UserService } from '../../../services/user.service';
   templateUrl: 'dashboard.html'
 })
 export class DashboardPage {
+    /*** Data ***/
     public entitiesVisited: number;
     public entitiesNoSinc: number;
-    public entitiesVisitedPercent: number;
-    public entitiesNoSincPercent: number;
     public totalEntities: number;
     public totalF: any;
+    
+    /*** Chart entities visited ***/
+    public chartDataEnVis: number[] =  [];
+    public chartLabelsEnVis: string[] = [this.globals.LANG.VISITED, this.globals.LANG.NO_VISITED];
+
+    /*** Chart entities no synchronize ***/
+    public chartDataEnNoSyn: number[] =  [];
+    public chartLabelsEnNoSyn: string[] = [this.globals.LANG.SINCRONIZE, this.globals.LANG.NO_SINCRONIZE];
+
+    /*** Chart formularies by fill ***/
+    public chartDataForms: number[] =  [];
+    public chartLabelsForms: string[] = [this.globals.LANG.BY_FILL, this.globals.LANG.BY_SAVE];
+
+    /*** Chart formularies by synchronize ***/
+    public chartDataFormSyn: number[] =  [];
+    public chartLabelsFormSyn: string[] = [this.globals.LANG.SINCRONIZE, this.globals.LANG.NO_SINCRONIZE];
+    
+    /* Chart general */
+    chartColor1: any[] = [{backgroundColor:['#3288bd','#5e4fa2', '#abdda4','#66c2a5']}]; 
+    baseOptions: any = {
+        responsive: true,
+        maintainAspectRatio: false,
+    };
+    isDataAvailable: boolean = false;  
+
+    /*** Last connect ***/
     public lastConnect: any;
-    public entitiesVisitedPercentColor = "ios-orange";
-    public entitiesNoSincPercentColor = "ios-orange";
 
     constructor(public navCtrl: NavController, 
         public authData: AuthData,
@@ -58,6 +81,9 @@ export class DashboardPage {
 
   ionViewWillEnter(){
     let ion = this;
+    let boolTE = false;
+    let boolF = false;
+    let boolNSE = false;
     let loadingPopupHome = ion.loadingCtrl.create({
       spinner: 'crescent', 
       content: ''
@@ -72,12 +98,21 @@ export class DashboardPage {
     //VISITED_ESTABLISHMENT
     ion.dashboardProvider.getTotalEntitiesByUser().then(AllEntities => {
         
-        this.totalEntities = AllEntities.length;
         this.entitiesVisited = this.getEntitiesVisited(AllEntities);
-        this.entitiesVisitedPercent = this.entitiesVisited * 100 / this.totalEntities;
-        //Set color to text
-        if(this.entitiesVisitedPercent == 100) this.entitiesVisitedPercentColor = "secondary";
-        else if(this.entitiesVisitedPercent <= 50) this.entitiesVisitedPercentColor = "danger";
+        this.totalEntities = AllEntities.length;
+        /* Chart */
+        this.chartDataEnVis = [this.entitiesVisited, this.totalEntities - this.entitiesVisited];
+        /* this.chartDataEnVis.push(this.entitiesVisited);
+        this.chartDataEnVis.push(this.totalEntities - this.entitiesVisited); */
+        console.log(this.chartDataEnVis);
+        console.log(this.chartLabelsEnVis);
+        //loadingPopup
+        boolTE = true;
+        if(boolF && boolNSE && boolTE){
+            this.isDataAvailable = true;
+            loadingPopupHome.dismiss();
+        } 
+
     }).catch((err) =>{
         console.log(err);
     });
@@ -85,20 +120,41 @@ export class DashboardPage {
     //TOTAL_FORMS_BY_FILL TOTAL_FORMS_BY_SINCRONIZE TOTAL_SAVED_FORMS
     ion.dashboardProvider.getTotalFormsByUser().then(AllForms => {
         this.totalF = this.getTotalForm(AllForms);
+        
+        /* Chart by fill */
+        this.chartDataForms = [this.totalF.formByFill, this.totalF.formBySave];
 
+        /* Chart synchronize */
+        this.chartDataFormSyn = [AllForms.length - this.totalF.formBySinc, this.totalF.formBySinc];
+        /* this.chartDataFormSyn.push(AllForms.length - this.totalF.formBySinc);
+        this.chartDataFormSyn.push(this.totalF.formBySinc); */
+        console.log(this.chartDataFormSyn);
+        console.log(this.chartLabelsFormSyn);
+        
+        //loadingPopup
+        boolF = true;
+        if(boolF && boolNSE && boolTE){
+            this.isDataAvailable = true;
+            loadingPopupHome.dismiss();
+        } 
     })
 
     //ESTABLISHMENT_BY_SINCRONIZE
-    ion.dashboardProvider.getTotalNoSincEntities().then(AllEntities => {
+    ion.dashboardProvider.getTotalNoSincEntities().then(AllEntitiesNoSyn => {
 
-        this.entitiesNoSinc = AllEntities.length;
-        this.entitiesNoSincPercent = this.entitiesNoSinc * 100 / this.totalEntities;
-        //Set color to text
-        if(this.entitiesNoSincPercent == 0) this.entitiesNoSincPercentColor = "secondary";
-        else if(this.entitiesNoSincPercent >= 50) this.entitiesNoSincPercentColor = "danger";
-
-        loadingPopupHome.dismiss();
-
+        this.entitiesNoSinc = AllEntitiesNoSyn.length;
+        /* Chart */
+        this.chartDataEnNoSyn = [this.totalEntities - this.entitiesNoSinc, this.entitiesNoSinc];
+        /* this.chartDataEnNoSyn.push(this.totalEntities - this.entitiesNoSinc);
+        this.chartDataEnNoSyn.push(this.entitiesNoSinc); */
+        console.log(this.chartDataEnNoSyn);
+        console.log(this.chartLabelsEnNoSyn);
+        //loadingPopups
+        boolNSE = true;
+        if(boolF && boolNSE && boolTE){
+            this.isDataAvailable = true;
+            loadingPopupHome.dismiss();
+        } 
     }).catch((err) =>{
         console.log(err);
     });
