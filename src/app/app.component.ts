@@ -1,9 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, ToastController, AlertController, MenuController  } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthData } from '../providers/auth-data';
 import { Helpers } from '../providers/helpers';
+import { DashboardProvider } from '../providers/dashboard/dashboard';
 import { Globals } from '../services/globals.service';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { APP_LANG } from './app.lang';
@@ -29,11 +31,14 @@ export class MyApp {
     public afAuth: AngularFireAuth,
     private toastCtrl: ToastController,
     public menuCtrl: MenuController,
-    public globals: Globals) {
+    public globals: Globals,
+    public storage: Storage,
+    public dashboard: DashboardProvider) {
     let ion = this;
-
+    
     ion.initializeApp();
 
+    
     ion.pages = [
       { icon: 'home', title: 'Home', component: 'HomePage' },
       { icon: 'apps', title: 'Dashboard', component: 'DashboardPage' },
@@ -126,16 +131,52 @@ export class MyApp {
         ]
       }
     ];
+
   }
 
   initializeApp() {
     let ion = this;
+    var db: any;
     ion.platform.ready().then(() => {
       ion.statusBar.styleDefault();
       ion.splashScreen.hide();
       ion.changueLanguage();
     });
+    
+    ion.platform.resume.subscribe((result)=>{
+      
+      console.log('Platform Resume Event');
+      var actualDate = new Date();
+      var dd = actualDate.getDate();
+      var mm = actualDate.getMonth()+1; 
+      var date = [(dd>9 ? '' : '0') + dd, '/',
+        (mm>9 ? '' : '0') + mm, '/',
+        actualDate.getFullYear()
+      ].join('');
+
+      console.log(date);
+
+      ion.authDataModule.getLastConnection().then(lastC => {
+          //console.log(lastC);
+          //Save the last connection
+          if(!lastC)
+          {
+            this.storage.set('last_connection', date);
+          }else{
+            this.storage.set('last_connection', lastC);
+          }
+          //Update new last_connection
+          ion.authDataModule.updateLastConnection(date);
+      }).catch((e) =>{
+          console.log(e);
+      });  
+      
+      
+
+    });
   }
+
+
 
   changueLanguage() {
     let ion = this;

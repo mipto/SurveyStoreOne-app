@@ -45,7 +45,13 @@ export class APP_LANG {
         CANCEL: 'Cancel',
         START: 'Start',
         NEW: 'New',
-        DRAFT:'Draft'
+        DRAFT:'Draft',
+        SINCRONIZE: 'Synchronize',
+        NO_SINCRONIZE: 'No synchronize',
+        VISITED:'Visited',
+        NO_VISITED:'No visited',
+        BY_FILL: 'By fill',
+        BY_SAVE: 'Save'
       },
       SPANISH: {
         EMAIL: 'Email',
@@ -91,7 +97,13 @@ export class APP_LANG {
         CANCEL: 'Cancelar',
         START: 'Empezar',
         NEW: 'Nuevo',
-        DRAFT:'Borrador'
+        DRAFT:'Borrador',
+        SINCRONIZE: 'Sincronizado',
+        NO_SINCRONIZE: 'Sin sincronizar',
+        VISITED:'Visitado',
+        NO_VISITED:'Sin visitar',
+        BY_FILL: 'Por llenar',
+        BY_SAVE: 'Guardado'
       },
       FRENCH: {
 
