@@ -51,9 +51,10 @@ export class PhotosPage {
 
   takePicture(){
     this.camera.getPicture({
-        destinationType: this.camera.DestinationType.FILE_URI,
+        destinationType: this.camera.DestinationType.DATA_URL,
         encodingType: this.camera.EncodingType.JPEG,
-        mediaType: this.camera.MediaType.PICTURE
+        mediaType: this.camera.MediaType.PICTURE,
+      
     }).then((imageData) => {
         let myPicture = {
           image: imageData,
