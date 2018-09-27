@@ -29,5 +29,15 @@ export class FormsPage {
   ionViewWillLeave(){
     this.forms = null;
   }
+
+  goPhotos() {
+    let ion = this;
+    
+    ion.navCtrl.push('PhotosPage', {
+      data: {
+        idForm: this.idForm
+      }
+    });
+  }
   
 }

@@ -1,0 +1,26 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Photos taken</ion-title>    
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <div *ngFor="let photo of photos">
+        <ion-card class="adv-map" *ngIf="!photo.deleted">
+            <div class="image-bg" style="position: relative">
+                <img [src]="photo.src">
+                <ion-fab right top>
+                    <button ion-fab class="fab-map" (click)="deletePicture(photo)">
+                        <ion-icon name='close'></ion-icon>
+                    </button>
+                </ion-fab>
+            </div>
+        </ion-card>
+    </div>
+</ion-content>
+
+<ion-footer>
+    <button ion-button round mode="ios" icon-start (click)="takePicture()">
+      Take Photo
+    </button>
+</ion-footer>

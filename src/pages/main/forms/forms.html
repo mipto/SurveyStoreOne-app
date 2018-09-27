@@ -1,6 +1,11 @@
 <ion-header>
   <ion-navbar>
     <ion-title>{{nameForm}}</ion-title>
+    <ion-buttons end>
+        <button ion-button icon-only (click)="goPhotos()">
+          <ion-icon name="camera"></ion-icon>
+        </button>
+      </ion-buttons>  
   </ion-navbar>
 </ion-header>
 
@@ -13,7 +18,11 @@
           <ion-list-header *ngIf="form.Level == '3'" class="level-three-text">{{form.Name}}</ion-list-header>
           <ion-item text-wrap *ngFor="let question of form.questions">
               <ion-label fixed right>{{question.Question}}</ion-label>
-              <ion-input type="text"></ion-input>
+              <ion-input *ngIf="question.type == 0" type="text"></ion-input>
+              <ion-input *ngIf="question.type == 1" type="number"></ion-input>
+              <ion-checkbox *ngIf="question.type == 2" color="blue" item-content></ion-checkbox>
+              <ion-input *ngIf="question.type == 3" type="text"></ion-input>
+              <ion-input *ngIf="question.type == 4" type="text"></ion-input>
               <ion-checkbox color="blue" item-right></ion-checkbox>
               <ion-label fixed right class="no-apply-text">N/A</ion-label>
           </ion-item>
