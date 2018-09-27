@@ -36,6 +36,7 @@ import { Globals } from '../services/globals.service';
 import * as ionicGalleryModal from 'ionic-gallery-modal';
 import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { FormsProvider } from '../providers/forms/forms';
+import { PhotosProvider } from '../providers/forms/photos';
 import { CardsProvider } from '../providers/forms/cards-list';
 
 /*HTTP CLIENT */
@@ -77,6 +78,7 @@ import { HttpClientModule } from '@angular/common/http';
     Facebook,
     GooglePlus,
     FormsProvider,
+    PhotosProvider,
     CardsProvider
   ]
 })
