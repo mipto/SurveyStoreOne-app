@@ -1,0 +1,41 @@
+page-home {
+  .scroll-content{
+    margin-top:0px !important;
+    padding-top: 0px !important;
+  }
+  .profile-box{
+    height: 280px;
+    padding-top: 50px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: #dddddd;
+    background-image: url(../../../assets/supermarket2.jpg);
+  }
+  .select-box {
+    padding-top: 50px;
+    padding-right: 20px;
+    padding-bottom: 50px;
+    padding-left: 15px;
+  }
+  .search-button {
+    width: 35px;
+    //padding-left: 25px;
+  }
+  .edit-avatar {
+    border-radius: 100%;
+    width: 25%;
+    border: 2px solid #ffffff;
+  }
+
+  .name-text {
+    font-size: 22px;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px #000000;
+  }
+
+  .last-connect-text {
+    color: #ebebeb;
+    text-shadow: 2px 2px 4px #000000;
+  }
+
+}

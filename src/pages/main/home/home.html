@@ -1,0 +1,57 @@
+<ion-header no-border>
+  <ion-navbar id = "transparent-toolbar" color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu" color="light"></ion-icon>
+    </button>
+  </ion-navbar>
+</ion-header>
+
+<ion-content fullscreen="true" no-padding>
+
+    <div class="profile-box">
+        <div text-center>
+            <img *ngIf="userData.user.photo" src="{{userData.user.photo}}" class="edit-avatar pop-in" alt="">
+            <img  *ngIf="!userData.user.photo" src = "https://pbs.twimg.com/profile_images/834457277830541312/bYMCvtHD.jpg" class="edit-avatar pop-in" alt="">
+            <p class="name-text">{{globals.LANG.HI}}, {{userData.user.first_name}} {{userData.user.last_name}}</p>
+            <p class="last-connect-text">{{globals.LANG.LAST_CONNECTION}}: {{ lastConnect }}</p>
+        </div>
+    </div>
+    <div class="select-box">
+        <ion-grid>
+            <ion-row>
+                <ion-col col-10>
+                <ion-item>
+                    <ion-label>{{globals.LANG.CLIENT}}</ion-label>
+                    <ion-select [(ngModel)]="search.client" (ionChange)="onClientSelectChange($event)" cancelText={{globals.LANG.CANCEL}}>
+                        <ion-option *ngFor="let client of clients" value="{{client.$key}}">{{client.Name}}</ion-option>
+                    </ion-select>
+                </ion-item>      
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col col-10>
+                <ion-item >
+                    <!-- Select -->
+                    <ion-label>{{globals.LANG.ENTITY}}</ion-label>
+                    <ion-select [(ngModel)]="search.entity" cancelText={{globals.LANG.CANCEL}} [disabled]="!entities">
+                        <ion-option *ngFor="let entitie of entities" value="{{entitie.$key}}">{{entitie.Name}}</ion-option>
+                    </ion-select>
+                </ion-item>
+                </ion-col>
+                <ion-col>
+                    <!-- Button -->
+                    <button class="search-button" ion-button icon-only round [disabled]="!entities" (click)="searchEntity()">
+                    <ion-icon name="search"></ion-icon>
+                </button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
+</ion-content>
+
+<ion-footer class="footer" padding>
+ <button class="footer-button" ion-button round mode="ios" (click)="searchForm()" icon-start>
+    <!-- <ion-icon name="search"></ion-icon> -->
+    {{globals.LANG.SEARCH}}
+</button>
+</ion-footer>

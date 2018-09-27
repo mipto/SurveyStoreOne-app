@@ -2,15 +2,17 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, LoadingController, AlertController, ToastController } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Platform } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 import { Facebook } from '@ionic-native/facebook';
 import { GooglePlus } from '@ionic-native/google-plus';
 
 import { Subscription } from 'rxjs/Subscription';
 
 import { AuthData } from '../../../providers/auth-data';
+import { DashboardProvider } from '../../../providers/dashboard/dashboard';
 import { UserService } from '../../../services/user.service';
 import { Globals } from '../../../services/globals.service';
-import { APP_CONFIG } from "./../../../app/app.config";
+import { APP_CONFIG } from '../../../app/app.config';
 
 import { AngularFireDatabase, FirebaseObjectObservable} from 'angularfire2/database-deprecated';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -40,7 +42,9 @@ export class LoginPage {
     public afDb: AngularFireDatabase,
     private toast: ToastController,
     public globals: Globals,
-    public UserService: UserService) {
+    public UserService: UserService,
+    public storage: Storage,
+    public dashboard: DashboardProvider) {
       let ion = this;
       let EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
       ion.loginForm = fb.group({
@@ -56,7 +60,7 @@ export class LoginPage {
           console.log('auth true login, moving dashboard');
           ion.authData.setUserData().then( () => {
             ion.AuthSubscription.unsubscribe();
-          ion.navCtrl.setRoot('DashboardPage');
+          ion.navCtrl.setRoot('HomePage');
           ion.toast.create({
             message: ion.globals.LANG.WELCOME_TO + ' ' + ion.appConfig.APP_NAME +'!, '+ userAuth.email,
                         duration: 3000
@@ -85,10 +89,40 @@ export class LoginPage {
         .then( authData => {
           console.log("Auth pass", authData);
 
+          //LAST_CONNECTION
+          var actualDate = new Date();
+          var dd = actualDate.getDate();
+          var mm = actualDate.getMonth()+1; 
+          var date = [(dd>9 ? '' : '0') + dd, '/',
+            (mm>9 ? '' : '0') + mm, '/',
+            actualDate.getFullYear()
+          ].join('');
+
+          ion.authData.getLastConnection().then(lastC => {
+              console.log(lastC);
+              //Save the last connection
+              if(!lastC)
+              {
+                //console.log("no existe el campo");
+                this.storage.set('last_connection', date);
+              }else{
+                //console.log("existe el campo");
+                this.storage.set('last_connection', lastC);
+              }
+              //Update new last_connection
+              ion.authData.updateLastConnection(date);
+
+          }).catch((e) =>{
+              console.log(e);
+          });  
+          
+          
+          //END LAST_CONNECTION
+
           ion.authData.setUserData().then( () => {
             loadingPopupLogin.dismiss();
             
-            ion.navCtrl.setRoot('DashboardPage');
+            ion.navCtrl.setRoot('HomePage');
             ion.toast.create({
               message: ion.globals.LANG.WELCOME_TO + ' ' + ion.appConfig.APP_NAME +'!, '+ authData.email,
                           duration: 3000

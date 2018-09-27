@@ -1,0 +1,24 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>{{globals.LANG.SEARCH}} {{globals.LANG.ENTITY}}</ion-title>
+      <button ion-button menuToggle>
+        <ion-icon name="menu" color="light"></ion-icon>
+      </button>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-searchbar placeholder={{globals.LANG.SEARCH}} (ionInput)="getEntities($event)"></ion-searchbar>
+<ion-list class="list-entities" no-lines radio-group [(ngModel)]="selectedEntity">
+  <ion-item *ngFor="let entitie of entities">
+      <ion-label>{{ entitie.Name }}</ion-label>
+      <ion-radio value="{{entitie.$key}}"></ion-radio>
+  </ion-item>
+</ion-list>
+</ion-content>
+
+<ion-footer class="footer" padding>
+    <button class="footer-button" ion-button round mode="ios" (click)="goFormWithEntity()">
+        {{globals.LANG.SELECT}}
+   </button>
+</ion-footer>

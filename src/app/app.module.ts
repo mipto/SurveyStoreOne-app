@@ -2,6 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
+//************** ionic ******************/
+import { IonicStorageModule } from '@ionic/storage';
+
 //*********** ionic Native **************/
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -35,6 +38,12 @@ import { Globals } from '../services/globals.service';
 //************** import image gallery *********************//
 import * as ionicGalleryModal from 'ionic-gallery-modal';
 import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
+import { FormsProvider } from '../providers/forms/forms';
+import { CardsProvider } from '../providers/forms/cards-list';
+
+/*HTTP CLIENT */
+import { HttpClientModule } from '@angular/common/http';
+import { DashboardProvider } from '../providers/dashboard/dashboard';
 
 @NgModule({
   declarations: [
@@ -44,11 +53,12 @@ import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
     BrowserModule,
     ionicGalleryModal.GalleryModalModule,
     IonicModule.forRoot(MyApp),
-  
+    HttpClientModule,
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -70,7 +80,10 @@ import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
     Facebook,
     RadioPlayer,
     Facebook,
-    GooglePlus
+    GooglePlus,
+    FormsProvider,
+    CardsProvider,
+    DashboardProvider
   ]
 })
 export class AppModule {}

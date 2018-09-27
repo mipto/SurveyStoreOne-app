@@ -107,6 +107,7 @@ export class AuthData {
 
   setUserData(): Promise<any> {
     let ion = this;
+    let authUser = ion.getAuthUser();
     return new Promise((resolve, reject) => {
       try {
         ion.getUserProfile().then(userProfileData => {
@@ -170,6 +171,52 @@ export class AuthData {
     } else {
       return null;
     }
+  }
+
+  getLastConnection(): Promise<any> {
+    let ion = this;
+    let obj;
+    return new Promise((resolve, reject) =>{
+        try {
+            let authUser = ion.getAuthUser();
+            ion.afsModule.collection('/users/').doc(authUser.uid).ref.get().then(function(doc) {
+                if (doc.exists) {
+                    //console.log("Document data:", doc.data());
+                    obj = JSON.parse(JSON.stringify(doc.data()));
+                  console.log(obj.last_connection);
+                    resolve(obj.last_connection);
+
+                } else {
+                    // doc.data() will be undefined in this case
+                    console.log("No such document!");
+                    reject();
+                }
+            }).catch(function(error) {
+                    reject();
+                    console.log("Error getting document:", error);
+            });
+
+        } catch (error) {
+            console.log(error);
+            reject();
+        }
+    })
+}
+
+updateLastConnection(last_c){
+
+    let ion = this;
+    return new Promise((resolve, reject) => {
+    try {
+        let authUser = ion.getAuthUser();
+        ion.afsModule.collection('/users/').doc(authUser.uid).ref.update({
+            "last_connection": last_c
+        });
+        resolve(true);
+    } catch (error) {
+        reject(error);
+    }
+    });
   }
 
 }
