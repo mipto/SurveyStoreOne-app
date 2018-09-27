@@ -80,7 +80,7 @@ export class FormsProvider {
   getFormQuestions(forms) {
     let ion = this;
     let hierarchiesQuestions = ion.db.collection("hierarchies_questions");
-    var questions = this.db.collection("questions");
+    var questions = ion.db.collection("questions");
     forms.forEach(function (form, i) {
       forms[i].questions = [];
       hierarchiesQuestions.where("Id_hierarchy_form", "==", form.$key).get()
@@ -111,51 +111,4 @@ export class FormsProvider {
   deleteChildrens(array, elem) {
     return array.filter(e => e.Parent_key !== elem.Parent_key);
   }
-
-
-  /*getAllDocuments(node = null): Promise<any> {
-    return new Promise((resolve, reject) => {
-      var citiesRef = this.db.collection("hierarchy_form");// Create a query against the collection.
-      if (node == null){
-        var query = citiesRef.where("Level", "==", '1');
-      }
-      else{
-        var query = citiesRef.where("Parent_key", "==", node);
-      }
-  
-        query
-            .get()
-            .then((querySnapshot) => {
-                let arr = [];
-                querySnapshot.forEach(function (doc) {
-                    var obj = JSON.parse(JSON.stringify(doc.data()));
-                    obj.$key = doc.id
-                    arr.push(obj);
-                });
-  
-                if (arr.length > 0) {
-                    
-                    arr.forEach(element => {
-                      
-                      if(element.Children_count >= 0){
-                        console.log(this.array);
-                       this.getAllDocuments(element.$key).then(res => {
-                  
-                        }).catch(err => {
-        
-                        })
-                      }
-                    });
-                    resolve(arr);
-                } else {
-                    console.log("No such document!");
-                    resolve(null);
-                }
-         
-            })
-            .catch((error: any) => {
-                reject(error);
-            });
-    });
-  }*/
 }
