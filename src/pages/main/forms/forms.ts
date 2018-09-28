@@ -27,7 +27,15 @@ export class FormsPage {
     })
   }
   ionViewWillLeave(){
-    this.forms = null;
+    let ion = this;
+    console.log(this.forms);
+
+    this.FormsProvider.saveAllAnswers(ion.forms).then(res => {
+      console.log('va a guardar');
+      
+      this.forms = null;
+    })
+    
   }
 
   goPhotos() {

@@ -13,18 +13,28 @@
 <ion-content>
     <ion-list>
       <div *ngFor="let form of forms">
-          <ion-list-header *ngIf="form.Level == '1'" class="level-one-text">{{form.Name}}</ion-list-header>
-          <ion-list-header *ngIf="form.Level == '2'" class="level-two-text">{{form.Name}}</ion-list-header>
-          <ion-list-header *ngIf="form.Level == '3'" class="level-three-text">{{form.Name}}</ion-list-header>
-          <ion-item text-wrap *ngFor="let question of form.questions">
+          <ion-list-header *ngIf="form.Level == '1'" class="level-one-text level-one-margin">{{form.Name}}</ion-list-header>
+          <ion-list-header *ngIf="form.Level == '2'" class="level-two-text level-two-margin">{{form.Name}}</ion-list-header>
+          <ion-list-header *ngIf="form.Level == '3'" class="level-three-text level-three-margin">{{form.Name}}</ion-list-header>
+
+          <!-- inputs -->
+          <ion-item [class.level-one-padding]="form.Level == '1'"
+          [class.level-two-padding]="form.Level == '2'"
+          [class.level-three-padding]="form.Level == '3'"
+           text-wrap *ngFor="let question of form.questions">
+           
+                <!-- QUESTION -->
               <ion-label fixed right>{{question.Question}}</ion-label>
-              <ion-input *ngIf="question.type == 0" type="text"></ion-input>
-              <ion-input *ngIf="question.type == 1" type="number"></ion-input>
-              <ion-checkbox *ngIf="question.type == 2" color="blue" item-content></ion-checkbox>
-              <ion-input *ngIf="question.type == 3" type="text"></ion-input>
-              <ion-input *ngIf="question.type == 4" type="text"></ion-input>
-              <ion-checkbox color="blue" item-right></ion-checkbox>
-              <ion-label fixed right class="no-apply-text">N/A</ion-label>
+
+
+              <ion-input *ngIf="question.type == 0" type="text" [(ngModel)]="question.answer"></ion-input>
+              <ion-input *ngIf="question.type == 1" type="number" [(ngModel)]="question.answer"></ion-input>
+              <ion-checkbox *ngIf="question.type == 2" color="blue" item-right style="margin-right: 30%;" [(ngModel)]="question.answer"></ion-checkbox>
+              <ion-input *ngIf="question.type == 3" type="text" [(ngModel)]="question.answer"></ion-input>
+              <ion-input *ngIf="question.type == 4" type="text" [(ngModel)]="question.answer"></ion-input>
+              <!-- N/A -->
+                <ion-checkbox color="blue" item-right [(ngModel)]="question.na"></ion-checkbox>
+                <ion-label fixed right class="no-apply-text">N/A</ion-label>
           </ion-item>
       </div>
     </ion-list>
