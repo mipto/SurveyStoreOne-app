@@ -61,15 +61,15 @@ export class CardsPage {
     }).present();
   });
 
-  //Test GeoLocation
-  this.geolocation.getCurrentPosition().then((resp) => {
-    // resp.coords.latitude
-    // resp.coords.longitude
-    console.log(resp.coords);
+  // //Test GeoLocation
+  // this.geolocation.getCurrentPosition().then((resp) => {
+  //   // resp.coords.latitude
+  //   // resp.coords.longitude
+  //   console.log(resp.coords);
     
-   }).catch((error) => {
-     console.log('Error getting location', error);
-   });
+  //  }).catch((error) => {
+  //    console.log('Error getting location', error);
+  //  });
     
   }
 
