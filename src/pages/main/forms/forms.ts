@@ -80,5 +80,37 @@ export class FormsPage {
       }
     });
   }
+
+  sincronizeForm(){
+    console.log('sincronize enter');
+    this.sincronizeConfirm();
+  }
+
+  sincronizeConfirm() {
+    let alert = this.alertCtrl.create({
+      title: 'Sincronize',
+      message: 'Are you sure you want to sincronize this form?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Canceled Sincronize');
+          }
+        },
+        {
+          text: 'Sincronize',
+          handler: () => {
+            console.log('Sincronized clicked');
+            this.FormsProvider.updateFormStatus(this.idForm, 3).then(res => {
+              console.log('updated form status.');
+              
+            })
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
   
 }

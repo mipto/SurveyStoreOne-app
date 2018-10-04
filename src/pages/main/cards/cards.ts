@@ -84,6 +84,16 @@ export class CardsPage {
     });
   }
 
+  getFormStatusColor(status) {
+    if (status == 1) {
+      return 'secondary';
+    } else if (status == 2){
+      return 'ios-orange';
+    } else {
+      return 'ios-green';
+    }
+  }
+
 
   presentAlert(title) {
     let alert = this.alertCtrl.create({
