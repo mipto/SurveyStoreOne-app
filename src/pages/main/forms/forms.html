@@ -24,7 +24,7 @@
            text-wrap *ngFor="let question of form.questions">
            
                 <!-- QUESTION -->
-              <ion-label fixed right>{{question.Question}}</ion-label>
+              <ion-label [id]="question.$key" fixed right>{{question.Question}}</ion-label>
 
 
               <ion-input *ngIf="question.type == 0" type="text" [(ngModel)]="question.answer"></ion-input>
@@ -38,6 +38,16 @@
           </ion-item>
       </div>
     </ion-list>
+    <ion-fab right bottom edge>
+        <button ion-fab mini (click)="openSelect()"><ion-icon name="add"></ion-icon></button>
+      </ion-fab>
+
+      <ion-select style="display:none;" [(ngModel)]="scrollSelect" #mySelect (ngModelChange)="scrollToEl(mySelect.value)">
+        <div *ngFor="let form of forms">
+            <ion-option [value]="question.$key" *ngFor="let question of form.questions">{{question.Question}}</ion-option>
+        </div>
+    </ion-select>
+    
 </ion-content>
 
 <ion-footer>

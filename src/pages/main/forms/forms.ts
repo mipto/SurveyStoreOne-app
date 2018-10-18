@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController , ToastController } from 'ionic-angular';
+import { Component, ViewChild  } from '@angular/core';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController , ToastController, Select } from 'ionic-angular';
 import { FormsProvider } from '../../../providers/forms/forms';
 
 
@@ -13,7 +13,10 @@ export class FormsPage {
   public idForm: any;
   public nameForm: any;
 
+  public scrollSelect: any;
+
   public loadingForm: any;
+  @ViewChild('mySelect') selectRef: Select;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams, 
@@ -112,5 +115,16 @@ export class FormsPage {
     });
     alert.present();
   }
+
+  openSelect()
+    {
+        this.selectRef.open();
+    }
+
+    scrollToEl(id) {
+      console.log(`scrolling to ${id}`);
+      let el = document.getElementById(id);
+      el.scrollIntoView();
+    }
   
 }
