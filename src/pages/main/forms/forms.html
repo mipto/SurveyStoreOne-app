@@ -26,12 +26,20 @@
                 <!-- QUESTION -->
               <ion-label [id]="question.$key" fixed right>{{question.Question}}</ion-label>
 
-
+              <!-- Input level 0 (text) -->
               <ion-input *ngIf="question.type == 0" type="text" [(ngModel)]="question.answer"></ion-input>
+              <!-- Input level 1 (number) -->
               <ion-input *ngIf="question.type == 1" type="number" [(ngModel)]="question.answer"></ion-input>
+              <!-- Input level 2 (yes/no) -->
               <ion-checkbox *ngIf="question.type == 2" color="blue" item-right style="margin-right: 30%;" [(ngModel)]="question.answer"></ion-checkbox>
-              <ion-input *ngIf="question.type == 3" type="text" [(ngModel)]="question.answer"></ion-input>
-              <ion-input *ngIf="question.type == 4" type="text" [(ngModel)]="question.answer"></ion-input>
+              <!-- Input level 3 (simple selection) -->
+              <ion-select *ngIf="question.type == 3" [(ngModel)]="question.answer">
+                <ion-option *ngFor="let simple of question.simple" [value]="simple">{{simple}}</ion-option>
+              </ion-select>
+              <!-- Input level 4 (multiple selection) -->
+              <ion-select *ngIf="question.type == 4" multiple="true" [(ngModel)]="question.answer">
+                <ion-option *ngFor="let multiple of question.multiple" [value]="multiple">{{multiple}}</ion-option>
+              </ion-select>
               <!-- N/A -->
                 <ion-checkbox color="blue" item-right [(ngModel)]="question.na"></ion-checkbox>
                 <ion-label fixed right class="no-apply-text">N/A</ion-label>
