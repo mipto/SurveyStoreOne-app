@@ -84,7 +84,7 @@ import { DashboardProvider } from '../providers/dashboard/dashboard';
     GooglePlus,
     FormsProvider,
     CardsProvider,
-    DashboardProvider'
+    DashboardProvider,
     PhotosProvider
   ]
 })

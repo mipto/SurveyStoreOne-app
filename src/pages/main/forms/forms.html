@@ -13,25 +13,53 @@
 <ion-content>
     <ion-list>
       <div *ngFor="let form of forms">
-          <ion-list-header *ngIf="form.Level == '1'" class="level-one-text">{{form.Name}}</ion-list-header>
-          <ion-list-header *ngIf="form.Level == '2'" class="level-two-text">{{form.Name}}</ion-list-header>
-          <ion-list-header *ngIf="form.Level == '3'" class="level-three-text">{{form.Name}}</ion-list-header>
-          <ion-item text-wrap *ngFor="let question of form.questions">
-              <ion-label fixed right>{{question.Question}}</ion-label>
-              <ion-input *ngIf="question.type == 0" type="text"></ion-input>
-              <ion-input *ngIf="question.type == 1" type="number"></ion-input>
-              <ion-checkbox *ngIf="question.type == 2" color="blue" item-content></ion-checkbox>
-              <ion-input *ngIf="question.type == 3" type="text"></ion-input>
-              <ion-input *ngIf="question.type == 4" type="text"></ion-input>
-              <ion-checkbox color="blue" item-right></ion-checkbox>
-              <ion-label fixed right class="no-apply-text">N/A</ion-label>
+          <ion-list-header *ngIf="form.Level == '1'" class="level-one-text level-one-margin">{{form.Name}}</ion-list-header>
+          <ion-list-header *ngIf="form.Level == '2'" class="level-two-text level-two-margin">{{form.Name}}</ion-list-header>
+          <ion-list-header *ngIf="form.Level == '3'" class="level-three-text level-three-margin">{{form.Name}}</ion-list-header>
+
+          <!-- inputs -->
+          <ion-item [class.level-one-padding]="form.Level == '1'"
+          [class.level-two-padding]="form.Level == '2'"
+          [class.level-three-padding]="form.Level == '3'"
+           text-wrap *ngFor="let question of form.questions">
+           
+                <!-- QUESTION -->
+              <ion-label [id]="question.$key" fixed right>{{question.Question}}</ion-label>
+
+              <!-- Input level 0 (text) -->
+              <ion-input *ngIf="question.type == 0" type="text" [(ngModel)]="question.answer"></ion-input>
+              <!-- Input level 1 (number) -->
+              <ion-input *ngIf="question.type == 1" type="number" [(ngModel)]="question.answer"></ion-input>
+              <!-- Input level 2 (yes/no) -->
+              <ion-checkbox *ngIf="question.type == 2" color="blue" item-right style="margin-right: 30%;" [(ngModel)]="question.answer"></ion-checkbox>
+              <!-- Input level 3 (simple selection) -->
+              <ion-select *ngIf="question.type == 3" [(ngModel)]="question.answer">
+                <ion-option *ngFor="let simple of question.simple" [value]="simple">{{simple}}</ion-option>
+              </ion-select>
+              <!-- Input level 4 (multiple selection) -->
+              <ion-select *ngIf="question.type == 4" multiple="true" [(ngModel)]="question.answer">
+                <ion-option *ngFor="let multiple of question.multiple" [value]="multiple">{{multiple}}</ion-option>
+              </ion-select>
+              <!-- N/A -->
+                <ion-checkbox color="blue" item-right [(ngModel)]="question.na"></ion-checkbox>
+                <ion-label fixed right class="no-apply-text">N/A</ion-label>
           </ion-item>
       </div>
     </ion-list>
+    <ion-fab right bottom edge>
+        <button ion-fab mini (click)="openSelect()"><ion-icon name="add"></ion-icon></button>
+      </ion-fab>
+
+      <ion-select style="display:none;" [(ngModel)]="scrollSelect" #mySelect (ngModelChange)="scrollToEl(mySelect.value)">
+        <div *ngFor="let form of forms">
+            <ion-option [value]="question.$key" *ngFor="let question of form.questions">{{question.Question}}</ion-option>
+        </div>
+    </ion-select>
+    
 </ion-content>
 
 <ion-footer>
-  <button ion-button round mode="ios" icon-start>
+  <button ion-button round mode="ios" icon-start (click)="sincronizeForm()">
     Sincronize
   </button>
 </ion-footer>

@@ -61,15 +61,15 @@ export class CardsPage {
     }).present();
   });
 
-  //Test GeoLocation
-  this.geolocation.getCurrentPosition().then((resp) => {
-    // resp.coords.latitude
-    // resp.coords.longitude
-    console.log(resp.coords);
+  // //Test GeoLocation
+  // this.geolocation.getCurrentPosition().then((resp) => {
+  //   // resp.coords.latitude
+  //   // resp.coords.longitude
+  //   console.log(resp.coords);
     
-   }).catch((error) => {
-     console.log('Error getting location', error);
-   });
+  //  }).catch((error) => {
+  //    console.log('Error getting location', error);
+  //  });
     
   }
 
@@ -82,6 +82,16 @@ export class CardsPage {
         nameForm: nameForm
       }
     });
+  }
+
+  getFormStatusColor(status) {
+    if (status == 1) {
+      return 'secondary';
+    } else if (status == 2){
+      return 'ios-orange';
+    } else {
+      return 'ios-green';
+    }
   }
 
 
