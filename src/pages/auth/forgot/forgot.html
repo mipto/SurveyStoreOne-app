@@ -1,5 +1,5 @@
 <ion-header no-border>
-  <ion-navbar transparent color="light">
+  <ion-navbar transparent id = "transparent-toolbar">
     <button ion-button menuToggle>
       <ion-icon name="menu" color="light"></ion-icon>
     </button>
@@ -8,11 +8,11 @@
 
 <ion-content [ngStyle]="{'background-image': 'url(' + backgroundImage +')'}">
   <div class="login-container">
-    <img class="logo" src="./assets/ionic.png" />
+    <img class="logo" src="{{appConfig.APP_ICON}}" />
     <form [formGroup]="resetPasswordForm" (submit)="resetPassword()" novalidate>
 
-      <ion-item>
-        <ion-label stacked>{{globals.LANG.EMAIL}}</ion-label>
+      <ion-item id="input-login">
+        <!-- <ion-label stacked>{{globals.LANG.EMAIL}}</ion-label> -->
         <ion-input tappable formControlName="email" type="email" placeholder="{{globals.LANG.YOUR_EMAIL}}" [class.invalid]="!resetPasswordForm.controls.email.valid && resetPasswordForm.controls.email.dirty"></ion-input>
       </ion-item>
 
@@ -20,7 +20,7 @@
         <p  *ngIf="!resetPasswordForm.controls.email.valid  && resetPasswordForm.controls.email.dirty">{{globals.LANG.VALID_EMAIL}}.</p>
       </ion-item>
 
-      <button ion-button block type="submit" mode="ios" color="blue2">
+      <button class="login-button" ion-button block type="submit" mode="ios" color="blue2">
         {{globals.LANG.RESET_PASSWORD}}
       </button>
 

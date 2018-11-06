@@ -30,7 +30,13 @@ $colors: (
   light:      #f4f4f4,
   dark:       #222,
   darkGray:   #333333,
- 
+
+  //Survey
+  blue-survey: #2980b9,
+  orange-survey: #db9b30,
+  shadow-button: rgba(24,70,100,2),
+  blue-gradient-dark: #21567b,
+  blue-gradient: #217ca9,
 
   special-blue:(
     base: #0059B2,
@@ -362,8 +368,6 @@ $text-input-md-show-focus-highlight: false;
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
-
-
 
 
 // App Material Design Variables

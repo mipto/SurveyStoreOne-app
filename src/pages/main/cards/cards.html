@@ -1,6 +1,6 @@
 <ion-header>
     <ion-navbar>
-        <ion-title>{{globals.LANG.FORM}}</ion-title>    
+        <p class="navbar-title">{{globals.LANG.FORM}}</p>   
         <button ion-button menuToggle (click)="goMapToEntity()">
         <ion-icon name="menu" color="light"></ion-icon>
         </button>
@@ -11,23 +11,27 @@
     <!-- <ion-item>
         <h2 text-center>{{entityName}}</h2>
     </ion-item> -->
-    <ion-card class="adv-map" *ngFor="let form of forms">
-        <ion-item>
-            <h2>{{form.Title}}</h2>
-            <p>{{entityName}}</p>
-        </ion-item>
+    <ion-card class="adv-map" *ngFor="let form of forms;let indice=index">
+        
         <div class="image-bg" style="position: relative">
-            <img src="assets/img/farmatodo3.jpg">
+            <img *ngIf="form.FormType == 's'" src="{{imgForm.typeStore[indice%3]}}">
+            <img *ngIf="form.FormType == 'p'" src="{{imgForm.typePerson[indice%3]}}">
+            
             <!-- <ion-fab right top>
             <button ion-fab class="fab-map">
                 <ion-icon name='pin'></ion-icon>
             </button>
             </ion-fab>-->
         </div>
+        <ion-item class="title-box">
+                <ion-note top item-end>01/08/2018</ion-note>
+                <h2>{{form.Title}}</h2>
+                <p>{{entityName}}</p>
+        </ion-item>
         <ion-card-content>
             <p class="description">{{form.Description}}</p>
         </ion-card-content>
-        <ion-item actions>
+        <!-- <ion-item actions>
             <span ion-text item-start color="secondary" class="item-bold"*ngIf="form.userStatus == 1">{{globals.LANG.NEW}}</span>
             <span ion-text item-start color="ios-orange" class="item-bold"*ngIf="form.userStatus == 2">{{globals.LANG.DRAFT}}</span>
             <span ion-text item-start color="ios-green" class="item-bold"*ngIf="form.userStatus == 3">Sincronized</span>
@@ -38,9 +42,15 @@
                 </svg>
                 {{globals.LANG.START}}
             </button>
-        </ion-item>
+        </ion-item> 
         <ion-card-content>
             <ion-note item-start color="subtle">01/08/2018</ion-note>
+        </ion-card-content>-->
+
+        <ion-card-content class="footer">
+                <button ion-button large class="footer-button" (click)="goForm(form.$key, form.Title)">
+                        {{globals.LANG.START}}
+                </button>
         </ion-card-content>
     </ion-card>
 </ion-content>

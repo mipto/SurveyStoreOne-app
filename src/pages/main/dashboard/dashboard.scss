@@ -4,21 +4,32 @@ page-dashboard {
     margin-top:0px !important;
     padding-top: 0px !important;
   }
-
-  .profile-box{
-    height: 280px;
-    padding-top: 50px;
+  ion-content{
     background-size: cover;
     background-repeat: no-repeat;
-    background-color: #dddddd;
-    background-image: url(../../../assets/supermarket2.jpg);
+    background-image: url(../../../assets/img/background.png) !important;
+  }
+  // ion-card-header{
+  //   color: #ffffff !important;
+  // }
+  .chart{
+    background: transparent !important;
+  }
+  .chart-card{
+    border-radius: 8px;
+    // background-color: #175572a9;
+  }
+  .profile-box{
+    height: 230px;
+    padding-top: 30px;
   }
   .dashboard-box{
-    margin-top:5px;
+    margin-top:15px;
   }
 
   .edit-avatar {
     border-radius: 100%;
+    margin-top: 30px;
     width: 25%;
     border: 2px solid #ffffff;
   }
@@ -26,12 +37,11 @@ page-dashboard {
   .name-text {
     font-size: 22px;
     color: #ffffff;
-    text-shadow: 2px 2px 4px #000000;
   }
 
   .last-connect-text {
-    color: #ebebeb;
-    text-shadow: 2px 2px 4px #000000;
+    margin-top:-15px;
+    color: #ffffff;
   }
 
   .form-icon {
