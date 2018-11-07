@@ -174,16 +174,28 @@ export class FormsProvider {
           let hasNaTrue = question.na == true ? true : false;
           let hasNaFalse = question.na == false ? true : false;
           
-          if (hasQuestion) {
-            ion.deleteOldAnswersBeforeSave(form.$key, question.$key).then(res => {
-              hierarchiesAnswers.doc().set({
-                id_form: form.$key,
-                id_question: question.$key,
-                answer: question.answer,
-                na: false
+        if (hasQuestion) {
+            if (hasNa && hasNaTrue) {
+              ion.deleteOldAnswersBeforeSave(form.$key, question.$key).then(res => {
+                hierarchiesAnswers.doc().set({
+                  id_form: form.$key,
+                  id_question: question.$key,
+                  answer: '',
+                  na: true
+                });
+                console.log('answers saved sucess!');
               });
-              console.log('answers saved sucess!');
+            } else {
+              ion.deleteOldAnswersBeforeSave(form.$key, question.$key).then(res => {
+                hierarchiesAnswers.doc().set({
+                  id_form: form.$key,
+                  id_question: question.$key,
+                  answer: question.answer,
+                  na: false
+                });
+                console.log('answers saved sucess!');
             });
+          } 
           } else if (hasNa) {
             if (hasNaTrue) {
               ion.deleteOldAnswersBeforeSave(form.$key, question.$key).then(res => {
