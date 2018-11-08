@@ -3,4 +3,38 @@ page-searchEntity {
     .list-entities {
         padding-top: 15px;
     }
+
+    .toolbar-background {
+    background-color:#2980b9 !important;
+    background-image: linear-gradient(to bottom, rgba(33,86,123,1), rgba(33,124,169,1) ) !important;
+   }
+    .search-bar{
+        border-radius: 18px;
+        border-color: #328aab;
+    }
+    ::-webkit-input-placeholder {
+        color: #216f99 !important;
+      }
+      
+
+      .select-button{
+          background-color: #365779 !important;
+          width: 90%;
+          box-shadow: none;
+      }
+      .searchbar-md .searchbar-input {
+        border-color: #1e7ea3 !important;
+        border-radius: 8px;
+        border: 2px solid #1e7ea3!important;
+        box-shadow: none;
+        //background-color: #009196;
+        .searchbar-md-border-color{
+            color: #216f99 !important;
+        }
+      }
+
+      .searchbar-search-icon {
+        background-image: url(../../../assets/icon/lupa2.svg) !important;
+    }
+      
 }

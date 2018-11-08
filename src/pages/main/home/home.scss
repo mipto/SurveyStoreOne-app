@@ -3,22 +3,52 @@ page-home {
     margin-top:0px !important;
     padding-top: 0px !important;
   }
-  .profile-box{
-    height: 280px;
-    padding-top: 50px;
+  ion-content{
     background-size: cover;
     background-repeat: no-repeat;
-    background-color: #dddddd;
-    background-image: url(../../../assets/supermarket2.jpg);
+    background-image: url(../../../assets/img/background.png) !important;
+  }
+  .profile-box{
+    padding-top: 50px;
+    height: 200px;
   }
   .select-box {
-    padding-top: 50px;
+    padding-top: 80px;
     padding-right: 20px;
     padding-bottom: 50px;
     padding-left: 15px;
   }
+ 
+  .select {
+    max-width: 100% !important;
+    background: transparent !important;
+    color: #ffffff !important;
+    // margin-bottom: 25px;
+  }
+  ion-select{
+    border: none;
+  }
+  .alert-wrapper {
+    max-width: 94% !important;
+    border-radius: 80%;
+  }
+  ion-label {
+    font-size: 15px;
+    color: #ffffff !important;
+
+  }
+  ion-option{
+    font-size: 15px !important;
+    color: #ffffff !important;
+
+  }
+  ion-row{
+    margin-top: 10px;
+  }
   .search-button {
-    width: 35px;
+    height: auto;
+    width: 37px;
+    margin-left: -3px;
     //padding-left: 25px;
   }
   .edit-avatar {
@@ -30,12 +60,57 @@ page-home {
   .name-text {
     font-size: 22px;
     color: #ffffff;
-    text-shadow: 2px 2px 4px #000000;
   }
 
   .last-connect-text {
-    color: #ebebeb;
-    text-shadow: 2px 2px 4px #000000;
+    margin-top: -13px;
+    color: #ffffff !important;
   }
 
+  .select-icon-inner{
+    color: #ffffff !important;
+    top: 50%;
+    border-top: 10px solid!important;
+    border-right: 6px solid transparent!important;
+    border-left: 6px solid transparent!important;
+    // left: -14px!important;
+    pointer-events: none;
+  }
+
+  .text-input-highlight-color-valid{
+    color: #ffffff!important;
+  }
+
+
+  
+
+}
+
+button.alert-button.alert-button-md.alert-button-default.alert-button-default-md,
+.alert-md .alert-radio-icon{
+  color: #3d5d7e !important;
+  border-color: #3d5d7e !important;
+}
+.alert-md .alert-radio-icon{
+  height: 20px;
+  width: 20px;
+}
+.alert-md .alert-radio-inner{
+  color: #3d5d7e !important;
+  height: 12px;
+  width: 12px;
+}
+.alert-md .alert-radio-group, 
+.alert-md .alert-checkbox-group{
+  border-color: #b2b2b2;
+  border-width: 1px;
+}
+.alert-md .alert-head{
+  text-align: center;
+  margin-top: -3%;
+  margin-bottom: -3%;
+}
+.alert-md .alert-wrapper {
+  border-radius: 8px;
+  box-shadow: none;
 }

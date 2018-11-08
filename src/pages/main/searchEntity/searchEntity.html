@@ -1,6 +1,6 @@
 <ion-header>
     <ion-navbar>
-        <ion-title>{{globals.LANG.SEARCH}} {{globals.LANG.ENTITY}}</ion-title>
+        <p class="navbar-title">{{globals.LANG.SEARCH}} {{globals.LANG.ENTITY}}</p>
       <button ion-button menuToggle>
         <ion-icon name="menu" color="light"></ion-icon>
       </button>
@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-searchbar placeholder={{globals.LANG.SEARCH}} (ionInput)="getEntities($event)"></ion-searchbar>
+    <ion-searchbar class="search-bar" placeholder={{globals.LANG.SEARCH}} (ionInput)="getEntities($event)"></ion-searchbar>
 <ion-list class="list-entities" no-lines radio-group [(ngModel)]="selectedEntity">
   <ion-item *ngFor="let entitie of entities">
       <ion-label>{{ entitie.Name }}</ion-label>
@@ -17,8 +17,8 @@
 </ion-list>
 </ion-content>
 
-<ion-footer class="footer" padding>
-    <button class="footer-button" ion-button round mode="ios" (click)="goFormWithEntity()">
+<ion-footer class="footer" padding no-border>
+    <button class="footer-button select-button" ion-button round mode="ios" (click)="goFormWithEntity()">
         {{globals.LANG.SELECT}}
    </button>
 </ion-footer>

@@ -1,4 +1,7 @@
 page-cards {
+  .scroll-content{
+    margin: 8px;
+  }
     .image-bg .description_container{
       position: absolute;
       background-color: rgba(0, 0, 0, 0.63);
@@ -7,16 +10,29 @@ page-cards {
       bottom: 0;
       text-align: center;
     }
-    .image-bg .description_container .description {
+    .image-bg .description {
       font-size: 2em !important;
       position: absolute;
       top: 20%;
       width: 100%;
       color: #fff;
     }
-
+    ion-note{
+      color: #000000 !important;
+    }
+    .title-box{
+      background-color: #e8e7e6;
+    }
+    .description_container {
+      margin-top: 5%;
+    }
     ion-card.adv-map {
         font-size: 0.7em !important;
+        border-radius: 10px;
+        box-shadow: none !important;
+    }
+    .ion-card, .card-ios, .card-md {
+      margin: 10px !important;
     }
       
       button[fab].fab-map {
@@ -28,9 +44,9 @@ page-cards {
         font-weight: bold;
       }
       
-      .button {
-        background-color: transparent !important;
-      }
+      // .button {
+      //   background-color: transparent !important;
+      // }
 
       svg {
         width:20px;
@@ -40,5 +56,20 @@ page-cards {
 
       ion-content.cards-bg {
         background-color: #f4f4f7;
+        
+      }
+
+      ion-content{
+        background-size: cover;
+        background-repeat: no-repeat;
+        // background-image: url(../../../assets/img/background.png) !important;
+        background-image: linear-gradient(to bottom,  color($colors, blue-gradient-dark),  color($colors, blue-gradient)) !important;
+      }
+      ion-navbar{
+        background-image: linear-gradient(to bottom,  color($colors, blue-gradient-dark),  color($colors, blue-gradient)) !important;
+
+      }
+      .button{
+        box-shadow: none !important;
       }
 }

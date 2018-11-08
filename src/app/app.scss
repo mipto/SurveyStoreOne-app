@@ -26,9 +26,11 @@
   }
   .menu-header {
     padding: 5px 15px;
-    background-image: url('../assets/md-bg6.jpg');
+    // background-image: url('../assets/md-bg6.jpg');
+    background-image: linear-gradient(color($colors, blue-gradient), color($colors, blue-gradient-dark)) !important;  
     background-size: cover;
     background-color: color($colors, blue2);
+    text-align: center;
     color: white;
     .name {
       font-weight: 400;
@@ -42,8 +44,9 @@
     }
     .user-avatar {
       padding: .5em;
-      height: 12vh;
+      height: 20vh;
       margin-top: 15px;
+      margin-bottom: 15px;
       // border: 3px solid #fff;
     }
   }
@@ -112,7 +115,7 @@
     }
     .user-avatar {
       padding: .5em;
-      height: 15vh;
+      height: 20vh;
       margin-top: 15px;
       // border: 3px solid #fff;
     }
@@ -151,8 +154,15 @@
 .bar-button-md-default{
   color: #ffffff !important;
 } 
+
+.searchbar-md-border-color
+.searchbar-wp-border-color
+.searchbar-ios-border-color
+{
+  color: #4365a5 !important;
+}
 .button{
-  background-color: #2980b9 !important;
+  background-color: color($colors, orange-survey) !important;
 }
 
 .toolbar-title.toolbar-title-md, 
@@ -171,10 +181,56 @@ color: #ffffff !important;
 .footer-button {
   font-size: 18px;
   width:49%;
+  border-radius: 7px;
+  box-shadow: 0px 0px 10px 0px color($colors, shadow-button);
+  font-size: 1.1em;
 }
 
 .footer {
   text-align: center;
   align-content: center;
   align-items: center;
+}
+
+.icon{
+  background-size: contain;
+  width: 24px;
+  height: 24px;
+  margin: 0px auto 0 auto;
+
+}
+
+#input {
+  width: 100%;
+  border-radius: 8px;
+  margin-top: 20px;  
+  background-color: #ffffff !important;
+}
+
+.navbar-title{
+  font-size: 18px;
+  color: #ffffff !important;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  height: 100%;
+  width: 70%;
+  text-align: center;
+}
+
+.user-icon {
+  background: url(../assets/icon/person-grey.svg) no-repeat top left;
+  background-size: contain;
+  width: 24px;
+  height: 24px;
+  margin: 0px auto 0 auto;
+}
+
+.dashboard-icon {
+  background: url(../assets/icon/dashboard.svg) no-repeat top left;
+  background-size: contain;
+  width: 24px;
+  height: 24px;
+  margin: 0px auto 0 auto;
 }
