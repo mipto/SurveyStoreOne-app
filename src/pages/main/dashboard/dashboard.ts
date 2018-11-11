@@ -33,14 +33,15 @@ export class DashboardPage {
 
     /*** Chart formularies by fill ***/
     public chartDataForms: number[] =  [];
-    public chartLabelsForms: string[] = [this.globals.LANG.BY_FILL, this.globals.LANG.BY_SAVE];
+    public chartLabelsForms: string[] = [this.globals.LANG.BY_SAVE, this.globals.LANG.BY_FILL];
 
     /*** Chart formularies by synchronize ***/
     public chartDataFormSyn: number[] =  [];
     public chartLabelsFormSyn: string[] = [this.globals.LANG.SINCRONIZE, this.globals.LANG.NO_SINCRONIZE];
     
     /* Chart general */
-    chartColor1: any[] = [{backgroundColor:['#3288bd','#5e4fa2', '#abdda4','#66c2a5']}]; 
+    chartColor1: any[] = [{backgroundColor:['#2ecc71','#f44336', '#abdda4','#66c2a5']}]; 
+    doughnutColors = '#abdda4';
     baseOptions: any = {
         responsive: true,
         maintainAspectRatio: false,

@@ -1,7 +1,18 @@
 page-profile {
 
   $text-color:#fff; 
-  profileHeader{
+  .scroll-content{
+    margin-top:0px !important;
+    padding-top: 0px !important;
+  }
+  ion-title{
+    margin-top: 8px;
+    text-align: center;
+  }
+  ion-list{
+    margin-top: -15px;
+  }
+  .profileHeader{
       color: #333;
       font-size: 18px;
   }
@@ -10,7 +21,7 @@ page-profile {
     // border-radius: 50%;
     border-radius: 50%;
     width: auto;
-    height: 110px;
+    height: 100px;
     margin: -15px auto 0;
     border-width: 2px;
     border-style: solid;
@@ -18,9 +29,25 @@ page-profile {
     border-image: initial;
     // box-shadow: 0px 11px 20px -3px rgba(142, 136, 146, 0.75);
   }
-  #profile1-info {
+  .profile1-info {
     width: 100%;
+    height: 250px;
     text-align: center;
+    padding-top: 10px;
+    background-image: linear-gradient(color($colors, blue-gradient), color($colors, blue-gradient-dark)) !important;  
+    background-size: cover;
+    background-repeat: no-repeat;
+    p{
+      font-size: 18px;
+      color: #ffffff !important;
+    }
+    h2{
+      color: #fff;
+    }
+  }
+  .profile-image-box {
+    padding-top: 30px;
+    
   }
   #profile1-name {
     color: #444;
@@ -46,5 +73,30 @@ page-profile {
   } 
   .validation-errors{
     color:rgb(100, 0, 0)
+  }
+  .icon-person {
+    background: url(../assets/icon/user.svg) no-repeat top left;
+  }
+  .icon-email {
+    background: url(../assets/icon/email.svg) no-repeat top left;
+  }
+  .icon-phone {
+    background: url(../assets/icon/phone.svg) no-repeat top left;
+  }
+  .icon-male {
+    background: url(../assets/icon/male.svg) no-repeat top left;
+  }
+  .icon-female {
+    background: url(../assets/icon/female.svg) no-repeat top left;
+  }
+  .icon-calendar {
+    background: url(../assets/icon/calendario.svg) no-repeat top left;
+  }
+  .icon-city {
+    background: url(../assets/icon/ciudad.svg) no-repeat top left;
+  }
+
+  .icon-country {
+    background: url(../assets/icon/pais.svg) no-repeat top left;
   }
 }

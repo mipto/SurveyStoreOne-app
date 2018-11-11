@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthData } from '../../../providers/auth-data';
 import { Globals } from '../../../services/globals.service';
+import { APP_CONFIG } from '../../../app/app.config';
 
 
 @IonicPage()
@@ -13,6 +14,7 @@ import { Globals } from '../../../services/globals.service';
 export class ForgotPage {
   public resetPasswordForm;
   public backgroundImage: any = "./assets/bg3.jpg"; 
+  appConfig: any = APP_CONFIG.Constants;
 
   constructor(public authData: AuthData, public fb: FormBuilder, 
     public nav: NavController, 
