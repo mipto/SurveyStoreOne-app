@@ -55,7 +55,7 @@
       <ion-select style="display:none;" [(ngModel)]="scrollSelect" #mySelect (ngModelChange)="scrollToEl(mySelect.value)">
         <div *ngFor="let form of forms">
             <ion-option [value]="form.$key">{{form.Name}}</ion-option>
-            <ion-option [value]="question.$key" *ngFor="let question of form.questions">{{question.Question}}</ion-option>
+            <!-- <ion-option [value]="question.$key" *ngFor="let question of form.questions">{{question.Question}}</ion-option> -->
         </div>
     </ion-select>
     
