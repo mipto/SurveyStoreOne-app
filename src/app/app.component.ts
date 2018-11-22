@@ -137,7 +137,7 @@ export class MyApp {
     let ion = this;
     var db: any;
 
-    //ion.splashScreen.show();
+    ion.splashScreen.show();
 
     ion.platform.ready().then(() => {
       ion.statusBar.styleDefault();
