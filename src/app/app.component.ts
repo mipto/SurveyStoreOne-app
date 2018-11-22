@@ -164,6 +164,7 @@ export class MyApp {
           if(!lastC)
           {
             this.storage.set('last_connection', date);
+            console.log("asdas");
           }else{
             this.storage.set('last_connection', lastC);
           }

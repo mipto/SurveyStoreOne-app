@@ -24,7 +24,7 @@
                 <ion-col col-10>
                 <ion-item class="select">
                     <ion-label>{{globals.LANG.CLIENT}}</ion-label>
-                    <ion-select class="asd" [(ngModel)]="search.client" (ionChange)="onClientSelectChange($event)" cancelText={{globals.LANG.CANCEL}}>
+                    <ion-select [(ngModel)]="search.client" (ionChange)="onClientSelectChange($event)" cancelText={{globals.LANG.CANCEL}}>
                         <ion-option *ngFor="let client of clients" value="{{client.$key}}">{{client.Name}}</ion-option>
                     </ion-select>
                 </ion-item>      
@@ -35,7 +35,7 @@
                 <ion-item class="select">
                     <!-- Select -->
                     <ion-label>{{globals.LANG.ENTITY}}</ion-label>
-                    <ion-select class="asd" [(ngModel)]="search.entity" cancelText={{globals.LANG.CANCEL}} [disabled]="!entities">
+                    <ion-select [(ngModel)]="search.entity" cancelText={{globals.LANG.CANCEL}} [disabled]="!entities">
                         <ion-option *ngFor="let entitie of entities" value="{{entitie.$key}}">{{entitie.Name}}</ion-option>
                     </ion-select>
                 </ion-item>
@@ -43,7 +43,7 @@
                 <ion-col>
                     <!-- Button -->
                     <button class="search-button" ion-button icon-only round [disabled]="!entities" (click)="searchEntity()">
-                        <!-- <ion-icon class="asd" name="search"></ion-icon> -->
+                        <!-- <ion-icon name="search"></ion-icon> -->
                         <img src="assets/icon/button-search.png" alt="">
                     </button>
                 </ion-col>
@@ -53,7 +53,7 @@
 </ion-content>
 
 <ion-footer class="footer" padding no-border>
- <button class="footer-button" ion-button round mode="ios" (click)="searchForm()" icon-start>
+ <button class="footer-button" ion-button round mode="ios" (click)="searchForm()" icon-start [disabled]="!search.entity">
     <!-- <ion-icon name="search"></ion-icon> -->
     {{globals.LANG.SEARCH}}
 </button>

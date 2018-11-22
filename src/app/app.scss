@@ -29,7 +29,7 @@
     // background-image: url('../assets/md-bg6.jpg');
     background-image: linear-gradient(color($colors, blue-gradient), color($colors, blue-gradient-dark)) !important;  
     background-size: cover;
-    background-color: color($colors, blue2);
+    //background-color: color($colors, blue2);
     text-align: center;
     color: white;
     .name {
@@ -68,7 +68,8 @@
     // margin-top: 10px;
     margin-bottom: 20px;
     padding: 5px 15px;
-    background-color: #fff;
+    background-image: linear-gradient(color($colors, blue-gradient), color($colors, blue-gradient-dark)) !important;  
+    //background-color: #fff;
     color:#000;
     .name {
       margin-top:8px;
@@ -101,7 +102,8 @@
     margin-bottom: 20px;
     padding: 5px 15px;
     background-size: cover;
-    background-color: color($colors, ios-gray);
+    background-image: linear-gradient(color($colors, blue-gradient), color($colors, blue-gradient-dark)) !important;      
+    //background-color: color($colors, ios-gray);
     color: #ffffff;
     .name {
       margin-top:8px;
