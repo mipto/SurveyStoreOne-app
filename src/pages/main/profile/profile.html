@@ -19,8 +19,9 @@
   <div class="profile1-info">
     <p>{{globals.LANG.PROFILE}}</p>
     <div class="profile-image-box" text-center>
-      <img id="profile1-image" class="pop-in" src="../../../assets/icon/user-male.svg" item-left *ngIf="userData.user.sex == 'M'"/>
-      <img id="profile1-image" class="pop-in" src="../../../assets/icon/user-female.svg" item-left *ngIf="userData.user.sex == 'F'"/>
+        <img *ngIf="userData.user.photo" id="profile1-image" src="{{userData.user.photo}}" class="edit-avatar pop-in" alt="">
+        <img id="profile1-image" class="pop-in" src="assets/icon/user-male.svg" item-left *ngIf="userData.user.sex == 'M' && !userData.user.photo"/>
+      <img id="profile1-image" class="pop-in" src="assets/icon/user-female.svg" item-left *ngIf="userData.user.sex == 'F' && !userData.user.photo"/>
       <ion-title id="profile1-name">{{userData.user.first_name}} {{userData.user.last_name}}</ion-title>
       <!--<p>{{(profile2 | async)?.company}} &bull; {{(profile2 | async)?.position}}</p> -->
       <h2 class="profile1-description">{{userData.user.position}}</h2>  

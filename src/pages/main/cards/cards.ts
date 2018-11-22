@@ -26,16 +26,9 @@ export class CardsPage {
   public entityName: any;
   public forms: any;
   public imgForm: object = {
-    typeStore: {
-    0: "https://firebasestorage.googleapis.com/v0/b/survey-store.appspot.com/o/forms_images%2Fstore%201.png?alt=media&token=58a92fff-b89f-47e1-8122-89ae899bfa79",
-    1: "https://firebasestorage.googleapis.com/v0/b/survey-store.appspot.com/o/forms_images%2Fstore%202.png?alt=media&token=75c4abe8-5140-470c-b573-22634062940c",
-    2: "https://firebasestorage.googleapis.com/v0/b/survey-store.appspot.com/o/forms_images%2Fstore%203.png?alt=media&token=212f12e9-fa5a-48c1-b918-1e3cb8d588c3",
-    },
-    typePerson: {
-      0: "https://firebasestorage.googleapis.com/v0/b/survey-store.appspot.com/o/forms_images%2Fpersonas%203.png?alt=media&token=a3f0e59a-f3d6-4767-a29d-3dc7f0749c1c",
-      1: "https://firebasestorage.googleapis.com/v0/b/survey-store.appspot.com/o/forms_images%2Fpersonas%202.png?alt=media&token=b093458c-bb49-4e63-a05b-1d853c55e3d0",
-      2: "https://firebasestorage.googleapis.com/v0/b/survey-store.appspot.com/o/forms_images%2Fpersonas%201.png?alt=media&token=484b573d-3517-44ad-b5e6-ea88d4acefe9",
-      }
+    typeStore: "https://firebasestorage.googleapis.com/v0/b/survey-store.appspot.com/o/forms_images%2Fstore%203.png?alt=media&token=212f12e9-fa5a-48c1-b918-1e3cb8d588c3",
+    typePerson: "https://firebasestorage.googleapis.com/v0/b/survey-store.appspot.com/o/forms_images%2Fpersonas%201.png?alt=media&token=484b573d-3517-44ad-b5e6-ea88d4acefe9",
+
   };
   
   constructor(public navCtrl: NavController, 
