@@ -103,8 +103,7 @@ export class DashboardPage {
         this.totalEntities = AllEntities.length;
         /* Chart */
         this.chartDataEnVis = [this.entitiesVisited, this.totalEntities - this.entitiesVisited];
-        /* this.chartDataEnVis.push(this.entitiesVisited);
-        this.chartDataEnVis.push(this.totalEntities - this.entitiesVisited); */
+
         console.log(this.chartDataEnVis);
         console.log(this.chartLabelsEnVis);
         //loadingPopup
@@ -127,8 +126,7 @@ export class DashboardPage {
 
         /* Chart synchronize */
         this.chartDataFormSyn = [AllForms.length - this.totalF.formBySinc, this.totalF.formBySinc];
-        /* this.chartDataFormSyn.push(AllForms.length - this.totalF.formBySinc);
-        this.chartDataFormSyn.push(this.totalF.formBySinc); */
+        
         console.log(this.chartDataFormSyn);
         console.log(this.chartLabelsFormSyn);
         
@@ -146,8 +144,7 @@ export class DashboardPage {
         this.entitiesNoSinc = AllEntitiesNoSyn.length;
         /* Chart */
         this.chartDataEnNoSyn = [this.totalEntities - this.entitiesNoSinc, this.entitiesNoSinc];
-        /* this.chartDataEnNoSyn.push(this.totalEntities - this.entitiesNoSinc);
-        this.chartDataEnNoSyn.push(this.entitiesNoSinc); */
+
         console.log(this.chartDataEnNoSyn);
         console.log(this.chartLabelsEnNoSyn);
         //loadingPopups

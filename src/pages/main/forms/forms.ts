@@ -14,8 +14,11 @@ export class FormsPage {
   public nameForm: any;
 
   public scrollSelect: any;
-
+  
   public loadingForm: any;
+  public showQuestion = false;
+  public parentKeyList = [];
+  public arrayFamily = [];
   @ViewChild('mySelect') selectRef: Select;
 
   constructor(public navCtrl: NavController, 
@@ -28,9 +31,8 @@ export class FormsPage {
     let data = navParams.get('data');
     this.idForm = data.idForm;
     this.nameForm = data.nameForm;
-
   }
-
+  
   ionViewWillEnter(){
     let ion = this;
     ion.loadingForm = ion.loadingCtrl.create({
@@ -39,6 +41,7 @@ export class FormsPage {
     });
     ion.loadingForm.present();
     ion.getForms();
+   
   }
   ionViewWillLeave(){
     let ion = this;
@@ -71,6 +74,7 @@ export class FormsPage {
       this.forms = docs;
       console.log('orderder forms', this.forms);
       ion.loadingForm.dismiss();
+      ion.createArrayFamiliar();
     })
   }
 
@@ -125,6 +129,71 @@ export class FormsPage {
       console.log(`scrolling to ${id}`);
       let el = document.getElementById(id);
       el.scrollIntoView();
+    }
+    createArrayFamiliar(){
+      for (const key in this.forms) {
+        if (this.forms.hasOwnProperty(key)) {
+          const element = this.forms[key];
+          let obj = {};
+          let id = element.$key;
+          //si form es level 1 NO tiene 
+          if (element.Level === "1") {
+            obj = {}
+            obj["form_id"] = id;
+            obj["ancestro"] = '';
+
+          }
+          else{
+            let actualLevel = element.Level;
+            let actualKey = element.Parent_key;
+            while(actualLevel != "2")
+            {
+              const resultado = this.forms.find( form => form.$key === actualKey );
+              if (resultado != undefined) {
+                actualLevel = resultado.Level;
+                actualKey = resultado.Parent_key;
+              }
+            }
+            obj["form_id"] = id;
+            obj["ancestro"] = actualKey;
+          }
+          this.arrayFamily.push(obj)
+
+        }
+      }
+    }
+    changeStateShowQ(parentKey){
+      
+      let findA = this.arrayFamily.find(k => k.form_id === parentKey);
+      let findP = this.parentKeyList.find(k => k === parentKey);
+
+      if (findP === undefined && findA.ancestro === '') {
+        this.parentKeyList.push(parentKey);
+      }else if(findA.ancestro === ''){
+        this.parentKeyList = this.parentKeyList.filter(obj => obj != parentKey);
+      }
+    }
+    activeParent(key){
+      //let findP = this.parentKeyList.find(k => k === parentKey);
+      let findA = this.arrayFamily.find(k => k.form_id === key);
+      let findP = this.parentKeyList.find(k => k === findA.ancestro);
+      
+      if (findP === undefined) {
+        return false;
+        
+      }else{
+        return true;
+      }
+    }
+
+    isAdd(key){
+      let findP = this.parentKeyList.find(k => k === key);
+      if (findP === undefined) {
+        return true;
+        
+      }else{
+        return false;
+      }
     }
   
 }
