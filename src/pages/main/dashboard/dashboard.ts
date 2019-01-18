@@ -97,33 +97,36 @@ export class DashboardPage {
     loadingPopupHome.present();
 
     //VISITED_ESTABLISHMENT
-    ion.dashboardProvider.getTotalEntitiesByUser().then(AllEntities => {
+    // ion.dashboardProvider.getTotalEntitiesByUser().then(AllEntities => {
         
-        this.entitiesVisited = this.getEntitiesVisited(AllEntities);
-        this.totalEntities = AllEntities.length;
-        /* Chart */
-        this.chartDataEnVis = [this.entitiesVisited, this.totalEntities - this.entitiesVisited];
+    //     this.entitiesVisited = this.getEntitiesVisited(AllEntities);
+    //     this.totalEntities = AllEntities.length;
+    //     /* Chart */
+    //     this.chartDataEnVis = [this.entitiesVisited, this.totalEntities - this.entitiesVisited];
 
-        console.log(this.chartDataEnVis);
-        console.log(this.chartLabelsEnVis);
-        //loadingPopup
-        boolTE = true;
-        if(boolF && boolNSE && boolTE){
-            this.isDataAvailable = true;
-            loadingPopupHome.dismiss();
-        } 
+    //     console.log(this.chartDataEnVis);
+    //     console.log(this.chartLabelsEnVis);
+    //     //loadingPopup
+    //     boolTE = true;
+    //     if(boolF && boolNSE && boolTE){
+    //         this.isDataAvailable = true;
+    //         loadingPopupHome.dismiss();
+    //     } 
 
-    }).catch((err) =>{
-        console.log(err);
-    });
+    // }).catch((err) =>{
+    //     console.log(err);
+    // });
 
     //TOTAL_FORMS_BY_FILL TOTAL_FORMS_BY_SINCRONIZE TOTAL_SAVED_FORMS
     ion.dashboardProvider.getTotalFormsByUser().then(AllForms => {
         this.totalF = this.getTotalForm(AllForms);
         
         /* Chart by fill */
-        this.chartDataForms = [this.totalF.formByFill, this.totalF.formBySave];
+        this.chartDataForms = [this.totalF.formBySave, this.totalF.formByFill];
 
+        console.log(this.chartDataForms)
+        console.log(this.chartLabelsForms)
+        
         /* Chart synchronize */
         this.chartDataFormSyn = [AllForms.length - this.totalF.formBySinc, this.totalF.formBySinc];
         
@@ -132,30 +135,30 @@ export class DashboardPage {
         
         //loadingPopup
         boolF = true;
-        if(boolF && boolNSE && boolTE){
+        if(boolF /* && boolNSE && boolTE */){
             this.isDataAvailable = true;
             loadingPopupHome.dismiss();
         } 
     })
 
     //ESTABLISHMENT_BY_SINCRONIZE
-    ion.dashboardProvider.getTotalNoSincEntities().then(AllEntitiesNoSyn => {
+    // ion.dashboardProvider.getTotalNoSincEntities().then(AllEntitiesNoSyn => {
 
-        this.entitiesNoSinc = AllEntitiesNoSyn.length;
-        /* Chart */
-        this.chartDataEnNoSyn = [this.totalEntities - this.entitiesNoSinc, this.entitiesNoSinc];
+    //     this.entitiesNoSinc = AllEntitiesNoSyn.length;
+    //     /* Chart */
+    //     this.chartDataEnNoSyn = [this.totalEntities - this.entitiesNoSinc, this.entitiesNoSinc];
 
-        console.log(this.chartDataEnNoSyn);
-        console.log(this.chartLabelsEnNoSyn);
-        //loadingPopups
-        boolNSE = true;
-        if(boolF && boolNSE && boolTE){
-            this.isDataAvailable = true;
-            loadingPopupHome.dismiss();
-        } 
-    }).catch((err) =>{
-        console.log(err);
-    });
+    //     console.log(this.chartDataEnNoSyn);
+    //     console.log(this.chartLabelsEnNoSyn);
+    //     //loadingPopups
+    //     boolNSE = true;
+    //     if(boolF && boolNSE && boolTE){
+    //         this.isDataAvailable = true;
+    //         loadingPopupHome.dismiss();
+    //     } 
+    // }).catch((err) =>{
+    //     console.log(err);
+    // });
     
   }
     getTotalForm(AllForms) 
@@ -167,7 +170,7 @@ export class DashboardPage {
         }
 
         AllForms.forEach( function(ii) {
-               
+              
             switch (ii.status) {
                 case 1:
                     totalForm.formByFill++;     

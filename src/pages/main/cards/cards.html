@@ -11,8 +11,9 @@
     <!-- <ion-item>
         <h2 text-center>{{entityName}}</h2>
     </ion-item> -->
+
     <ion-card class="adv-map" *ngFor="let form of forms">
-        
+    <div *ngIf="form.userStatus != 3">
         <div class="image-bg" style="position: relative">
             <img *ngIf="form.FormType == 's'" src="{{imgForm.typeStore}}">
             <img *ngIf="form.FormType == 'p'" src="{{imgForm.typePerson}}">
@@ -90,6 +91,8 @@
                  </ion-col>
              </ion-row>
             </ion-item>
+
+    </div>    
 
     </ion-card>
 </ion-content>

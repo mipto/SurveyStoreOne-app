@@ -15,9 +15,33 @@ page-forms {
 
     }
     .level-three-text{
-        color: #476d83;
+        color: #478356;
         font-size: 16px;
 
+    }
+    .level-four-text{
+        color: #836447;
+        font-size: 16px;
+
+    }
+    .level-five-text{
+        color: #477283;
+        font-size: 16px;
+
+    }
+    .level-six-text{
+        color: #524783;
+        font-size: 16px;
+
+    }
+    .level-seven-text{
+        color: #484c4e;
+        font-size: 16px;
+
+    }
+    .level-last-text{
+        color: #476d83;
+        font-size: 16px;
     }
     .level-one-background{
         background-color: #dee6eb;
@@ -28,24 +52,43 @@ page-forms {
 
     }
     .level-three-background{
+        background-color: #ebf5ee;
+    }
+    .level-four-background{
+        background-color: #ebf1f5;
+    }
+    
+    .level-five-background{
+        background-color: #f5efeb;
+
+    }
+    .level-six-background{
+        background-color: #f2ebf5;
+
+    }
+    .level-seven-background{
+        background-color: #ececec;
+        
+    }
+    .level-last-background{
         background-color: #ebf1f5;
     }
     .level-one-margin{
     }
     .level-two-margin{
-        margin-left: 20px;
+        //margin-left: 20px;
     }
     .level-three-margin{
-        margin-left: 40px;
+        //margin-left: 40px;
     }
     .level-one-padding{
     }
     .level-two-padding{
-        padding-left: 20px;
+     //   padding-left: 20px;
         // padding-left: 30px;
     }
     .level-three-padding{
-        padding-left: 30px;
+   //     padding-left: 30px;
         // padding-left: 40px;
     }
     
@@ -57,8 +100,10 @@ page-forms {
     .no-apply-text{
         position: absolute;
         right: 0;
+        top: 30%;
         margin-right: -62px;
-        margin-top: -19px;
+        margin-top: -9px;
+        display: table-row;
     }
     .item-md{
         background-color: transparent !important;
@@ -70,6 +115,13 @@ page-forms {
         background-color: transparent;
         border-width: 1px;
     }
+    ion-checkbox{
+        margin-top:1px;
+        margin-bottom:1px;
+    }
+    .item.item-md .checkbox-md[item-right], .item.item-md .checkbox-md[item-end]{
+        margin: 11px 10px 1px 0;
+    }
     .checkbox-md-blue .checkbox-checked {
         border-color: color($colors, blue-gradient-dark);
         background-image: url(/assets/icon/checkbox-blank-circle.png);
@@ -79,6 +131,7 @@ page-forms {
     .checkbox-md-blue .checkbox-checked .checkbox-inner {
         border-color: transparent;
     }
+
     .item-input .label-md, .item-select .label-md, .item-datetime .label-md{
         color: #383838;
         font-size: 100%;
@@ -107,7 +160,7 @@ page-forms {
       }
     ion-select{
         display: flex;
-        max-width: 95%;
+        max-width: 85%;
         margin-right: 9px;
         background-color:  #ffffff87;
         border-radius: 8px;
@@ -127,5 +180,9 @@ page-forms {
           background-color: transparent !important;
           color: #365779 !important;
           box-shadow: none;
+      }
+      div.input-wrapper{
+          display: block;
+          margin-bottom: 10px;
       }
 }

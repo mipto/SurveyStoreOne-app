@@ -51,7 +51,7 @@ export class HomePage {
     
   }
 
-  ionViewWillEnter(){
+  ionViewCanEnter(){
     let ion = this;
     let loadingPopupHome = ion.loadingCtrl.create({
       spinner: 'crescent', 

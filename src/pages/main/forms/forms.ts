@@ -195,5 +195,9 @@ export class FormsPage {
         return false;
       }
     }
+    greaterThan8(n)
+    {
+      return Number(n) >= 8;
+    }
   
 }
