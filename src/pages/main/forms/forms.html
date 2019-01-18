@@ -57,7 +57,7 @@
                     <!-- Input level 1 (number) -->
                     <ion-input *ngIf="question.type == 1" type="number" [(ngModel)]="question.answer" [disabled]="question.na"></ion-input>
                     <!-- Input level 2 (yes/no) -->
-                    <ion-select *ngIf="question.type == 2" [(ngModel)]="question.answer" [disabled]="question.na" [attr.maxlength]="question.max_value">
+                    <ion-select *ngIf="question.type == 2" [(ngModel)]="question.answer" [disabled]="question.na">
                       <ion-option *ngFor="let bool of question.bool" [value]="bool">{{bool}}</ion-option>
                     </ion-select>
                     <!-- Input level 3 (simple selection) -->
