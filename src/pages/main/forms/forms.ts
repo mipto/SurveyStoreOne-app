@@ -12,6 +12,7 @@ export class FormsPage {
   public forms: any;
   public idForm: any;
   public nameForm: any;
+  public formsConstraint: any;
 
   public scrollSelect: any;
   
@@ -41,6 +42,7 @@ export class FormsPage {
     });
     ion.loadingForm.present();
     ion.getForms();
+
    
   }
   ionViewWillLeave(){
@@ -199,5 +201,40 @@ export class FormsPage {
     {
       return Number(n) >= 8;
     }
+    valideInput(evento, typeInput, max, min){
+        console.log(' estoy escribiendo esto', evento);
+        if (typeInput == 'number') {
+          let re = new RegExp("^([0-9])*$");
+          if (re.test(evento)) {
+            if ((max == null || (Number(evento) <= max))
+            && (min == null || (Number(evento) >= min))) {
+              console.log("Valid");
+              return 0;
+            }else
+            {
+              console.log("Invalid");
+              return 1;
+
+            }
+              //lo dejo apsar
+          } else {
+              console.log("Invalid");
+              return 1;
+              //mostrar mensaje al usuario de que lo que introdujo es invalido
+              //alert('Introduce solo numeros del 1-9');
+          }
+        } else if (typeInput == 'text') {
+          let re = new RegExp("^([a-z0-9]{5,})$");
+          if (re.test(evento)) {
+              console.log("Valid");
+              //lo dejo apsar
+          } else {
+              console.log("Invalid");
+              //mostrar mensaje al usuario de que lo que introdujo es invalido
+              alert('Introduce solo numeros del 1-9');
+          }
+        }
+    
+      }
   
 }

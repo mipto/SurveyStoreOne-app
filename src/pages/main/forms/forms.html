@@ -47,37 +47,42 @@
                 
                 <!-- <button *ngIf="form.Level == '1'" ion-button round icon-start (click)="changeStateShowQ(form.$key)">asd</button> -->
                 <!-- inputs -->
-                <ion-item text-wrap *ngFor="let question of form.questions">
-                 
-                      <!-- QUESTION -->
-                    <ion-label [id]="question.$key" [style.opacity]="question.na ? '.4' : '1'">{{question.Question}}</ion-label>
-      
-                    <!-- Input level 0 (text) -->
-                    <ion-input *ngIf="question.type == 0" type="text" [(ngModel)]="question.answer" [disabled]="question.na"></ion-input>
-                    <!-- Input level 1 (number) -->
-                    <ion-input *ngIf="question.type == 1" type="number" [(ngModel)]="question.answer" [disabled]="question.na"></ion-input>
-                    <!-- Input level 2 (yes/no) -->
-                    <ion-select *ngIf="question.type == 2" [(ngModel)]="question.answer" [disabled]="question.na">
-                      <ion-option *ngFor="let bool of question.bool" [value]="bool">{{bool}}</ion-option>
-                    </ion-select>
-                    <!-- Input level 3 (simple selection) -->
-                    <ion-select *ngIf="question.type == 3" [(ngModel)]="question.answer" [disabled]="question.na">
-                      <ion-option *ngFor="let simple of question.simple" [value]="simple">{{simple}}</ion-option>
-                    </ion-select>
-                    <!-- <ion-input *ngIf="question.type == 3" type="text" style='margin-top:5px;' [disabled]="question.na"></ion-input> -->
-                
-                    <!-- Input level 4 (multiple selection) -->
-                    <ion-select *ngIf="question.type == 4" multiple="true" [(ngModel)]="question.answer" [disabled]="question.na">
-                      <ion-option *ngFor="let multiple of question.multiple" [value]="multiple">{{multiple}}</ion-option>
-                    </ion-select>
-                    <!-- N/A -->
-                    <ion-label fixed right class="no-apply-text">N/A</ion-label>
-                    <!-- <ion-label fixed right class="no-apply-text"> -->
-                        <ion-checkbox class="asd" color="blue" item-right [(ngModel)]="question.na"></ion-checkbox>
-                        <!-- N/A
-                    </ion-label> -->
+                <div text-wrap *ngFor="let question of form.questions">
+                    <ion-item no-lines>
 
-                </ion-item>
+                        <!-- QUESTION -->
+                      <ion-label [id]="question.$key" [style.opacity]="question.na ? '.4' : '1'">{{question.Question}}</ion-label>
+        
+                      <!-- Input level 0 (text) -->
+                      <ion-input *ngIf="question.type == 0" type="text" [(ngModel)]="question.answer" [disabled]="question.na"></ion-input>
+                      <!-- Input level 1 (number) -->
+                      <ion-input *ngIf="question.type == 1" type="number" [(ngModel)]="question.answer" [disabled]="question.na" (ngModelChange)="question.error = valideInput($event, 'number', question.max_value, question.min_value)" ></ion-input>
+                      <!-- Input level 2 (yes/no) -->
+                      <ion-select *ngIf="question.type == 2" [(ngModel)]="question.answer" [disabled]="question.na">
+                        <ion-option *ngFor="let bool of question.bool" [value]="bool">{{bool}}</ion-option>
+                      </ion-select>
+                      <!-- Input level 3 (simple selection) -->
+                      <ion-select *ngIf="question.type == 3" [(ngModel)]="question.answer" [disabled]="question.na">
+                        <ion-option *ngFor="let simple of question.simple" [value]="simple">{{simple}}</ion-option>
+                      </ion-select>
+                      <!-- <ion-input *ngIf="question.type == 3" type="text" style='margin-top:5px;' [disabled]="question.na"></ion-input> -->
+                  
+                      <!-- Input level 4 (multiple selection) -->
+                      <ion-select *ngIf="question.type == 4" multiple="true" [(ngModel)]="question.answer" [disabled]="question.na">
+                        <ion-option *ngFor="let multiple of question.multiple" [value]="multiple">{{multiple}}</ion-option>
+                      </ion-select>
+                      <!-- N/A -->
+                      <ion-label fixed right class="no-apply-text">N/A</ion-label>
+                      <!-- <ion-label fixed right class="no-apply-text"> -->
+                          <ion-checkbox class="asd" color="blue" item-right [(ngModel)]="question.na"></ion-checkbox>
+                          <!-- N/A
+                      </ion-label> -->
+                    </ion-item>
+                    <!-- Error message -->
+                    <ion-item no-lines *ngIf= "question.error == 1 && !question.na">
+                        <span class="error-message" *ngIf="question.type == 1">* Ingrese número válido</span>
+                    </ion-item>
+                </div>
             </div>
 
         </div>

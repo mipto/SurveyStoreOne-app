@@ -95,12 +95,12 @@ export class FormsProvider {
           snapShot.forEach(function (doc) {
             let objQuestion = JSON.parse(JSON.stringify(doc.data()));
             objQuestion.$key = doc.id;
-
+            
             questions.doc(objQuestion.Id_question).get()
             .then(function(doc) {
                 var objQuestion = JSON.parse(JSON.stringify(doc.data()));
                 objQuestion.$key = doc.id;
-                
+                objQuestion.error = 0;
                 ion.getFormAnswers(form.$key, doc.id)
                 .then(answer => {
                   if(typeof(answer) === "boolean"){
@@ -108,7 +108,6 @@ export class FormsProvider {
                   } else {
                     objQuestion.answer = answer;
                   }
-                  
                 });
                 if (!forms[i].questions.find(x => x.$key === objQuestion.$key)) {
                   forms[i].questions.push(objQuestion);

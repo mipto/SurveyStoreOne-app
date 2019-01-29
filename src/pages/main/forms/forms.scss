@@ -72,7 +72,7 @@ page-forms {
     }
     .level-last-background{
         background-color: #ebf1f5;
-    }
+    }/*
     .level-one-margin{
     }
     .level-two-margin{
@@ -90,7 +90,7 @@ page-forms {
     .level-three-padding{
    //     padding-left: 30px;
         // padding-left: 40px;
-    }
+    }*/
     
     .item-cover{
         left: initial;
@@ -184,5 +184,9 @@ page-forms {
       div.input-wrapper{
           display: block;
           margin-bottom: 10px;
+      }
+      .error-message{
+          font-style: bold;
+          color: red;
       }
 }
