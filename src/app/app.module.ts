@@ -41,6 +41,8 @@ import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { FormsProvider } from '../providers/forms/forms';
 import { PhotosProvider } from '../providers/forms/photos';
 import { CardsProvider } from '../providers/forms/cards-list';
+import { NetworkProvider } from '../providers/network';
+import { Network } from "@ionic-native/network";
 
 /*HTTP CLIENT */
 import { HttpClientModule } from '@angular/common/http';
@@ -58,8 +60,8 @@ import { DashboardProvider } from '../providers/dashboard/dashboard';
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    AngularFirestoreModule,
-    IonicStorageModule.forRoot()
+    AngularFirestoreModule.enablePersistence(),
+    IonicStorageModule.forRoot(), 
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -85,7 +87,9 @@ import { DashboardProvider } from '../providers/dashboard/dashboard';
     FormsProvider,
     CardsProvider,
     DashboardProvider,
-    PhotosProvider
+    PhotosProvider,
+    NetworkProvider,
+    Network
   ]
 })
 export class AppModule {}

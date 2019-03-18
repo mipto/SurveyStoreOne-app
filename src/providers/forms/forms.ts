@@ -101,14 +101,20 @@ export class FormsProvider {
                 var objQuestion = JSON.parse(JSON.stringify(doc.data()));
                 objQuestion.$key = doc.id;
                 objQuestion.error = 0;
+                
                 ion.getFormAnswers(form.$key, doc.id)
                 .then(answer => {
                   if(typeof(answer) === "boolean"){
                     objQuestion.na = answer;
                   } else {
                     objQuestion.answer = answer;
+                    //objQuestion.answer = answer[0];
+                    //objQuestion.otherOption = answer[1];
                   }
+
                 });
+
+
                 if (!forms[i].questions.find(x => x.$key === objQuestion.$key)) {
                   forms[i].questions.push(objQuestion);
                 }
@@ -141,9 +147,11 @@ export class FormsProvider {
                   resolve(objAnswer.na);
                 } else {
                   resolve(objAnswer.answer);
+                  //resolve([objAnswer.answer, objAnswer.otherOption]);
                 }
               } else {
                 resolve(objAnswer.answer);
+                //resolve([objAnswer.answer, objAnswer.otherOption]);
               }
               
             });
@@ -172,7 +180,17 @@ export class FormsProvider {
           let hasNa = typeof question.na !== 'undefined' ? true : false;
           let hasNaTrue = question.na == true ? true : false;
           let hasNaFalse = question.na == false ? true : false;
-          
+          let hasOtherOption = typeof question.otherOption !== 'undefined' ? true : false;
+          let hasOtherOptionTrue = question.otherOption == true ? true : false;
+          let hasOtherOptionFalse = question.otherOption == false ? true : false;
+          let otherBool
+          if (hasOtherOption) {
+            otherBool = question.otherOption
+          } else {
+            otherBool = false
+            
+          }
+          console.log(question.otherOption)
         if (hasQuestion) {
             if (hasNa && hasNaTrue) {
               ion.deleteOldAnswersBeforeSave(form.$key, question.$key).then(res => {
@@ -180,6 +198,7 @@ export class FormsProvider {
                   id_form: form.$key,
                   id_question: question.$key,
                   answer: '',
+                  otherOption: otherBool,
                   na: true
                 });
                 console.log('answers saved sucess!');
@@ -190,6 +209,7 @@ export class FormsProvider {
                   id_form: form.$key,
                   id_question: question.$key,
                   answer: question.answer,
+                  otherOption: otherBool,
                   na: false
                 });
                 console.log('answers saved sucess!');
@@ -201,6 +221,7 @@ export class FormsProvider {
                 hierarchiesAnswers.doc().set({
                   id_form: form.$key,
                   id_question: question.$key,
+                  otherOption: otherBool,
                   answer: '',
                   na: true
                 });
@@ -211,6 +232,7 @@ export class FormsProvider {
                 hierarchiesAnswers.doc().set({
                   id_form: form.$key,
                   id_question: question.$key,
+                  otherOption: otherBool,
                   answer: '',
                   na: false
                 });
@@ -283,6 +305,28 @@ export class FormsProvider {
         reject(err);
       })
       
+    });
+  }
+
+  //Función de sincronizar para obtener TODOS los formularios de un usuario
+  getFormByUser(){
+    return new Promise((resolve, reject) => {
+      let ion = this;
+      let authUser = ion.authData.getAuthUser();
+        let forms_users = this.db.collection("forms_users");
+        forms_users.where("id_user", "==", authUser.uid)
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            let formUser = doc.data();
+            formUser.$key = doc.id;
+            resolve(formUser);
+         });
+        })
+        .catch(err => {
+          console.log('doc form not found.');
+          reject(err);
+        });
     });
   }
 }

@@ -3,6 +3,8 @@ import { IonicPage, NavController, NavParams, LoadingController, AlertController
 import { AuthData } from '../../../providers/auth-data';
 import { CardsProvider } from '../../../providers/forms/cards-list';
 import { Globals } from '../../../services/globals.service';
+import { Network } from '@ionic-native/network';
+import { Storage } from '@ionic/storage';
 
 import { AngularFireDatabase} from 'angularfire2/database-deprecated';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -41,8 +43,10 @@ export class CardsPage {
     public globals: Globals,
     public userData: UserService,
     public navParams: NavParams,
+    public network: Network,
     public cardsList: CardsProvider,
-    private geolocation: Geolocation) {
+    private geolocation: Geolocation,
+    public storage: Storage) {
     
       let data = navParams.get('data');
 
@@ -52,10 +56,29 @@ export class CardsPage {
   }
 
   ionViewWillEnter(){
-    let ion = this;
-   console.log('new view', this.search);
+  let ion = this;
+  
+  //Versión Online
+  this.network.onConnect().subscribe(data => {
+    console.log(data, ' qweqwe ', this.network.type)
+    console.log('new view', this.search);
+    ion.cardsList.getAllFormsByUserClientAndEntity(this.search).then(AllForms => {
+       console.log('new view forms', AllForms);
+       ion.forms = AllForms;
+       console.log('resolved view', AllForms);
+       
+   }).catch(err => {
+     ion.toastCtrl.create({
+       message: 'This entity doesnt have any form, please select another.',
+       duration: 3000
+     }).present();
+   });
+       
+  }, error => console.error(error));
+
+  console.log('new view', this.search);
    ion.cardsList.getAllFormsByUserClientAndEntity(this.search).then(AllForms => {
-    console.log('new view forms', AllForms);
+      console.log('new view forms', AllForms);
       ion.forms = AllForms;
       console.log('resolved view', AllForms);
       
@@ -65,6 +88,19 @@ export class CardsPage {
       duration: 3000
     }).present();
   });
+
+  //Versión Offline
+  this.network.onDisconnect().subscribe(data => {
+    console.log(data, ' ', this.network.type)
+    //acceder a la variable en storage AllForms 
+    this.storage.get('allForms').then((last_con) => {
+      //console.log('ultima conexion: ', last_con);
+      //this.allForms =  last_con;
+    }).catch((er) =>{
+        console.log(er);
+    });
+
+  }, error => console.error(error));
 
   // //Test GeoLocation
   // this.geolocation.getCurrentPosition().then((resp) => {

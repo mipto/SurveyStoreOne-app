@@ -7,8 +7,12 @@ import { Storage } from '@ionic/storage';
 
 import { AngularFireDatabase} from 'angularfire2/database-deprecated';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { Network } from '@ionic-native/network';
 
 import { UserService } from '../../../services/user.service';
+import { storage } from 'firebase';
+import { MapOperator } from 'rxjs/operators/map';
+import { DashboardProvider } from '../../../providers/dashboard/dashboard';
 
 @IonicPage()
 @Component({
@@ -32,7 +36,9 @@ export class HomePage {
     public globals: Globals,
     public userData: UserService,
     public navParams: NavParams,
+    public network: Network,
     public cardsList: CardsProvider,
+    public dashboard: DashboardProvider,
     public storage: Storage) {
 
       let ion = this;
@@ -51,6 +57,7 @@ export class HomePage {
     
   }
 
+  
   ionViewCanEnter(){
     let ion = this;
     let loadingPopupHome = ion.loadingCtrl.create({
@@ -68,11 +75,48 @@ export class HomePage {
         ion.search.entity = data.selectedEntity;
       }
     };
-    ion.cardsList.getAllClients().then(Allclients => {
+    //Versión online
+    //Se debe iterar en clientes para hacer la consulta:
+    //ion.cardsList.getAllEntitiesByUser(allClient[i])
+    //y esas entidades se guardan en otro arreglo que sería
+    //entidades[nombreClient]
+     
+    ion.cardsList.getAllClients().then(async Allclients => {
       ion.clients = Allclients;
+      this.storage.set('Allclients', ion.clients);
+      this.storage.get('Allclients').then(client =>{
+        ion.clients = client;
+      })
+     
+      //Obtenemos TODAS las entidades por cliente
+      //Función aparte
+      // this.getEntitiesByUser(Allclients).then(allEnt =>{
+      //   console.log(allEnt);
+      //   //this.storage.set('entitiesByUser',allEnt)
+        
+      // })
+     
+      ion.dashboard.getTotalEntitiesByUser().then(AllEnt =>{
+        console.log(AllEnt);
+        this.storage.set('entitiesByUser', AllEnt)
+      }).catch((error)=>{
+        console.log(error);
+        
+      })
       loadingPopupHome.dismiss();
+        
     });
+   
     
+    //Versión offline
+    //ion.clients = Allclienst del storage
+    this.storage.get('Allclients').then((clients) => {
+      //Usamos lo que está en el storage
+      ion.clients = clients;
+
+    }).catch((er) =>{
+        console.log(er);
+    });
   }
 
   onClientSelectChange(selectedValue: any) {
@@ -81,10 +125,13 @@ export class HomePage {
       spinner: 'crescent', 
       content: ''
     });
+    
     console.log(ion.search);
     
+    //Versión Online
     ion.cardsList.getAllEntitiesByUser(selectedValue).then(AllEntities => {
       ion.entities = AllEntities;
+
       loadingPopupHome.dismiss();
     }).catch(err => {
       ion.entities = null;
@@ -93,8 +140,29 @@ export class HomePage {
           duration: 3000
         }).present();
     });
-  }
 
+    //Versión Offline
+    this.storage.get('entitiesByUser').then(ent =>{
+      console.log(ent);
+      ent.forEach(element => {
+        if (element.$key == selectedValue) {
+          console.log(element);
+          
+        }
+      });
+    })
+  }
+  ionViewDidEnter() {
+    
+    this.network.onConnect().subscribe(data => {
+      console.log(data, ' ', this.network.type)
+    }, error => console.error(error));
+   
+    this.network.onDisconnect().subscribe(data => {
+      console.log(data, ' ', this.network.type)
+    }, error => console.error(error));
+  }
+  
   searchEntity() {
     let ion = this;
     

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, ToastController, AlertController, MenuController  } from 'ionic-angular';
+import { Nav, Platform, ToastController, AlertController, MenuController, Events  } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -10,6 +10,8 @@ import { Globals } from '../services/globals.service';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { APP_LANG } from './app.lang';
 import { APP_CONFIG } from './app.config';
+import { NetworkProvider } from '../providers/network';
+import { Network } from '@ionic-native/network';
 
 @Component({
   templateUrl: 'app.html'
@@ -33,7 +35,10 @@ export class MyApp {
     public menuCtrl: MenuController,
     public globals: Globals,
     public storage: Storage,
-    public dashboard: DashboardProvider) {
+    public dashboard: DashboardProvider,
+    public events: Events,
+    public network: Network,
+    public networkProvider: NetworkProvider) {
     let ion = this;
     
     ion.initializeApp();
@@ -143,6 +148,33 @@ export class MyApp {
       ion.statusBar.styleDefault();
       ion.splashScreen.hide();
       ion.changueLanguage();
+
+      /* Network */
+      // watch network for a disconnection
+      let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
+        console.log('network was disconnected :-(');
+      });
+
+      // stop disconnect watch
+      disconnectSubscription.unsubscribe();
+
+
+      // watch network for a connection
+      let connectSubscription = this.network.onConnect().subscribe(() => {
+        console.log('network connected!');
+        // We just got a connection but we need to wait briefly
+        // before we determine the connection type. Might need to wait.
+        // prior to doing any api requests as well.
+        setTimeout(() => {
+          if (this.network.type === 'wifi') {
+            console.log('we got a wifi connection, woohoo!');
+          }
+        }, 3000);
+      });
+
+      // stop connect watch
+      connectSubscription.unsubscribe();
+
     });
     
     ion.platform.resume.subscribe((result)=>{

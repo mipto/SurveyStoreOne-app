@@ -56,20 +56,22 @@
                       <!-- Input level 0 (text) -->
                       <ion-input *ngIf="question.type == 0" type="text" [(ngModel)]="question.answer" [disabled]="question.na"></ion-input>
                       <!-- Input level 1 (number) -->
-                      <ion-input *ngIf="question.type == 1" type="number" [(ngModel)]="question.answer" [disabled]="question.na" (ngModelChange)="question.error = valideInput($event, 'number', question.max_value, question.min_value)" ></ion-input>
+                      <ion-input *ngIf="question.type == 1" type="number" [(ngModel)]="question.answer" [ngModel]="ans" [disabled]="question.na" (ngModelChange)="question.error = valideInput($event, 'number', question.max_value, question.min_value)" ></ion-input>
                       <!-- Input level 2 (yes/no) -->
                       <ion-select *ngIf="question.type == 2" [(ngModel)]="question.answer" [disabled]="question.na">
                         <ion-option *ngFor="let bool of question.bool" [value]="bool">{{bool}}</ion-option>
                       </ion-select>
                       <!-- Input level 3 (simple selection) -->
-                      <ion-select *ngIf="question.type == 3" [(ngModel)]="question.answer" [disabled]="question.na">
-                        <ion-option *ngFor="let simple of question.simple" [value]="simple">{{simple}}</ion-option>
+                      <ion-select *ngIf="question.type == 3" [(ngModel)]="question.answer" [disabled]="question.na" >
+                            <!-- (ionChange)="question.otherOption = onChange($event)" -->
+                        <ion-option *ngFor="let simple of question.simple" [value]="simple" (ionSelect)="question.otherOption = onChange($event)">{{simple}}</ion-option>
+                        <ion-option *ngIf="question.other" (ionSelect)="question.otherOption = onChange($event)">Other</ion-option>
                       </ion-select>
-                      <!-- <ion-input *ngIf="question.type == 3" type="text" style='margin-top:5px;' [disabled]="question.na"></ion-input> -->
                   
                       <!-- Input level 4 (multiple selection) -->
                       <ion-select *ngIf="question.type == 4" multiple="true" [(ngModel)]="question.answer" [disabled]="question.na">
                         <ion-option *ngFor="let multiple of question.multiple" [value]="multiple">{{multiple}}</ion-option>
+                        <ion-option [value]="multiple">Other</ion-option>
                       </ion-select>
                       <!-- N/A -->
                       <ion-label fixed right class="no-apply-text">N/A</ion-label>
@@ -77,6 +79,11 @@
                           <ion-checkbox class="asd" color="blue" item-right [(ngModel)]="question.na"></ion-checkbox>
                           <!-- N/A
                       </ion-label> -->
+
+                      <!-- Input Other option -->
+                    </ion-item>
+                    <ion-item no-lines *ngIf="question.type == 3 && question.otherOption">
+                      <ion-input type="text" style='margin-top:5px;' [(ngModel)]="question.answer" (ngModelChange)="question.answer = $event;"  [value]="simple" [disabled]="question.na"></ion-input>
                     </ion-item>
                     <!-- Error message -->
                     <ion-item no-lines *ngIf= "question.error == 1 && !question.na">

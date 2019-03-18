@@ -18,7 +18,7 @@ export class CardsProvider {
     this.db = firebase.firestore();
   }
 
-  getAllClients(): Promise<any> {
+    getAllClients(): Promise<any> {
         return new Promise((resolve, reject) => {
             try {
                 var clients = this.db.collection("clients").get()
@@ -58,7 +58,7 @@ export class CardsProvider {
                     arr[0].Id_entity.forEach(element => {
                         var entitie = this.db.collection("entities").doc(element.entity_id)
                         entitie.get().then(function(doc) {
-                            console.log(doc.data());
+                            //console.log(doc.data());
                             var objEntitie = JSON.parse(JSON.stringify(doc.data()));
                             objEntitie.$key = doc.id
                             EntitieArr.push(objEntitie);
@@ -73,6 +73,56 @@ export class CardsProvider {
             }
         });
     }
+
+
+    getAllEntitiesAndAllClientByUser(): Promise<any> {
+        let ion = this;
+        let arr = [];
+        let EntitieArr = [];
+        
+        return new Promise((resolve, reject) => {
+            try {
+                let authUser = ion.authData.getAuthUser();
+                var entities_user = this.db.collection("entities_users");
+                entities_user.where("IdUser", "==", authUser.uid).get()
+                .then((entitiesSnapShot) => {
+                    entitiesSnapShot.forEach(function (doc) {
+                        var obj = JSON.parse(JSON.stringify(doc.data()));
+                        obj.$key = doc.id
+                        arr.push(obj);
+                    });
+                    for (let ii = 0; ii < arr.length; ii++) {
+                        let cont = 0
+                        arr[ii].Id_entity.forEach(element => {
+                            var entitie = this.db.collection("entities").doc(element.entity_id)
+                            entitie.get().then(function(doc) {
+                                //console.log(doc.data());
+                                var objEntitie = JSON.parse(JSON.stringify(doc.data()));
+                                objEntitie.$key = doc.id
+                                objEntitie.idClient = arr[ii].IdClient
+                                EntitieArr.push(objEntitie);
+                                console.log(objEntitie);
+                                
+                                cont++
+                                if (ii == (arr.length - 1) && cont == (arr[ii].Id_entity.length - 1) ) {
+                                    resolve(EntitieArr);
+                                    
+                                }
+                            });
+                            
+                        });
+                        
+                    }
+                    
+                }).catch(err => {
+                    reject(err);
+                });
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
 
     getAllFormsByClientAndEntitie(searchData): Promise<any> {
         let arrForms = [];

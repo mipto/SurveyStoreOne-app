@@ -42,8 +42,6 @@ export class FormsPage {
     });
     ion.loadingForm.present();
     ion.getForms();
-
-   
   }
   ionViewWillLeave(){
     let ion = this;
@@ -201,7 +199,8 @@ export class FormsPage {
     {
       return Number(n) >= 8;
     }
-    valideInput(evento, typeInput, max, min){
+    valideInput(evento, typeInput, max, min)
+    {
         console.log(' estoy escribiendo esto', evento);
         if (typeInput == 'number') {
           let re = new RegExp("^([0-9])*$");
@@ -235,6 +234,15 @@ export class FormsPage {
           }
         }
     
+    }
+    onChange(answer)
+    {
+      console.log("evento select ",answer);
+      //return true
+      if (answer == "Other" || answer == "") {
+        console.log("Other select");
+        return true;
       }
-  
+      return false;
+    }
 }
