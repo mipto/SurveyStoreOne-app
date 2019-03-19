@@ -57,6 +57,7 @@ export class HomePage {
     
   }
 
+  //Hacer absolutamente todas las consultas necesarias?
   
   ionViewCanEnter(){
     let ion = this;
@@ -81,7 +82,7 @@ export class HomePage {
     //y esas entidades se guardan en otro arreglo que sería
     //entidades[nombreClient]
      
-    ion.cardsList.getAllClients().then(async Allclients => {
+    ion.cardsList.getAllClients().then( Allclients => {
       ion.clients = Allclients;
       this.storage.set('Allclients', ion.clients);
       this.storage.get('Allclients').then(client =>{
@@ -95,19 +96,27 @@ export class HomePage {
       //   //this.storage.set('entitiesByUser',allEnt)
         
       // })
-     
       ion.dashboard.getTotalEntitiesByUser().then(AllEnt =>{
         console.log(AllEnt);
+        //Solo tenemos los Id's
+        this.storage.set('entitiesByUserAndClient', AllEnt)
+      }).catch((error)=>{
+        console.log(error);
+        
+      })
+      ion.dashboard.getTotalDataEntities().then(AllEnt =>{
+        console.log(AllEnt);
+        //Estan todos los id's de las entidades que le corresponden al usuario
         this.storage.set('entitiesByUser', AllEnt)
       }).catch((error)=>{
         console.log(error);
         
       })
+
       loadingPopupHome.dismiss();
         
     });
    
-    
     //Versión offline
     //ion.clients = Allclienst del storage
     this.storage.get('Allclients').then((clients) => {
@@ -126,12 +135,13 @@ export class HomePage {
       content: ''
     });
     
-    console.log(ion.search);
+    //console.log(ion.search);
     
     //Versión Online
-    ion.cardsList.getAllEntitiesByUser(selectedValue).then(AllEntities => {
+   /* ion.cardsList.getAllEntitiesByUser(selectedValue).then(AllEntities => {
       ion.entities = AllEntities;
-
+      console.log(AllEntities);
+      
       loadingPopupHome.dismiss();
     }).catch(err => {
       ion.entities = null;
@@ -139,17 +149,36 @@ export class HomePage {
           message: 'This client doesnt have entities, please select another.',
           duration: 3000
         }).present();
-    });
+    });*/
 
     //Versión Offline
-    this.storage.get('entitiesByUser').then(ent =>{
-      console.log(ent);
-      ent.forEach(element => {
-        if (element.$key == selectedValue) {
-          console.log(element);
-          
-        }
-      });
+    this.storage.get('entitiesByUserAndClient').then(ent =>{
+      let entSelect = []
+      if (ent.length > 0) {
+        ent.forEach(element => {
+          if (element.$key == selectedValue) {
+            this.storage.get('entitiesByUser').then(data =>{
+              //Se buscan los datos de las entidades como tal
+              let find = data.find(k => k.$key === element.entity_id)
+              if (find !== undefined) {
+                entSelect.push(find);
+              } 
+            })
+          }
+        });
+        
+        console.log(entSelect);
+        ion.entities = entSelect
+        loadingPopupHome.dismiss();
+        
+      } else {
+        ion.entities = null;
+        ion.toastCtrl.create({
+            message: 'This client doesnt have entities, please select another.',
+            duration: 3000
+          }).present();
+      }
+
     })
   }
   ionViewDidEnter() {

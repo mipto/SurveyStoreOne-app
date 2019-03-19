@@ -267,28 +267,30 @@ export class DashboardProvider {
                     var itemsProcessed = 0;
                     
                     entUser.forEach(ent => {
-                        
-                        this.getEntitieData(ent.entity_id).then(AllEntities => {
-                            itemsProcessed++;                        
+                        var entities = this.db.collection("entities").doc(ent.entity_id).get()
+                        .then( function (doc) {
+                            itemsProcessed++;
+                            var entity = JSON.parse(JSON.stringify(doc.data()));
                             
-                            AllEntities.forEach(element => {
-                                element.ent_id = ent.entity_id
-                                console.log(element);
-                                dataEnt.push(element)
-                                
-                            });
+                            entity.$key = ent.entity_id
+                            let find = dataEnt.find(k => k.$key === entity.$key);
+                            if (find === undefined) {
+                                dataEnt.push(entity)
+                            } else {
+                                //console.log(dataEnt) 
+                            }
 
-                            if(itemsProcessed === entUser.length){
-                                console.log(dataEnt);
-                                
-                                resolve(dataEnt);
-                            }/*else{
-                                reject();
-                            }*/
-                        }).catch((err) =>{
-                            console.log(err);
-                            reject();
-                        });
+                            if(itemsProcessed === entUser.length) {
+                                if (dataEnt.length >= 1) {
+                                 resolve(dataEnt);
+                                }else{
+                                    reject()
+                                }
+                            } 
+                            
+                        })
+
+                        
                     });
                 }).catch(err => {
                     reject();
