@@ -21,7 +21,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 })
 export class CardsPage {
 
-  public search: object = {
+  public search:  {
     client: '',
     entity: ''
   };
@@ -89,14 +89,22 @@ export class CardsPage {
     }).present();
   });
 
-  ion.cardsList.getAllFormsByUser().then(AllForms =>{
-    console.log(AllForms)
-    this.storage.set('allForms', AllForms)
-  }).catch(e =>{
-    console.log(e);  
-  })
-
+  // ion.cardsList.getAllFormsByUser().then(AllForms =>{
+  //   console.log(AllForms)
+  //   this.storage.set('allForms', AllForms)
+  // }).catch(e =>{
+  //   console.log(e);  
+  // })
+  
   //Versión Offline
+    this.storage.get('allForms').then((AllForms) => {
+      //console.log('todos: ', AllForms.filter(form => form.IdClient == this.search.client && form.IdEntitie == this.search.entity));
+      ion.forms = AllForms.filter(form => form.IdClient == this.search.client && form.IdEntitie == this.search.entity);
+    
+    }).catch((er) =>{
+        console.log(er);
+    });
+
   this.network.onDisconnect().subscribe(data => {
     console.log(data, ' ', this.network.type)
     //acceder a la variable en storage AllForms 

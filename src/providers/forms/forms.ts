@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import { AuthData } from '../../providers/auth-data';
+import { CardsProvider } from "../../providers/forms/cards-list";
 /*
   Generated class for the FormsProvider provider.
 
@@ -15,7 +16,7 @@ export class FormsProvider {
   model: any = {};
   public array: any = {};
 
-  constructor(private http: HttpClient, public authData: AuthData) {
+  constructor(private http: HttpClient, public authData: AuthData, public cardsProvider:CardsProvider) {
     this.db = firebase.firestore();
     this.array = [];
   }
@@ -328,5 +329,21 @@ export class FormsProvider {
           reject(err);
         });
     });
+  }
+
+  getAllDocumentsForAllForms(){
+    return new Promise((resolve,reject) =>{
+      let ion = this;
+      let authUser = ion.authData.getAuthUser();
+      ion.cardsProvider.getAllFormsByUser().then(AllFormId =>{
+        console.log(AllFormId);
+        resolve(AllFormId)
+        
+      }).catch(e =>{
+        console.log(e);
+        reject()
+        
+      })
+    })
   }
 }

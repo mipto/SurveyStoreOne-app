@@ -144,7 +144,14 @@
 .toolbar-background {
   background-color:#2980b9 !important;
  }
-
+ ion-content {
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-color: transparent;
+  // background-color: #2980b9 !important;
+  //  background-image: linear-gradient(to bottom, #21567b, #217ca9) !important;
+  background-image: linear-gradient(to bottom, rgba(33,124,169,1) 5%, rgba(33,124,169,1) 70%, rgba(33,86,123,1) 100%) !important;  
+}
 .bar-button-default-wp, 
 .bar-button-clear-wp-default, 
 .bar-button-wp-default,
@@ -235,4 +242,11 @@ color: #ffffff !important;
   width: 24px;
   height: 24px;
   margin: 0px auto 0 auto;
+}
+
+.login-button{
+  background-color: #db9b30 !important;
+  border-radius: 7px;
+  box-shadow: 0px 0px 20px 0px rgba(24,70,100,1);
+  font-size: 1.1em;
 }

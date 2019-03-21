@@ -13,6 +13,7 @@ import { UserService } from '../../../services/user.service';
 import { storage } from 'firebase';
 import { MapOperator } from 'rxjs/operators/map';
 import { DashboardProvider } from '../../../providers/dashboard/dashboard';
+import { FormsProvider } from '../../../providers/forms/forms';
 
 @IonicPage()
 @Component({
@@ -39,7 +40,8 @@ export class HomePage {
     public network: Network,
     public cardsList: CardsProvider,
     public dashboard: DashboardProvider,
-    public storage: Storage) {
+    public storage: Storage,
+    public formProvider: FormsProvider) {
 
       let ion = this;
 
@@ -76,12 +78,10 @@ export class HomePage {
         ion.search.entity = data.selectedEntity;
       }
     };
+
+    //Data de pantalla de Home
+
     //Versión online
-    //Se debe iterar en clientes para hacer la consulta:
-    //ion.cardsList.getAllEntitiesByUser(allClient[i])
-    //y esas entidades se guardan en otro arreglo que sería
-    //entidades[nombreClient]
-     
     ion.cardsList.getAllClients().then( Allclients => {
       ion.clients = Allclients;
       this.storage.set('Allclients', ion.clients);
@@ -89,16 +89,10 @@ export class HomePage {
         ion.clients = client;
       })
      
-      //Obtenemos TODAS las entidades por cliente
-      //Función aparte
-      // this.getEntitiesByUser(Allclients).then(allEnt =>{
-      //   console.log(allEnt);
-      //   //this.storage.set('entitiesByUser',allEnt)
-        
-      // })
+
       ion.dashboard.getTotalEntitiesByUser().then(AllEnt =>{
         console.log(AllEnt);
-        //Solo tenemos los Id's
+        //Solo tenemos los Id's asociados a un cliente
         this.storage.set('entitiesByUserAndClient', AllEnt)
       }).catch((error)=>{
         console.log(error);
@@ -106,7 +100,7 @@ export class HomePage {
       })
       ion.dashboard.getTotalDataEntities().then(AllEnt =>{
         console.log(AllEnt);
-        //Estan todos los id's de las entidades que le corresponden al usuario
+        //Estan los datos de cada entidad 
         this.storage.set('entitiesByUser', AllEnt)
       }).catch((error)=>{
         console.log(error);
@@ -118,14 +112,29 @@ export class HomePage {
     });
    
     //Versión offline
-    //ion.clients = Allclienst del storage
     this.storage.get('Allclients').then((clients) => {
       //Usamos lo que está en el storage
       ion.clients = clients;
-
     }).catch((er) =>{
         console.log(er);
     });
+
+
+    //Data de pantalla de Cards
+    ion.cardsList.getAllFormsByUser().then(AllForms =>{
+      console.log(AllForms)
+      this.storage.set('allForms', AllForms)
+    }).catch(e =>{
+      console.log(e);  
+    })
+
+    //Data de pantalla de Formulario
+    ion.formProvider.getAllDocumentsForAllForms().then(All =>{
+      console.log(All);
+    }).catch(e =>{
+      console.log(e);  
+    })
+
   }
 
   onClientSelectChange(selectedValue: any) {
