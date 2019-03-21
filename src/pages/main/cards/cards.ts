@@ -76,11 +76,11 @@ export class CardsPage {
        
   }, error => console.error(error));
 
-  console.log('new view', this.search);
+  //console.log('new view', this.search);
    ion.cardsList.getAllFormsByUserClientAndEntity(this.search).then(AllForms => {
-      console.log('new view forms', AllForms);
+      //console.log('new view forms', AllForms);
       ion.forms = AllForms;
-      console.log('resolved view', AllForms);
+      //console.log('resolved view', AllForms);
       
   }).catch(err => {
     ion.toastCtrl.create({
@@ -88,6 +88,13 @@ export class CardsPage {
       duration: 3000
     }).present();
   });
+
+  ion.cardsList.getAllFormsByUser().then(AllForms =>{
+    console.log(AllForms)
+    this.storage.set('allForms', AllForms)
+  }).catch(e =>{
+    console.log(e);  
+  })
 
   //Versión Offline
   this.network.onDisconnect().subscribe(data => {
