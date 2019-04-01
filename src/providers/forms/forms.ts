@@ -142,7 +142,7 @@ export class FormsProvider {
 
               // allForms[i].questions[i].answer = objAnswer.answer;
 
-              console.log('objAnswer', objAnswer);
+              //console.log('objAnswer', objAnswer);
               if (objAnswer.na) {
                 if (objAnswer.na == true) {
                   resolve(objAnswer.na);
@@ -331,19 +331,40 @@ export class FormsProvider {
     });
   }
 
-  getAllDocumentsForAllForms(){
+  getAllDocumentsForAllForms(AllFormId){
     return new Promise((resolve,reject) =>{
       let ion = this;
+      let allForms = [];
       let authUser = ion.authData.getAuthUser();
-      ion.cardsProvider.getAllFormsByUser().then(AllFormId =>{
-        console.log(AllFormId);
-        resolve(AllFormId)
+        //console.log(AllFormId);
+        var itemsProcessed = 0;
+        AllFormId.forEach(element => {
+          //console.log(element.$key);
+          itemsProcessed++
+          ion.getAllDocuments(element.$key).then(doc =>{
+            //+console.log(doc);
+            if(doc !== null)
+            {
+              doc.$key = element.$key
+              allForms.push(doc);
+
+            }/*else{
+              let doN;
+              doN.$key = element.$key
+              doN = 0
+              allForms.push(doN);
+
+            }*/
+            if(itemsProcessed == AllFormId.length && allForms.length > 0)
+            {
+              //console.log(allForms);
+              
+              resolve(allForms)
+            }
+          })
+        });
         
-      }).catch(e =>{
-        console.log(e);
-        reject()
-        
-      })
+      
     })
   }
 }

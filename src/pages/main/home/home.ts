@@ -67,6 +67,8 @@ export class HomePage {
       spinner: 'crescent', 
       content: ''
     });
+    loadingPopupHome.present();
+
     if (this.navParams.get('data')) {
       let data = this.navParams.get('data');
       if (data.selectedEntity && data.selectedClient) {
@@ -107,7 +109,7 @@ export class HomePage {
         
       })
 
-      loadingPopupHome.dismiss();
+      //loadingPopupHome.dismiss();
         
     });
    
@@ -124,16 +126,19 @@ export class HomePage {
     ion.cardsList.getAllFormsByUser().then(AllForms =>{
       console.log(AllForms)
       this.storage.set('allForms', AllForms)
+      //Data de pantalla de Formulario
+      ion.formProvider.getAllDocumentsForAllForms(AllForms).then(All =>{
+        
+        console.log('Questions:',All);
+        loadingPopupHome.dismiss();
+  
+      }).catch(e =>{
+        console.log(e);  
+      })
     }).catch(e =>{
       console.log(e);  
     })
 
-    //Data de pantalla de Formulario
-    ion.formProvider.getAllDocumentsForAllForms().then(All =>{
-      console.log(All);
-    }).catch(e =>{
-      console.log(e);  
-    })
 
   }
 
@@ -143,7 +148,6 @@ export class HomePage {
       spinner: 'crescent', 
       content: ''
     });
-    
     //console.log(ion.search);
     
     //Versión Online

@@ -45,10 +45,11 @@ export class FormsPage {
   }
   ionViewWillLeave(){
     let ion = this;
-    console.log(this.forms);
-
+    //Offline (ver si se guardaron bien los cambios en el storage)
+    console.log('Formulario: ',this.forms);
+    //Parte online
     this.FormsProvider.saveAllAnswers(ion.forms).then(res => {
-      console.log('va a guardar');
+      // console.log('va a guardar');
       this.forms = null;
 
       this.FormsProvider.getFormUserByFormID(ion.idForm).then(userForm => {
@@ -56,11 +57,11 @@ export class FormsPage {
         form = userForm;
         if (form.status == 1) {
           this.FormsProvider.updateFormStatus(ion.idForm, 2).then(res => {
-            console.log('updated form status.');
+            // console.log('updated form status.');
             
           })
         } else {
-          console.log('form is already draft.');
+          // console.log('form is already draft.');
           
         }
       })
@@ -201,7 +202,7 @@ export class FormsPage {
     }
     valideInput(evento, typeInput, max, min)
     {
-        console.log(' estoy escribiendo esto', evento);
+        //console.log(' estoy escribiendo esto', evento);
         if (typeInput == 'number') {
           let re = new RegExp("^([0-9])*$");
           if (re.test(evento)) {
@@ -230,7 +231,7 @@ export class FormsPage {
           } else {
               console.log("Invalid");
               //mostrar mensaje al usuario de que lo que introdujo es invalido
-              alert('Introduce solo numeros del 1-9');
+              //alert('Introduce solo numeros del 1-9');
           }
         }
     
