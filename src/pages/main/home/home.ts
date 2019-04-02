@@ -125,12 +125,15 @@ export class HomePage {
     //Data de pantalla de Cards
     ion.cardsList.getAllFormsByUser().then(AllForms =>{
       console.log(AllForms)
+      
       this.storage.set('allForms', AllForms)
       //Data de pantalla de Formulario
       ion.formProvider.getAllDocumentsForAllForms(AllForms).then(All =>{
-        
-        console.log('Questions:',All);
         loadingPopupHome.dismiss();
+        
+      this.storage.set('allFormsQA', All)
+      console.log('Questions:',All);
+      
   
       }).catch(e =>{
         console.log(e);  
@@ -138,7 +141,7 @@ export class HomePage {
     }).catch(e =>{
       console.log(e);  
     })
-
+    
 
   }
 

@@ -1,6 +1,7 @@
 import { Component, ViewChild  } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController , ToastController, Select } from 'ionic-angular';
 import { FormsProvider } from '../../../providers/forms/forms';
+import { Storage } from '@ionic/storage';
 
 
 @IonicPage()
@@ -26,6 +27,7 @@ export class FormsPage {
     public navParams: NavParams, 
     public FormsProvider: FormsProvider,
     public alertCtrl: AlertController,
+    public storage: Storage,
     public loadingCtrl: LoadingController,
     private toastCtrl: ToastController) {
 
@@ -76,6 +78,13 @@ export class FormsPage {
       console.log('orderder forms', this.forms);
       ion.loadingForm.dismiss();
       ion.createArrayFamiliar();
+    })
+    this.storage.get('allFormsQA').then(all =>{
+      console.log(all.filter(k => k.$key === this.idForm));
+      
+    }).catch(e=>{
+      console.log(e);
+      
     })
   }
 
