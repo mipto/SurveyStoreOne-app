@@ -345,7 +345,7 @@ export class FormsProvider {
             //+console.log(doc);
             if(doc !== null)
             {
-              doc.$key = element.$key
+              //doc.$key = element.$key
               allForms.push(doc);
 
             }/*else{

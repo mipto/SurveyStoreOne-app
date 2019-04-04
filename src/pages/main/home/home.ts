@@ -109,7 +109,7 @@ export class HomePage {
         
       })
 
-      //loadingPopupHome.dismiss();
+      // loadingPopupHome.dismiss();
         
     });
    
@@ -129,11 +129,15 @@ export class HomePage {
       this.storage.set('allForms', AllForms)
       //Data de pantalla de Formulario
       ion.formProvider.getAllDocumentsForAllForms(AllForms).then(All =>{
-        loadingPopupHome.dismiss();
         
-      this.storage.set('allFormsQA', All)
-      console.log('Questions:',All);
+        this.storage.set('allFormsQA', All)
+        console.log('Questions:',All[0]);
+            this.storage.get('allFormsQA').then(all =>{
+              console.log(all);
       
+            })
+        loadingPopupHome.dismiss();
+       
   
       }).catch(e =>{
         console.log(e);  

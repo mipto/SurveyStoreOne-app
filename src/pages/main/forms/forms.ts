@@ -73,15 +73,24 @@ export class FormsPage {
 
   getForms() {
     let ion = this;
+    //Versión online
     this.FormsProvider.getAllDocuments(this.idForm).then(docs => {
       this.forms = docs;
       console.log('orderder forms', this.forms);
-      ion.loadingForm.dismiss();
-      ion.createArrayFamiliar();
+       ion.loadingForm.dismiss();
+       ion.createArrayFamiliar();
     })
+
+    //Versión offline
     this.storage.get('allFormsQA').then(all =>{
-      console.log(all.filter(k => k.$key === this.idForm));
+        console.log(all.filter(k => k[0].Id_form === this.idForm)[0]);
+      //console.log(all[0].$key);
+      //all[0].$key=undefined
+      // this.forms = all[0];
+      // console.log(this.forms);
       
+      // ion.loadingForm.dismiss();
+      // ion.createArrayFamiliar();
     }).catch(e=>{
       console.log(e);
       
@@ -146,6 +155,8 @@ export class FormsPage {
           const element = this.forms[key];
           let obj = {};
           let id = element.$key;
+          //console.log(element);
+          
           //si form es level 1 NO tiene 
           if (element.Level === "1") {
             obj = {}
