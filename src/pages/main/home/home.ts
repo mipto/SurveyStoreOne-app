@@ -14,6 +14,8 @@ import { storage } from 'firebase';
 import { MapOperator } from 'rxjs/operators/map';
 import { DashboardProvider } from '../../../providers/dashboard/dashboard';
 import { FormsProvider } from '../../../providers/forms/forms';
+import { timeout } from 'rxjs/operators';
+import { timeoutWith } from 'rxjs/operator/timeoutWith';
 
 @IonicPage()
 @Component({
@@ -124,18 +126,20 @@ export class HomePage {
 
     //Data de pantalla de Cards
     ion.cardsList.getAllFormsByUser().then(AllForms =>{
-      console.log(AllForms)
+      console.log('allForms (consulta): ',AllForms)
       
-      this.storage.set('allForms', AllForms)
+      //this.storage.set('allForms (storage): ', AllForms)
       //Data de pantalla de Formulario
-      ion.formProvider.getAllDocumentsForAllForms(AllForms).then(All =>{
-        
-        this.storage.set('allFormsQA', All)
-        console.log('Questions:',All[0]);
-            this.storage.get('allFormsQA').then(all =>{
-              console.log(all);
-      
-            })
+      ion.formProvider.getAllDocumentsForAllForms(AllForms)
+      .then(All =>{
+        // console.log('Questions (consulta):', All[0]);
+        setTimeout(() => {
+          this.storage.set('allFormsQA',  All).then(elementsSaved => {
+            //console.log('ressss', elementsSaved);
+          
+          }); 
+        }, 1500);
+        this.createQuestiosAnswerArray(All)
         loadingPopupHome.dismiss();
        
   
@@ -148,7 +152,42 @@ export class HomePage {
     
 
   }
-
+  createQuestiosAnswerArray(AllForm)
+  {
+    let arr = []
+    for (const key in AllForm) {
+      if (AllForm.hasOwnProperty(key)) {
+        const form = AllForm[key];
+        //console.log(key)
+        
+        for (const ii in form) {
+          var obj ={
+            nForm: '',
+            hierK:'',
+            questions:{}
+          }
+          obj.nForm = key
+          if (form.hasOwnProperty(ii)) {
+            const hierarchy = form[ii];
+            //console.log('key: ', hierarchy.$key,' ', hierarchy.questions);
+            obj.hierK = hierarchy.$key  
+            obj.questions =(hierarchy.questions)
+            
+            arr.push(obj)
+            
+          }
+        }
+      }
+    }
+    console.log('arrayQA', arr);
+    this.storage.set('arrayQA', arr).catch(e => console.log(e));
+    
+    this.storage.get('arrayQA').then(a => {
+      console.log('arrayQA (Storage): ', a);
+      
+    })
+    
+  }
   onClientSelectChange(selectedValue: any) {
     let ion = this;
     let loadingPopupHome = ion.loadingCtrl.create({
@@ -205,10 +244,18 @@ export class HomePage {
     
     this.network.onConnect().subscribe(data => {
       console.log(data, ' ', this.network.type)
+      this.toastCtrl.create({
+        message: 'This client is online.',
+        duration: 3000
+      }).present();
     }, error => console.error(error));
    
     this.network.onDisconnect().subscribe(data => {
       console.log(data, ' ', this.network.type)
+      this.toastCtrl.create({
+        message: 'This client is offline.',
+        duration: 3000
+      }).present();
     }, error => console.error(error));
   }
   

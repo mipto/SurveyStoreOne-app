@@ -13,6 +13,8 @@ export class FormsPage {
   public forms: any;
   public idForm: any;
   public nameForm: any;
+  public allForms: any;
+  public formIndex: any;
   public formsConstraint: any;
 
   public scrollSelect: any;
@@ -48,7 +50,15 @@ export class FormsPage {
   ionViewWillLeave(){
     let ion = this;
     //Offline (ver si se guardaron bien los cambios en el storage)
+    // setTimeout(() => {
     console.log('Formulario: ',this.forms);
+      
+    this.allForms[this.formIndex] = this.forms
+    console.log(this.allForms);
+    this.storage.set('allFormsQA', this.allForms)
+      
+    // }, 2000);
+    
     //Parte online
     this.FormsProvider.saveAllAnswers(ion.forms).then(res => {
       // console.log('va a guardar');
@@ -75,7 +85,7 @@ export class FormsPage {
     let ion = this;
     //Versión online
     this.FormsProvider.getAllDocuments(this.idForm).then(docs => {
-      this.forms = docs;
+      //this.forms = docs;
       console.log('orderder forms', this.forms);
        ion.loadingForm.dismiss();
        ion.createArrayFamiliar();
@@ -83,10 +93,13 @@ export class FormsPage {
 
     //Versión offline
     this.storage.get('allFormsQA').then(all =>{
-        console.log(all.filter(k => k[0].Id_form === this.idForm)[0]);
+      this.allForms = all;
+      console.log(this.allForms.filter(k => k[0].Id_form === this.idForm)[0]);
+      // console.log(all.findIndex(k => k[0].Id_form === this.idForm));
+      this.formIndex = all.findIndex(k => k[0].Id_form === this.idForm)
       //console.log(all[0].$key);
       //all[0].$key=undefined
-      // this.forms = all[0];
+       this.forms =all.filter(k => k[0].Id_form === this.idForm)[0];
       // console.log(this.forms);
       
       // ion.loadingForm.dismiss();

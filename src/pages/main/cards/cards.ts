@@ -99,7 +99,7 @@ export class CardsPage {
   //Versión Offline
     this.storage.get('allForms').then((AllForms) => {
       //console.log('todos: ', AllForms.filter(form => form.IdClient == this.search.client && form.IdEntitie == this.search.entity));
-      ion.forms = AllForms.filter(form => form.IdClient == this.search.client && form.IdEntitie == this.search.entity);
+      //ion.forms = AllForms.filter(form => form.IdClient == this.search.client && form.IdEntitie == this.search.entity);
     
     }).catch((er) =>{
         console.log(er);

@@ -5,6 +5,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
 import { Globals } from '../../../services/globals.service';
 import { last } from 'rxjs/operator/last';
+import { Storage } from '@ionic/storage';
 
 @IonicPage()
 @Component({
@@ -26,7 +27,8 @@ export class ProfilePage {
     private toastCtrl: ToastController,
     public globals: Globals,
     public authData: AuthData,
-    public userData: UserService) {
+    public userData: UserService,
+    public storage: Storage) {
 
     let ion = this;
     ion.onEdit = false;
@@ -42,7 +44,9 @@ export class ProfilePage {
   }
 
   ionViewWillEnter() {
-    
+    this.storage.get('allFormsQA').then(all =>{
+      console.log('Questions (storage):',all[0]);
+    })
   }
 
   toggleEdit() {
