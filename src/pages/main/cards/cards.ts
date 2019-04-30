@@ -28,9 +28,10 @@ export class CardsPage {
   public entityName: any;
   public forms: any;
   public imgForm: object = {
-    typeStore: "https://firebasestorage.googleapis.com/v0/b/survey-store.appspot.com/o/forms_images%2Fstore%203.png?alt=media&token=212f12e9-fa5a-48c1-b918-1e3cb8d588c3",
-    typePerson: "https://firebasestorage.googleapis.com/v0/b/survey-store.appspot.com/o/forms_images%2Fpersonas%201.png?alt=media&token=484b573d-3517-44ad-b5e6-ea88d4acefe9",
-
+    // typeStore: "https://firebasestorage.googleapis.com/v0/b/survey-store.appspot.com/o/forms_images%2Fstore%203.png?alt=media&token=212f12e9-fa5a-48c1-b918-1e3cb8d588c3",
+    // typePerson: "https://firebasestorage.googleapis.com/v0/b/survey-store.appspot.com/o/forms_images%2Fpersonas%201.png?alt=media&token=484b573d-3517-44ad-b5e6-ea88d4acefe9",
+    typeStore: "..\assets\img\store.png",
+    typePerson: "..\assets\img\person.png",
   };
   
   constructor(public navCtrl: NavController, 
@@ -58,65 +59,27 @@ export class CardsPage {
   ionViewWillEnter(){
   let ion = this;
   
-  //Versión Online
-  this.network.onConnect().subscribe(data => {
-    console.log(data, ' qweqwe ', this.network.type)
-    console.log('new view', this.search);
-    ion.cardsList.getAllFormsByUserClientAndEntity(this.search).then(AllForms => {
-       console.log('new view forms', AllForms);
-       ion.forms = AllForms;
-       console.log('resolved view', AllForms);
-       
-   }).catch(err => {
-     ion.toastCtrl.create({
-       message: 'This entity doesnt have any form, please select another.',
-       duration: 3000
-     }).present();
-   });
-       
-  }, error => console.error(error));
-
-  //console.log('new view', this.search);
-   ion.cardsList.getAllFormsByUserClientAndEntity(this.search).then(AllForms => {
-      //console.log('new view forms', AllForms);
-      ion.forms = AllForms;
-      //console.log('resolved view', AllForms);
-      
-  }).catch(err => {
-    ion.toastCtrl.create({
-      message: 'This entity doesnt have any form, please select another.',
-      duration: 3000
-    }).present();
-  });
-
-  // ion.cardsList.getAllFormsByUser().then(AllForms =>{
-  //   console.log(AllForms)
-  //   this.storage.set('allForms', AllForms)
-  // }).catch(e =>{
-  //   console.log(e);  
-  // })
-  
-  //Versión Offline
-    this.storage.get('allForms').then((AllForms) => {
-      //console.log('todos: ', AllForms.filter(form => form.IdClient == this.search.client && form.IdEntitie == this.search.entity));
-      //ion.forms = AllForms.filter(form => form.IdClient == this.search.client && form.IdEntitie == this.search.entity);
+  if (ion.isOnDevice()) 
+  {
+    if (ion.isOnline()) 
+    {
+      //Versión Online
+      this.getAllFormsOnline()
+    } else {
+      //Versión Offline
+      this.getAllFormsOffline()
+    }
+  } else 
+  {  
+    console.log('Is on browser!');
     
-    }).catch((er) =>{
-        console.log(er);
-    });
-
-  this.network.onDisconnect().subscribe(data => {
-    console.log(data, ' ', this.network.type)
-    //acceder a la variable en storage AllForms 
-    this.storage.get('allForms').then((last_con) => {
-      //console.log('ultima conexion: ', last_con);
-      //this.allForms =  last_con;
-    }).catch((er) =>{
-        console.log(er);
-    });
-
-  }, error => console.error(error));
-
+    //Versión Online
+    this.getAllFormsOnline()
+      
+    //Versión Offline
+    this.getAllFormsOffline()
+    
+  }
   // //Test GeoLocation
   // this.geolocation.getCurrentPosition().then((resp) => {
   //   // resp.coords.latitude
@@ -127,6 +90,40 @@ export class CardsPage {
   //    console.log('Error getting location', error);
   //  });
     
+  }
+
+  isOnline(): boolean {
+    return  this.network.type !== 'none'
+  }
+  
+  isOnDevice():boolean {
+    return this.network.type !== null
+  }
+
+  getAllFormsOnline(){
+    let ion = this
+    //console.log('new view', this.search);
+    ion.cardsList.getAllFormsByUserClientAndEntity(this.search).then(AllForms => {
+        //console.log('new view forms', AllForms);
+        ion.forms = AllForms;
+        //console.log('resolved view', AllForms);
+        
+    }).catch(err => {
+      ion.toastCtrl.create({
+        message: 'This entity doesnt have any form, please select another.',
+        duration: 3000
+      }).present();
+    });
+  }
+
+  getAllFormsOffline() {
+    this.storage.get('allForms').then((AllForms) => {
+      //console.log('todos: ', AllForms.filter(form => form.IdClient == this.search.client && form.IdEntitie == this.search.entity));
+      this.forms = AllForms.filter(form => form.IdClient == this.search.client && form.IdEntitie == this.search.entity && form.userStatus != 3);
+    
+    }).catch((er) =>{
+        console.log(er);
+    });
   }
 
   goForm(idForm, nameForm) {

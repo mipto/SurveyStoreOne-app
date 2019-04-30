@@ -52,7 +52,8 @@ export class APP_LANG {
         VISITED:'Visited',
         NO_VISITED:'No visited',
         BY_FILL: 'By fill',
-        BY_SAVE: 'Save'
+        BY_SAVE: 'Save',
+        CONNEC_TRIGGER: 'Connection detected, updating forms.',
       },
       SPANISH: {
         EMAIL: 'Email',
@@ -105,7 +106,9 @@ export class APP_LANG {
         VISITED:'Visitado',
         NO_VISITED:'Sin visitar',
         BY_FILL: 'Por llenar',
-        BY_SAVE: 'Guardado'
+        BY_SAVE: 'Guardado',
+        CONNEC_TRIGGER: 'Conexión detectada, actualizando formularios.',
+
       },
       FRENCH: {
 

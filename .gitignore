@@ -12,8 +12,9 @@ log.txt
 .vscode/
 npm-debug.log*
 
-.sourcemaps/
 .idea/
+.ionic/
+.sourcemaps/
 .sass-cache/
 .tmp/
 .versions/
@@ -22,7 +23,6 @@ dist/
 node_modules/
 tmp/
 temp/
-hooks/
 platforms/
 plugins/
 plugins/android.json

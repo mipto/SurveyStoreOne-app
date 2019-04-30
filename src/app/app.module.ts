@@ -5,7 +5,9 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 //************** ionic ******************/
 import { IonicStorageModule } from '@ionic/storage';
 
+
 //*********** ionic Native **************/
+
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -51,11 +53,12 @@ import { DashboardProvider } from '../providers/dashboard/dashboard';
 @NgModule({
   declarations: [
     MyApp,
+    
   ],
   imports: [
     BrowserModule,
-    ionicGalleryModal.GalleryModalModule,
     IonicModule.forRoot(MyApp),
+    ionicGalleryModal.GalleryModalModule,
     HttpClientModule,
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
     AngularFireDatabaseModule,
@@ -67,18 +70,17 @@ import { DashboardProvider } from '../providers/dashboard/dashboard';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    
   ],
   providers: [
     StatusBar,
-    SplashScreen,
+    Globals,
+    AuthData,
     Geolocation,
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: ionicGalleryModal.GalleryModalHammerConfig,
     },
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
-    Globals,
-    AuthData,
     UserService,
     Helpers,
     Facebook,
@@ -90,7 +92,9 @@ import { DashboardProvider } from '../providers/dashboard/dashboard';
     DashboardProvider,
     PhotosProvider,
     NetworkProvider,
-    Network
+    Network,
+    SplashScreen,
+    {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
 export class AppModule {}

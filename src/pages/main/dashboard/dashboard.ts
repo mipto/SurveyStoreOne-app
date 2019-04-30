@@ -10,6 +10,7 @@ import { AngularFireDatabase} from 'angularfire2/database-deprecated';
 import { AngularFireAuth } from 'angularfire2/auth';
 
 import { UserService } from '../../../services/user.service';
+import { Network } from '@ionic-native/network';
 
 @IonicPage()
 @Component({
@@ -56,6 +57,7 @@ export class DashboardPage {
         public alertCtrl: AlertController,
         public loadingCtrl: LoadingController,
         private toastCtrl: ToastController,
+        public network: Network,
         public afAuth: AngularFireAuth, 
         public afDb: AngularFireDatabase,
         public globals: Globals,
@@ -82,9 +84,7 @@ export class DashboardPage {
 
   ionViewWillEnter(){
     let ion = this;
-    let boolTE = false;
-    let boolF = false;
-    let boolNSE = false;
+   
     let loadingPopupHome = ion.loadingCtrl.create({
       spinner: 'crescent', 
       content: ''
@@ -95,7 +95,57 @@ export class DashboardPage {
     }
 
     loadingPopupHome.present();
+    if(this.isOnDevice())
+    {
+      if (this.isOnline()) {
+        ion.getDashboardDataOnline(loadingPopupHome)
+        
+      } else {
+        ion.getDashboardDataOffline(loadingPopupHome)
+        
+      }
+    }else {
+      // ion.getDashboardDataOnline(loadingPopupHome)
+      ion.getDashboardDataOffline(loadingPopupHome)
 
+    }
+  }
+  
+  isOnline(): boolean {
+    return  this.network.type !== 'none'
+  }
+
+  isOnDevice():boolean {
+    return this.network.type !== null
+  }
+
+  getDashboardDataOffline(loadingPopupHome) {
+    this.storage.get('allForms').then((forms) => {
+      console.log('byFill: ', forms.filter(f => f.userStatus === 1))
+      console.log('bySave: ', forms.filter(f => f.userStatus === 2))
+      console.log('bySinc: ', forms.filter(f => f.userStatus === 3))
+
+      let formBySave = forms.filter(f => f.userStatus === 2).length
+      let formByFill = forms.filter(f => f.userStatus === 1).length
+      console.log(formBySave);
+      
+      this.chartDataForms = [formBySave, formByFill];
+
+      
+      /* Chart synchronize */
+      let formSinc= forms.filter(f => f.userStatus === 3).length
+      this.chartDataFormSyn = [ formSinc, forms.length - formSinc];
+    }).then((a) =>{
+      this.isDataAvailable = true;
+      loadingPopupHome.dismiss()
+    })
+  }
+
+  getDashboardDataOnline(loadingPopupHome){
+    let ion = this
+    let boolTE = false;
+    let boolF = false;
+    let boolNSE = false;
     //VISITED_ESTABLISHMENT
     // ion.dashboardProvider.getTotalEntitiesByUser().then(AllEntities => {
         
@@ -119,47 +169,47 @@ export class DashboardPage {
 
     //TOTAL_FORMS_BY_FILL TOTAL_FORMS_BY_SINCRONIZE TOTAL_SAVED_FORMS
     ion.dashboardProvider.getTotalFormsByUser().then(AllForms => {
-        this.totalF = this.getTotalForm(AllForms);
-        
-        /* Chart by fill */
-        this.chartDataForms = [this.totalF.formBySave, this.totalF.formByFill];
+      this.totalF = this.getTotalForm(AllForms);
+      
+      /* Chart by fill */
+      this.chartDataForms = [this.totalF.formBySave, this.totalF.formByFill];
 
-        console.log(this.chartDataForms)
-        console.log(this.chartLabelsForms)
-        
-        /* Chart synchronize */
-        this.chartDataFormSyn = [AllForms.length - this.totalF.formBySinc, this.totalF.formBySinc];
-        
-        console.log(this.chartDataFormSyn);
-        console.log(this.chartLabelsFormSyn);
-        
-        //loadingPopup
-        boolF = true;
-        if(boolF /* && boolNSE && boolTE */){
-            this.isDataAvailable = true;
-            loadingPopupHome.dismiss();
-        } 
-    })
+      console.log(this.chartDataForms)
+      console.log(this.chartLabelsForms)
+      
+      /* Chart synchronize */
+      this.chartDataFormSyn = [AllForms.length - this.totalF.formBySinc, this.totalF.formBySinc];
+      
+      console.log(this.chartDataFormSyn);
+      console.log(this.chartLabelsFormSyn);
+      
+      //loadingPopup
+      boolF = true;
+      if(boolF /* && boolNSE && boolTE */){
+          this.isDataAvailable = true;
+          loadingPopupHome.dismiss();
+      } 
+  })
 
-    //ESTABLISHMENT_BY_SINCRONIZE
-    // ion.dashboardProvider.getTotalNoSincEntities().then(AllEntitiesNoSyn => {
+  //ESTABLISHMENT_BY_SINCRONIZE
+  // ion.dashboardProvider.getTotalNoSincEntities().then(AllEntitiesNoSyn => {
 
-    //     this.entitiesNoSinc = AllEntitiesNoSyn.length;
-    //     /* Chart */
-    //     this.chartDataEnNoSyn = [this.totalEntities - this.entitiesNoSinc, this.entitiesNoSinc];
+  //     this.entitiesNoSinc = AllEntitiesNoSyn.length;
+  //     /* Chart */
+  //     this.chartDataEnNoSyn = [this.totalEntities - this.entitiesNoSinc, this.entitiesNoSinc];
 
-    //     console.log(this.chartDataEnNoSyn);
-    //     console.log(this.chartLabelsEnNoSyn);
-    //     //loadingPopups
-    //     boolNSE = true;
-    //     if(boolF && boolNSE && boolTE){
-    //         this.isDataAvailable = true;
-    //         loadingPopupHome.dismiss();
-    //     } 
-    // }).catch((err) =>{
-    //     console.log(err);
-    // });
-    
+  //     console.log(this.chartDataEnNoSyn);
+  //     console.log(this.chartLabelsEnNoSyn);
+  //     //loadingPopups
+  //     boolNSE = true;
+  //     if(boolF && boolNSE && boolTE){
+  //         this.isDataAvailable = true;
+  //         loadingPopupHome.dismiss();
+  //     } 
+  // }).catch((err) =>{
+  //     console.log(err);
+  // });
+
   }
     getTotalForm(AllForms) 
     {

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, LoadingController, AlertController, ToastController } from 'ionic-angular';
+import {  IonicPage, NavController, LoadingController, AlertController, ToastController } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Platform } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
@@ -21,7 +21,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 
 //Auth Pages
 
-@IonicPage()
+@IonicPage() 
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'

@@ -15,8 +15,8 @@
     <ion-card class="adv-map" *ngFor="let form of forms">
     <div *ngIf="form.userStatus != 3">
         <div class="image-bg" style="position: relative">
-            <img *ngIf="form.FormType == 's'" src="{{imgForm.typeStore}}">
-            <img *ngIf="form.FormType == 'p'" src="{{imgForm.typePerson}}">
+            <img *ngIf="form.FormType == 's'" src="./assets/img/store.png">
+            <img *ngIf="form.FormType == 'p'" src="./assets/img/person.png">
             
             <!-- <ion-fab right top>
             <button ion-fab class="fab-map">
@@ -64,10 +64,10 @@
                  <ion-row>
                      <ion-col col-1> 
                         <ion-icon item-start *ngIf="form.userStatus == 1">
-                            <img class="icon-small" src="/assets/icon/new.png">
+                            <img class="icon-small" src="./assets/icon/new.png">
                         </ion-icon>
                         <ion-icon item-start *ngIf="form.userStatus == 2">
-                            <img class="icon-small" src="/assets/icon/draft.png">
+                            <img class="icon-small" src="./assets/icon/draft.png">
                         </ion-icon>
                      </ion-col>
                      <ion-col>
@@ -78,13 +78,13 @@
                    <ion-col> 
                      <button class="button-new" ion-button float-right icon-start (click)="goForm(form.$key, form.Title)" *ngIf="form.userStatus == 1">
                         <ion-icon>
-                            <img src="/assets/icon/Icon empezar.png">
+                            <img src="./assets/icon/Icon empezar.png">
                         </ion-icon>
                             {{globals.LANG.START}}
                      </button>
                      <button ion-button float-right icon-start (click)="goForm(form.$key, form.Title)" *ngIf="form.userStatus == 2">
                         <ion-icon>
-                            <img src="/assets/icon/Icon empezar.png">
+                            <img src="./assets/icon/Icon empezar.png">
                         </ion-icon>
                             {{globals.LANG.START}}
                         </button>

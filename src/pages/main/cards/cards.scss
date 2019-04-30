@@ -87,8 +87,13 @@ page-cards {
         margin-right: 5px;
 
       }
+      .form-img {
+        background: url(../assets/img/store.png) no-repeat top left !important;
+      }
       .icon-new {
-        background: url(../assets/icon/new.png) no-repeat top left !important;
+        background-image: url(../assets/icon/new.png) !important;
+        background-size: cover;
+        background-repeat: no-repeat;
       }
       .icon-draft {
         background: url(../assets/icon/draft.png) no-repeat top left  !important;

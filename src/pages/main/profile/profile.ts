@@ -44,9 +44,7 @@ export class ProfilePage {
   }
 
   ionViewWillEnter() {
-    this.storage.get('allFormsQA').then(all =>{
-      console.log('Questions (storage):',all[0]);
-    })
+    
   }
 
   toggleEdit() {

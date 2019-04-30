@@ -2,6 +2,8 @@ import { Component, ViewChild  } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController , ToastController, Select } from 'ionic-angular';
 import { FormsProvider } from '../../../providers/forms/forms';
 import { Storage } from '@ionic/storage';
+import { Network } from '@ionic-native/network';
+import { Globals } from '../../../services/globals.service';
 
 
 @IonicPage()
@@ -16,7 +18,7 @@ export class FormsPage {
   public allForms: any;
   public formIndex: any;
   public formsConstraint: any;
-
+  public changeForm: any;
   public scrollSelect: any;
   
   public loadingForm: any;
@@ -31,6 +33,8 @@ export class FormsPage {
     public alertCtrl: AlertController,
     public storage: Storage,
     public loadingCtrl: LoadingController,
+    public globals: Globals,
+    public network: Network,
     private toastCtrl: ToastController) {
 
     let data = navParams.get('data');
@@ -49,17 +53,65 @@ export class FormsPage {
   }
   ionViewWillLeave(){
     let ion = this;
-    //Offline (ver si se guardaron bien los cambios en el storage)
-    // setTimeout(() => {
     console.log('Formulario: ',this.forms);
+    if(this.isOnDevice())
+    {
+      if(this.isOnline())
+      {
+        //Parte online
+        ion.saveAllAnswersOnline() 
+        
+      }else
+      {
+        //Offline (ver si se guardaron bien los cambios en el storage)
+        ion.saveAllAnswersOffline()  
+              
+      }
+    }else{
+      //Offline (ver si se guardaron bien los cambios en el storage)
+      // ion.saveAllAnswersOffline()  
+      // ion.saveAllAnswersOnConnect()
+      //Parte online
+      ion.saveAllAnswersOnline() 
       
-    this.allForms[this.formIndex] = this.forms
-    console.log(this.allForms);
-    this.storage.set('allFormsQA', this.allForms)
-      
-    // }, 2000);
+
+    }
+  }
+
+  saveAllAnswersOnConnect()
+  {
+    //Promise.all([this.storage.set('changeForms')])
+    console.log(this.changeForm);
+
+      for (let ii = 0; ii < this.changeForm.length; ii++) {
+        const element = this.changeForm[ii];
+        console.log(this.allForms[element]);
+        console.log(this.forms);
+        
+        this.FormsProvider.saveAllAnswers(this.allForms[element]).then(res => {
+          // console.log('va a guardar');
+          this.forms = null;
     
-    //Parte online
+          this.FormsProvider.getFormUserByFormID(this.idForm).then(userForm => {
+            let form: any;
+            form = userForm;
+            if (form.status == 1) {
+              this.FormsProvider.updateFormStatus(this.idForm, 2).then(res => {
+                // console.log('updated form status.');
+                
+              })
+            } else {
+              // console.log('form is already draft.');
+              
+            }
+          })
+        })
+        
+      }
+    
+  }
+  saveAllAnswersOnline() {
+    let ion = this
     this.FormsProvider.saveAllAnswers(ion.forms).then(res => {
       // console.log('va a guardar');
       this.forms = null;
@@ -78,35 +130,104 @@ export class FormsPage {
         }
       })
     })
+  
+  }
+  saveAllAnswersOffline() {
+    let arr = []
+    this.allForms[this.formIndex] = this.forms
+    //this.allForms[this.formIndex].change = true
+   
+    console.log(this.changeForm);
     
+    this.storage.set('changeForms',  this.changeForm)
+
+    // console.log(this.allForms);
+    this.storage.set('allFormsQA', this.allForms)
+  }
+
+  isOnline(): boolean {
+    return  this.network.type !== 'none'
+  }
+  
+  isOnDevice():boolean {
+    return this.network.type !== null
   }
 
   getForms() {
     let ion = this;
-    //Versión online
-    this.FormsProvider.getAllDocuments(this.idForm).then(docs => {
-      //this.forms = docs;
-      console.log('orderder forms', this.forms);
-       ion.loadingForm.dismiss();
-       ion.createArrayFamiliar();
-    })
+    if(this.isOnDevice())
+    {
+      if (this.isOnline()) {
+      //Versión online
+      this.getDocumentsOnline()
+    
+    } else {
+      //Versión offline
+      this.getDocumentsOffline()
+        
+      }
+    } else
+    {
+      //Versión online
+       this.getDocumentsOnline()
+      
+  
+      //Versión offline
+      //this.getDocumentsOffline()
 
-    //Versión offline
+    }
+    
+  }
+  getDocumentsOffline() {
+   let ion= this
     this.storage.get('allFormsQA').then(all =>{
       this.allForms = all;
       console.log(this.allForms.filter(k => k[0].Id_form === this.idForm)[0]);
-      // console.log(all.findIndex(k => k[0].Id_form === this.idForm));
       this.formIndex = all.findIndex(k => k[0].Id_form === this.idForm)
-      //console.log(all[0].$key);
-      //all[0].$key=undefined
+      
        this.forms =all.filter(k => k[0].Id_form === this.idForm)[0];
       // console.log(this.forms);
-      
-      // ion.loadingForm.dismiss();
-      // ion.createArrayFamiliar();
+      this.storage.get('changeForms').then(form =>{
+        console.log(form);
+        
+        this.changeForm = form;
+        if(this.changeForm !== undefined && this.changeForm !== null)
+        {
+          console.log(this.changeForm);
+          
+          // arr = this.changeForm
+          if ( this.changeForm.indexOf(this.formIndex) === -1) {
+            this.changeForm.push(this.formIndex)
+           
+          }
+        }else{
+          console.log('vaciooo ',this.changeForm);
+          this.changeForm = []
+          this.changeForm.push(this.formIndex)
+
+         // this.storage.set('changeForms', [])
+
+        }
+      })
+      ion.loadingForm.dismiss();
+      ion.createArrayFamiliar();
     }).catch(e=>{
       console.log(e);
       
+    })
+  }
+  getDocumentsOnline() {
+    let ion = this;
+    this.FormsProvider.getAllDocuments(this.idForm).then(docs => {
+      this.forms = docs;
+      console.log('orderder forms', this.forms);
+
+      this.storage.get('allFormsQA').then(all =>{
+        this.allForms = all;
+        this.formIndex = all.findIndex(k => k[0].Id_form === this.idForm)
+      });
+       ion.loadingForm.dismiss();
+       ion.createArrayFamiliar();
     })
   }
 
@@ -141,10 +262,40 @@ export class FormsPage {
           text: 'Sincronize',
           handler: () => {
             console.log('Sincronized clicked');
-            this.FormsProvider.updateFormStatus(this.idForm, 3).then(res => {
-              console.log('updated form status.');
-              
-            })
+
+            if(this.isOnDevice())
+            {
+              if(this.isOnline())
+              {
+                //Online
+                this.FormsProvider.updateFormStatus(this.idForm, 3).then(res => {
+                  console.log('updated form status.');
+                  
+              })  
+              }else
+              {
+                //Offline
+                this.storage.get('allForms').then( all => {
+                  let auxInd = all.findIndex(k => k.$key === this.idForm)
+                  all[auxInd].userStatus = 3
+                })
+
+              }
+
+            }
+            else{
+              //Offline
+              this.storage.get('allForms').then( all => {
+                let auxInd = all.findIndex(k => k.$key === this.idForm)
+                all[auxInd].userStatus = 3
+              })
+              //Online
+              this.FormsProvider.updateFormStatus(this.idForm, 3).then(res => {
+                console.log('updated form status.');
+                
+              })
+
+            }
           }
         }
       ]

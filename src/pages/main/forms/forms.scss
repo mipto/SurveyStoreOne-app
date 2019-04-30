@@ -124,7 +124,7 @@ page-forms {
     }
     .checkbox-md-blue .checkbox-checked {
         border-color: color($colors, blue-gradient-dark);
-        background-image: url(/assets/icon/checkbox-blank-circle.png);
+        background-image: url(../assets/icon/checkbox-blank-circle.png) !important;
         height: 20px;
         width: 20px;
     }
@@ -162,7 +162,7 @@ page-forms {
         display: flex;
         max-width: 85%;
         margin-right: 9px;
-        background-color:  #ffffff87;
+        background-color:  #ffffff;
         border-radius: 8px;
 
     }
@@ -170,10 +170,12 @@ page-forms {
       ion-input, ion-textarea{
         margin-right: 9px;
         max-width: 80%;
+        border-bottom-color: transparent !important;
+
       }
 
       .item-input ion-input, .item-input ion-textarea{
-        background-color: #ffffff87;
+        background-color: #ffffff;
         border-radius: 8px;
       }
       .button-desplegar{
