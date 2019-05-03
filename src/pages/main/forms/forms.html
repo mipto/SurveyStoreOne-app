@@ -67,13 +67,13 @@
                       <ion-select *ngIf="question.type == 3" [(ngModel)]="question.answer" [disabled]="question.na" >
                             <!-- (ionChange)="question.otherOption = onChange($event)" -->
                         <ion-option *ngFor="let simple of question.simple" [value]="simple" (ionSelect)="question.otherOption = onChange($event)">{{simple}}</ion-option>
-                        <ion-option *ngIf="question.other" (ionSelect)="question.otherOption = onChange($event)">Other</ion-option>
+                        <ion-option *ngIf="question.other" (ionSelect)="question.otherOption = onChange($event)">{{globals.LANG.OTHER}}</ion-option>
                       </ion-select>
                   
                       <!-- Input level 4 (multiple selection) -->
                       <ion-select *ngIf="question.type == 4" multiple="true" [(ngModel)]="question.answer" [disabled]="question.na">
-                        <ion-option *ngFor="let multiple of question.multiple" [value]="multiple">{{multiple}}</ion-option>
-                        <ion-option [value]="multiple">Other</ion-option>
+                        <ion-option *ngFor="let multiple of question.multiple" [value]="multiple" (ionSelect)="question.otherOption = onChange($event)">{{multiple}}</ion-option>
+                        <ion-option [value]="multiple" (ionSelect)="question.otherOption = onChange($event)">{{globals.LANG.OTHER}}</ion-option>
                       </ion-select>
                       <!-- N/A -->
                       <ion-label fixed right class="no-apply-text">N/A</ion-label>
@@ -82,12 +82,22 @@
                           <!-- N/A
                       </ion-label> -->
 
-                      <!-- Input Other option -->
                     </ion-item>
+                    <!-- Input Other option (Select simple) -->
                     <ion-item no-lines style="
                     border-bottom-color: transparent;
                     box-shadow: none;"
                     *ngIf="question.type == 3 && question.otherOption">
+                    <ion-label>{{globals.LANG.OTHER_OPTION}}:</ion-label>
+                      <ion-input type="text" style='margin-top:5px;' [(ngModel)]="question.otherAnswer" [disabled]="question.na"></ion-input>
+                      <!-- <ion-input type="text" style='margin-top:5px;' [(ngModel)]="question.otherAnswer" (ngModelChange)="question.answer = $event;" [disabled]="question.na"></ion-input> -->
+                    </ion-item>
+                    <!-- Input Other option (Select multiple) -->
+                    <ion-item no-lines style="
+                    border-bottom-color: transparent;
+                    box-shadow: none;"
+                    *ngIf="question.type == 4 && question.otherOption">
+                    <ion-label>{{globals.LANG.OTHER_OPTION}}:</ion-label>
                       <ion-input type="text" style='margin-top:5px;' [(ngModel)]="question.otherAnswer" [disabled]="question.na"></ion-input>
                       <!-- <ion-input type="text" style='margin-top:5px;' [(ngModel)]="question.otherAnswer" (ngModelChange)="question.answer = $event;" [disabled]="question.na"></ion-input> -->
                     </ion-item>
@@ -96,9 +106,17 @@
                     border-bottom-color: transparent;
                     border-top-color: transparent;
                     box-shadow: none;" 
-                    *ngIf= "question.error == 1 && !question.na">
+                    *ngIf= "(question.error == 1 || valideInput(question.answer, 'number', question.max_value, question.min_value))&& !question.na">
                         <span class="error-message" *ngIf="question.type == 1">* {{globals.LANG.VALID_NUMBER}}</span>
                     </ion-item>
+                    <ion-item no-lines style="
+                    border-bottom-color: transparent;
+                    border-top-color: transparent;
+                    box-shadow: none;" 
+                    *ngIf= "answerEmpty(question.answer) && !question.na">
+                        <span class="error-message">* {{globals.LANG.EMPTY_FIELD}}</span>
+                    </ion-item>
+                    
                 </div>
             </div>
 
@@ -110,7 +128,7 @@
 
       <ion-select style="display:none;" [(ngModel)]="scrollSelect" #mySelect (ngModelChange)="scrollToEl(mySelect.value)">
         <div *ngFor="let form of forms">
-            <div *ngIf="form.Level == '1'">
+            <div *ngIf="form.Level == '2'">
             <ion-option [value]="form.$key">{{form.Name}}</ion-option>
             </div>
             <!-- <ion-option [value]="question.$key" *ngFor="let question of form.questions">{{question.Question}}</ion-option> -->

@@ -102,7 +102,7 @@ export class FormsProvider {
                 var objQuestion = JSON.parse(JSON.stringify(doc.data()));
                 objQuestion.$key = doc.id;
                 objQuestion.error = 0;
-                if(objQuestion.type === 3)
+                if(objQuestion.type === 3 || objQuestion.type === 4)
                 {
                   ion.getFormSelectAnswers(form.$key, doc.id)
                   .then(answer => {
@@ -126,7 +126,7 @@ export class FormsProvider {
                       objQuestion.na = answer;
                     } else {
                       objQuestion.answer = answer;
-                      console.log(answer);
+                      //console.log(answer);
                       
                       // objQuestion.answer = answer[0];
                       // objQuestion.otherOption = answer[1];
@@ -261,7 +261,7 @@ export class FormsProvider {
           console.log(question.otherOption)
         if (hasQuestion) {
           //hay que cambiar cosas de aquí agregar el other option if con question.type
-          if(question.type === 3){
+          if(question.type === 3 || question.type === 4){
             if (hasNa && hasNaTrue) {
               ion.deleteOldAnswersBeforeSave(form.$key, question.$key).then(res => {
                 hierarchiesAnswers.doc().set({
@@ -315,7 +315,7 @@ export class FormsProvider {
 
           }
         } else if (hasNa) {
-          if(question.type === 3){
+          if(question.type === 3 || question.type === 4){
             if (hasNaTrue) {
               ion.deleteOldAnswersBeforeSave(form.$key, question.$key).then(res => {
                 hierarchiesAnswers.doc().set({

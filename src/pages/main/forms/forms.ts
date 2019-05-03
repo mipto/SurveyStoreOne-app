@@ -178,6 +178,10 @@ export class FormsPage {
     }
     
   }
+  anyError(){
+    console.log(this.forms.question);
+    
+  }
   getDocumentsOffline() {
    let ion= this
     this.storage.get('allFormsQA').then(all =>{
@@ -243,7 +247,49 @@ export class FormsPage {
 
   sincronizeForm(){
     console.log('sincronize enter');
-    this.sincronizeConfirm();
+    if(!this.validForm()){
+      this.toastCtrl.create({
+        message: this.globals.LANG.SINC_ERROR,
+        duration: 3000
+      }).present();
+      console.log('error o vacío');
+    }else{
+      this.sincronizeConfirm();
+
+    }
+    
+  }
+  validForm() {
+    let valid=true
+   
+    for (let ii = 0; ii < this.forms.length; ii++) {
+      const form = this.forms[ii];
+      for (let jj = 0; jj < form.questions.length; jj++) {
+        const question = form.questions[jj];
+        if (!question.na) {
+          if((question.type == 3 || question.type == 4) &&
+            question.otherOption &&
+            this.answerEmpty(question.otherAnswer))
+          {
+            valid = false
+            break;
+          }
+          if(this.answerEmpty(question.answer) && !question.na)
+          {
+            valid = false
+            break;
+          }        
+          if(question.type == 1 && this.valideInput(question.answer, 'number', question.max_value, question.min_value) == 1)
+            {
+              console.log('numero invalidoo ', question.answer);
+              
+              valid = false
+              break;
+            }
+        } 
+      }
+    }
+    return valid
   }
 
   sincronizeConfirm() {
@@ -384,25 +430,32 @@ export class FormsPage {
     {
       return Number(n) >= 8;
     }
-    valideInput(evento, typeInput, max, min)
+    answerEmpty(answer)
+    {
+      // console.log(answer);
+      
+      return (answer ===  '') || (answer ===  null) || (answer ===  undefined)
+    }
+    valideInput(evento,  typeInput, max, min)
     {
         //console.log(' estoy escribiendo esto', evento);
+     
         if (typeInput == 'number') {
           let re = new RegExp("^([0-9])*$");
           if (re.test(evento)) {
             if ((max == null || (Number(evento) <= max))
             && (min == null || (Number(evento) >= min))) {
-              console.log("Valid");
+              // console.log("Valid");
               return 0;
             }else
             {
-              console.log("Invalid");
+              // console.log("Invalid ", evento);
               return 1;
 
             }
               //lo dejo apsar
           } else {
-              console.log("Invalid");
+              // console.log("Invalid");
               return 1;
               //mostrar mensaje al usuario de que lo que introdujo es invalido
               //alert('Introduce solo numeros del 1-9');
@@ -410,10 +463,10 @@ export class FormsPage {
         } else if (typeInput == 'text') {
           let re = new RegExp("^([a-z0-9]{5,})$");
           if (re.test(evento)) {
-              console.log("Valid");
+              // console.log("Valid");
               //lo dejo apsar
           } else {
-              console.log("Invalid");
+              // console.log("Invalid");
               //mostrar mensaje al usuario de que lo que introdujo es invalido
               //alert('Introduce solo numeros del 1-9');
           }
@@ -422,10 +475,10 @@ export class FormsPage {
     }
     onChange(answer)
     {
-      console.log("evento select ",answer);
+      // console.log("evento select ",answer);
       //return true
-      if (answer == "Other" || answer == "") {
-        console.log("Other select");
+      if (answer == this.globals.LANG.OTHER || answer == "") {
+        // console.log("Other select");
         return true;
       }
       return false;

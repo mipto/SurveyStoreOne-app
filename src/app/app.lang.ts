@@ -54,6 +54,11 @@ export class APP_LANG {
         BY_FILL: 'By fill',
         BY_SAVE: 'Save',
         CONNEC_TRIGGER: 'Connection detected, updating forms.',
+        OTHER: 'Other',
+        OTHER_OPTION: 'Write the other option',
+        EMPTY_FIELD: 'Empty field (Required)',
+        SINC_ERROR:'Any field have an error or it\'s empty. Please verify before synchronice.',
+
       },
       SPANISH: {
         EMAIL: 'Email',
@@ -108,7 +113,10 @@ export class APP_LANG {
         BY_FILL: 'Por llenar',
         BY_SAVE: 'Guardado',
         CONNEC_TRIGGER: 'Conexión detectada, actualizando formularios.',
-
+        OTHER: 'Otro',
+        OTHER_OPTION: 'Escriba la otra opción',
+        EMPTY_FIELD: 'Campo vacío (Requerido)',
+        SINC_ERROR:'Algún o algunos campos tiene un error y/o está vacío. Por favor verifique antes de sincronizar.',
       },
       FRENCH: {
 
