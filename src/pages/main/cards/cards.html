@@ -1,6 +1,7 @@
 <ion-header>
     <ion-navbar>
-        <p class="navbar-title">{{globals.LANG.FORM}}</p>   
+        <ion-searchbar class="search-bar" placeholder={{globals.LANG.SEARCH}} (ionInput)="getForms($event)"></ion-searchbar>
+        <!-- <p class="navbar-title">{{globals.LANG.FORM}}</p>    -->
         <button ion-button menuToggle (click)="goMapToEntity()">
         <ion-icon name="menu" color="light"></ion-icon>
         </button>
@@ -76,13 +77,13 @@
                          <h2 ion-text item-start class="item-bold label-draft"*ngIf="form.userStatus == 2">{{globals.LANG.DRAFT}}</h2>
                      </ion-col>
                    <ion-col> 
-                     <button class="button-new" ion-button float-right icon-start (click)="goForm(form.$key, form.Title)" *ngIf="form.userStatus == 1">
+                     <button class="button-new" ion-button float-right icon-start (click)="goForm(form.$key, form.Title, form.status)" *ngIf="form.userStatus == 1">
                         <ion-icon>
                             <img src="./assets/icon/Icon empezar.png">
                         </ion-icon>
                             {{globals.LANG.START}}
                      </button>
-                     <button ion-button float-right icon-start (click)="goForm(form.$key, form.Title)" *ngIf="form.userStatus == 2">
+                     <button ion-button float-right icon-start (click)="goForm(form.$key, form.Title, form.status)" *ngIf="form.userStatus == 2">
                         <ion-icon>
                             <img src="./assets/icon/Icon empezar.png">
                         </ion-icon>

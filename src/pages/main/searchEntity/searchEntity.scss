@@ -3,7 +3,9 @@ page-searchEntity {
     .list-entities {
         padding-top: 15px;
     }
-
+    ion-searchbar .button {
+        background-color: transparent !important
+    } 
     .toolbar-background {
     background-color:#2980b9 !important;
     background-image: linear-gradient(to bottom, rgba(33,86,123,1), rgba(33,124,169,1) ) !important;

@@ -4,18 +4,26 @@ import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import { UserService } from '../../services/user.service';
-import { AngularFirestore } from 'angularfire2/firestore';
 import { AuthData } from '../../providers/auth-data';
-import { ArrayObservable } from 'rxjs/observable/ArrayObservable';
+import { Storage } from '@ionic/storage';
 
 
 @Injectable()
 export class CardsProvider {
   private db: any;
 
-  constructor(private http: HttpClient, public userService: UserService, private afs: AngularFirestore,
-    public authData: AuthData) {
+  constructor(private http: HttpClient, 
+    public userService: UserService, 
+    public authData: AuthData, 
+    public storage: Storage) {
     this.db = firebase.firestore();
+    this.storage.get('allForms').then(sd=>{
+        console.log(sd);
+        
+    }).catch(e =>{
+        console.log(e);
+        
+    })
   }
 
     getAllClients(): Promise<any> {
@@ -178,6 +186,13 @@ export class CardsProvider {
                                 objForm.userStatus = element.status
                                 
                                 FormArr.push(objForm);
+                            }
+                            if (objForm.status == 2 && objForm.IdClient==searchData.client && objForm.IdEntitie==searchData.entity) {
+                               
+                                objForm.$key = doc.id
+                                objForm.userStatus = element.status
+                                
+                                FormArr.push(objForm);
                             } 
                             if(itemsProcessed === arr.length) {
                                 if (FormArr.length >= 1) {
@@ -220,7 +235,7 @@ export class CardsProvider {
                         .then(function(doc) {
                             itemsProcessed++;
                             var objForm = JSON.parse(JSON.stringify(doc.data()));
-                            if (objForm.status == 1) { 
+                            if (objForm.status == 1 || objForm.status == 2) { 
                                 // && objForm.IdClient==searchData.client && objForm.IdEntitie==searchData.entity) {
                                 objForm.$key = doc.id
                                 objForm.userStatus = element.status

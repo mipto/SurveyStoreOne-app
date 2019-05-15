@@ -129,15 +129,19 @@ export class HomePage {
     let ion = this
     let aux
     Promise.all([ ion.storage.get('changeForms')]).then(([change]) =>{
-      console.log(change);
+      // console.log(change);
       
       if(change === null || change === undefined)
         ion.storage.set('changeForms', [])
 
     })
+    ion.formProvider.getAllDocumentPendient("KKucKKIlEUSiqTNiGivn").then(form =>{
+      // console.log(form);
+      
+    })
     
     ion.cardsList.getAllFormsByUser().then(AllForms =>{
-      //console.log('allForms (consulta): ',AllForms)
+      // console.log('allForms (consulta): ',AllForms)
       
       this.storage.set('allForms', AllForms)
       //Data de pantalla de Formulario
@@ -145,10 +149,15 @@ export class HomePage {
       .then(All =>{
         // console.log('Questions (consulta):', All[0]);
         setTimeout(() => {
-          this.storage.set('allFormsQA',  All).then(elementsSaved => {
-            console.log('ressss', elementsSaved);
+          //obtener aparte las posiciones de los formularios que son pendientes para que NO se pierdan
           
-          }); 
+            //console.log(All);
+            
+            this.storage.set('allFormsQA',  All).then(elementsSaved => {
+              console.log('ressss', elementsSaved);
+            
+            }); 
+          
         }, 3500);
         //this.createQuestiosAnswerArray(All)
         loadingPopupHome.dismiss();
@@ -184,7 +193,6 @@ export class HomePage {
      
 
       ion.dashboard.getTotalEntitiesByUser().then(AllEnt =>{
-        console.log(AllEnt);
         //Solo tenemos los Id's asociados a un cliente
         this.storage.set('entitiesByUserAndClient', AllEnt)
       }).catch((error)=>{
@@ -192,7 +200,6 @@ export class HomePage {
         
       })
       ion.dashboard.getTotalDataEntities().then(AllEnt =>{
-        console.log(AllEnt);
         //Estan los datos de cada entidad 
         this.storage.set('entitiesByUser', AllEnt)
       }).catch((error)=>{
@@ -223,7 +230,6 @@ export class HomePage {
   
       }
     }else{
-      console.log('Is in a browser!');
       
       //Versión Online
       ion.getEntitiesOnline(selectedValue)
@@ -255,7 +261,6 @@ export class HomePage {
           }
         });
         
-        console.log(entSelect);
         ion.entities = entSelect
         loadingPopupHome.dismiss();
         
@@ -281,7 +286,7 @@ export class HomePage {
 
     ion.cardsList.getAllEntitiesByUser(selectedValue).then(AllEntities => {
       ion.entities = AllEntities;
-      console.log(AllEntities);
+      // console.log(AllEntities);
       
       loadingPopupHome.dismiss();
     }).catch(err => {
@@ -313,7 +318,7 @@ export class HomePage {
 
   searchForm() {
     let ion = this;
-    console.log(ion.search);
+    // console.log(ion.search);
 
     let entity = this.entities.find(x => x.$key === ion.search.entity);
     

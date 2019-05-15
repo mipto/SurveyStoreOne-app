@@ -4,6 +4,8 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 import { AuthData } from '../../providers/auth-data';
 import { CardsProvider } from "../../providers/forms/cards-list";
+import { Storage } from '@ionic/storage';
+
 /*
   Generated class for the FormsProvider provider.
 
@@ -16,11 +18,24 @@ export class FormsProvider {
   model: any = {};
   public array: any = {};
 
-  constructor(private http: HttpClient, public authData: AuthData, public cardsProvider:CardsProvider) {
+  constructor(private http: HttpClient, public authData: AuthData, public cardsProvider:CardsProvider, public storage: Storage) {
     this.db = firebase.firestore();
     this.array = [];
   }
 
+  getAllDocumentPendient(idForm): Promise<any>{
+    return new Promise((resolve, reject) => {
+        this.storage.get('allFormsQA').then(sd=>{
+          console.log(sd);
+          resolve(sd.filter(k => k[0].Id_form === idForm)[0])
+          
+      }).catch(e=>{
+        console.log(e);
+        reject(e);
+      })
+
+    })
+  }
   getAllDocuments(idForm): Promise<any> {
 
     return new Promise((resolve, reject) => {
@@ -34,6 +49,7 @@ export class FormsProvider {
             obj.$key = doc.id
             arr.push(obj);
           });
+          
 
           if (arr.length > 0) {
             arr = arr.sort(function (a, b) { return (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0); });
@@ -110,7 +126,7 @@ export class FormsProvider {
                       objQuestion.na = answer;
                     } else {
                       // objQuestion.answer = answer;
-                      console.log(answer);
+                      // console.log(answer);
                       
                       objQuestion.answer = answer[0];
                       objQuestion.otherOption = answer[1];
@@ -149,7 +165,7 @@ export class FormsProvider {
 
   getFormAnswers(formID, questionID) {
     return new Promise((resolve, reject) => {
-      console.log('entro en get answers');
+      // console.log('entro en get answers');
       let ion = this;
       let hierarchiesAnswers = ion.db.collection("hierarchies_answers");
 
@@ -184,10 +200,10 @@ export class FormsProvider {
     });
   }
   getFormSelectAnswers(formID, questionID) {
-    console.log('select answer');
+    // console.log('select answer');
     
     return new Promise((resolve, reject) => {
-      console.log('entro en get answers');
+      // console.log('entro en get answers');
       let ion = this;
       let hierarchiesAnswers = ion.db.collection("hierarchies_answers");
 
@@ -468,27 +484,53 @@ export class FormsProvider {
         AllFormId.forEach(element => {
           //console.log(element.$key);
           itemsProcessed++
-          ion.getAllDocuments(element.$key).then(doc =>{
-            //+console.log(doc);
-            if(doc !== null)
-            {
-              //doc.$key = element.$key
-              allForms.push(doc);
+          if(element.status == 1)
+          {
+            ion.getAllDocuments(element.$key).then(doc =>{
+              //+console.log(doc);
+              if(doc !== null)
+              {
+                //doc.$key = element.$key
+                allForms.push(doc);
 
-            }/*else{
-              let doN;
-              doN.$key = element.$key
-              doN = 0
-              allForms.push(doN);
+              }/*else{
+                let doN;
+                doN.$key = element.$key
+                doN = 0
+                allForms.push(doN);
 
-            }*/
-            if(itemsProcessed == AllFormId.length && allForms.length > 0)
-            {
-              //console.log(allForms);
-              
-              resolve(allForms)
-            }
-          })
+              }*/
+              if(itemsProcessed == AllFormId.length && allForms.length > 0)
+              {
+                //console.log(allForms);
+                
+                resolve(allForms)
+              }
+            })
+          }else if(element.status == 2)
+          {
+            ion.getAllDocumentPendient(element.$key).then(doc =>{
+              console.log(doc);
+              if(doc !== null)
+              {
+                //doc.$key = element.$key
+                allForms.push(doc);
+
+              }/*else{
+                let doN;
+                doN.$key = element.$key
+                doN = 0
+                allForms.push(doN);
+
+              }*/
+              if(itemsProcessed == AllFormId.length && allForms.length > 0)
+              {
+                //console.log(allForms);
+                
+                resolve(allForms)
+              }
+            })
+          }
         });
         
       

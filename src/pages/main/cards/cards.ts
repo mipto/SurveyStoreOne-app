@@ -27,6 +27,7 @@ export class CardsPage {
   };
   public entityName: any;
   public forms: any;
+  public allForms: any;
   public imgForm: object = {
     // typeStore: "https://firebasestorage.googleapis.com/v0/b/survey-store.appspot.com/o/forms_images%2Fstore%203.png?alt=media&token=212f12e9-fa5a-48c1-b918-1e3cb8d588c3",
     // typePerson: "https://firebasestorage.googleapis.com/v0/b/survey-store.appspot.com/o/forms_images%2Fpersonas%201.png?alt=media&token=484b573d-3517-44ad-b5e6-ea88d4acefe9",
@@ -54,6 +55,24 @@ export class CardsPage {
       this.search = data.search;
       this.entityName = data.entityName;
 
+  }
+
+  
+  getForms(ev: any){
+    // set val to the value of the searchbar
+    const val = ev.target.value;
+    
+    //incializamos nuevamente con todos los formularios
+    this.forms = this.allForms
+    // if the value is an empty string don't filter the items
+    
+    if (val && val.trim() != '') {
+      this.forms = this.forms.filter((form) => {
+        return (form.Title.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      })
+    }
+    
+    
   }
 
   ionViewWillEnter(){
@@ -106,6 +125,8 @@ export class CardsPage {
     ion.cardsList.getAllFormsByUserClientAndEntity(this.search).then(AllForms => {
         //console.log('new view forms', AllForms);
         ion.forms = AllForms;
+        this.allForms = this.forms
+
         //console.log('resolved view', AllForms);
         
     }).catch(err => {
@@ -120,19 +141,20 @@ export class CardsPage {
     this.storage.get('allForms').then((AllForms) => {
       //console.log('todos: ', AllForms.filter(form => form.IdClient == this.search.client && form.IdEntitie == this.search.entity));
       this.forms = AllForms.filter(form => form.IdClient == this.search.client && form.IdEntitie == this.search.entity && form.userStatus != 3);
-    
+      this.allForms = this.forms
     }).catch((er) =>{
         console.log(er);
     });
   }
 
-  goForm(idForm, nameForm) {
+  goForm(idForm, nameForm, status) {
     let ion = this;
-    
+   
     ion.navCtrl.push('FormsPage', {
       data: {
         idForm: idForm,
-        nameForm: nameForm
+        nameForm: nameForm,
+        statusForm: status,
       }
     });
   }

@@ -34,7 +34,9 @@ page-cards {
     // .ion-card, .card-ios, .card-md,  {
     //   margin: 10px !important;
     // }
-    
+    ion-searchbar .button {
+      background-color: transparent !important
+    } 
       .card-content-md {
         padding-top: 5px;
       }

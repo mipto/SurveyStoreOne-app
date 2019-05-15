@@ -15,6 +15,7 @@ export class FormsPage {
   public forms: any;
   public idForm: any;
   public nameForm: any;
+  public statusForm: any;
   public allForms: any;
   public formIndex: any;
   public formsConstraint: any;
@@ -40,6 +41,7 @@ export class FormsPage {
     let data = navParams.get('data');
     this.idForm = data.idForm;
     this.nameForm = data.nameForm;
+    this.statusForm = data.statusForm;
   }
   
   ionViewWillEnter(){
@@ -64,6 +66,8 @@ export class FormsPage {
       }else
       {
         //Offline (ver si se guardaron bien los cambios en el storage)
+        console.log("offline");
+        
         ion.saveAllAnswersOffline()  
               
       }
@@ -112,6 +116,8 @@ export class FormsPage {
   }
   saveAllAnswersOnline() {
     let ion = this
+    //if status == 2
+    this.saveAllAnswersOffline()
     this.FormsProvider.saveAllAnswers(ion.forms).then(res => {
       // console.log('va a guardar');
       this.forms = null;
@@ -157,7 +163,7 @@ export class FormsPage {
     let ion = this;
     if(this.isOnDevice())
     {
-      if (this.isOnline()) {
+      if (this.isOnline() && this.statusForm === 1) {
       //Versión online
       this.getDocumentsOnline()
     
@@ -168,12 +174,18 @@ export class FormsPage {
       }
     } else
     {
-      //Versión online
-       this.getDocumentsOnline()
+      if (this.statusForm === 1) {
+        //Versión online
+        
+         this.getDocumentsOnline()
+        
+      } else {
+        //Versión offline
+        this.getDocumentsOffline()
+        
+      }
       
   
-      //Versión offline
-      //this.getDocumentsOffline()
 
     }
     
@@ -186,18 +198,18 @@ export class FormsPage {
    let ion= this
     this.storage.get('allFormsQA').then(all =>{
       this.allForms = all;
-      console.log(this.allForms.filter(k => k[0].Id_form === this.idForm)[0]);
+      // console.log(this.allForms.filter(k => k[0].Id_form === this.idForm)[0]);
       this.formIndex = all.findIndex(k => k[0].Id_form === this.idForm)
       
        this.forms =all.filter(k => k[0].Id_form === this.idForm)[0];
       // console.log(this.forms);
       this.storage.get('changeForms').then(form =>{
-        console.log(form);
+        // console.log(form);
         
         this.changeForm = form;
         if(this.changeForm !== undefined && this.changeForm !== null)
         {
-          console.log(this.changeForm);
+          // console.log(this.changeForm);
           
           // arr = this.changeForm
           if ( this.changeForm.indexOf(this.formIndex) === -1) {
@@ -205,7 +217,7 @@ export class FormsPage {
            
           }
         }else{
-          console.log('vaciooo ',this.changeForm);
+          // console.log('vaciooo ',this.changeForm);
           this.changeForm = []
           this.changeForm.push(this.formIndex)
 
@@ -224,7 +236,7 @@ export class FormsPage {
     let ion = this;
     this.FormsProvider.getAllDocuments(this.idForm).then(docs => {
       this.forms = docs;
-      console.log('orderder forms', this.forms);
+      // console.log('orderder forms', this.forms);
 
       this.storage.get('allFormsQA').then(all =>{
         this.allForms = all;
