@@ -136,6 +136,7 @@ export class FormsProvider {
 
                 }
                 else{
+                  //buscar respuestas una a una
                   ion.getFormAnswers(form.$key, doc.id)
                   .then(answer => {
                     if(typeof(answer) === "boolean"){
@@ -165,7 +166,7 @@ export class FormsProvider {
 
   getFormAnswers(formID, questionID) {
     return new Promise((resolve, reject) => {
-      // console.log('entro en get answers');
+      console.log('entro en get answers');
       let ion = this;
       let hierarchiesAnswers = ion.db.collection("hierarchies_answers");
 
@@ -177,7 +178,8 @@ export class FormsProvider {
               objAnswer.$key = doc.id;
 
               // allForms[i].questions[i].answer = objAnswer.answer;
-
+              //console.log('eaee');
+              
               //console.log('objAnswer', objAnswer);
               if (objAnswer.na) {
                 if (objAnswer.na == true) {
@@ -203,7 +205,7 @@ export class FormsProvider {
     // console.log('select answer');
     
     return new Promise((resolve, reject) => {
-      // console.log('entro en get answers');
+      console.log('entro en get answers');
       let ion = this;
       let hierarchiesAnswers = ion.db.collection("hierarchies_answers");
 
@@ -220,7 +222,7 @@ export class FormsProvider {
 
               // allForms[i].questions[i].answer = objAnswer.answer;
 
-              //console.log('objAnswer', objAnswer);
+              console.log('objAnswer', objAnswer);
               if (objAnswer.na) {
                 if (objAnswer.na == true) {
                   resolve(objAnswer.na);
@@ -252,7 +254,16 @@ export class FormsProvider {
     let ion = this;
     return new Promise((resolve, reject) => {
       let hierarchiesAnswers = ion.db.collection("hierarchies_answers");
+      ion.deleteOldAnswersArrayBeforeSave().then(ans =>{
 
+        hierarchiesAnswers.doc().set({
+          id_form:'123123',
+          answers: [{asd: 'ss', sss: 'www'},{asd: 'ss', sss: 'www'},{asd: 'ss', sss: 'www'}]
+  
+        })
+        console.log('answers saved sucess!');
+
+      })
       Forms.forEach(form => {
         form.questions.forEach(question => {
           let hasQuestion = question.answer ? true : false;
@@ -392,7 +403,24 @@ export class FormsProvider {
       resolve();
     });
   }
-
+  deleteOldAnswersArrayBeforeSave()
+  {
+    let ion = this
+    return new Promise (resolve =>{
+      let hierarchiesAnswers = ion.db.collection("hierarchies_answers");
+      hierarchiesAnswers.where("id_form", "==", '123123')
+      .get()
+      .then((snapShot) => {
+        snapShot.forEach(function (doc) {
+          hierarchiesAnswers.doc(doc.id).delete().then(function() {
+            console.log("Document successfully deleted!");
+            resolve();
+          });
+        });
+        resolve();
+      });
+    })
+  }
   deleteOldAnswersBeforeSave(form, question){
     //ya funciona no tocar xD
     let ion = this;
