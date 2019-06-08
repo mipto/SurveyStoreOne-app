@@ -37,7 +37,7 @@ export class FormsProvider {
     })
   }
   getAllDocuments(idForm): Promise<any> {
-
+ 
     return new Promise((resolve, reject) => {
       var forms = this.db.collection("hierarchy_form")
       .where("Id_form", "==", idForm)// Create a query against the collection.
