@@ -118,6 +118,7 @@ export class FormsPage {
     let ion = this
     //if status == 2
     this.saveAllAnswersOffline()
+    this.FormsProvider.saveArrAnswers(ion.forms)
     this.FormsProvider.saveAllAnswers(ion.forms).then(res => {
       // console.log('va a guardar');
       this.forms = null;
@@ -348,6 +349,7 @@ export class FormsPage {
                 all[auxInd].userStatus = 3
               })
               //Online
+              //se agrega un nuevo campo, es la fecha actual
               this.FormsProvider.updateFormStatus(this.idForm, 3).then(res => {
                 console.log('updated form status.');
                 

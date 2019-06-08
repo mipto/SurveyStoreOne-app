@@ -115,10 +115,10 @@ export class HomePage {
       //Versión online
       ion.loadHomeDataOnline()
      
-      //Versión offline
-      //ion.loadHomeDataOffline(loadingPopupHome)
+      // //Versión offline
+      // //ion.loadHomeDataOffline(loadingPopupHome)
   
-      //Data de pantalla de Cards
+      // //Data de pantalla de Cards
       ion.loadFormDataOnline(loadingPopupHome)
       
 
@@ -201,6 +201,7 @@ export class HomePage {
       })
       ion.dashboard.getTotalDataEntities().then(AllEnt =>{
         //Estan los datos de cada entidad 
+        console.log(AllEnt)
         this.storage.set('entitiesByUser', AllEnt)
       }).catch((error)=>{
         console.log(error);

@@ -37,7 +37,7 @@ export class FormsProvider {
     })
   }
   getAllDocuments(idForm): Promise<any> {
- 
+
     return new Promise((resolve, reject) => {
       var forms = this.db.collection("hierarchy_form")
       .where("Id_form", "==", idForm)// Create a query against the collection.
@@ -222,7 +222,7 @@ export class FormsProvider {
 
               // allForms[i].questions[i].answer = objAnswer.answer;
 
-              console.log('objAnswer', objAnswer);
+              // console.log('objAnswer', objAnswer);
               if (objAnswer.na) {
                 if (objAnswer.na == true) {
                   resolve(objAnswer.na);
@@ -254,16 +254,18 @@ export class FormsProvider {
     let ion = this;
     return new Promise((resolve, reject) => {
       let hierarchiesAnswers = ion.db.collection("hierarchies_answers");
-      ion.deleteOldAnswersArrayBeforeSave().then(ans =>{
+      // console.log(Forms[0].Id_form);
+      
+      // ion.deleteOldAnswersArrayBeforeSave(Forms[0].Id_form).then(ans =>{
+        
+      //   hierarchiesAnswers.doc().set({
+      //     id_form: Forms[0].Id_form,
+      //     answers: [{asd: 'ss', sss: 'www'}, {asd: 'ss', sss: 'www'}, {asd: 'ss', sss: 'www'}],
+      //     sync: false,
+      //   })
+      //   console.log('answers saved sucess!');
 
-        hierarchiesAnswers.doc().set({
-          id_form:'123123',
-          answers: [{asd: 'ss', sss: 'www'},{asd: 'ss', sss: 'www'},{asd: 'ss', sss: 'www'}]
-  
-        })
-        console.log('answers saved sucess!');
-
-      })
+      // })
       Forms.forEach(form => {
         form.questions.forEach(question => {
           let hasQuestion = question.answer ? true : false;
@@ -403,15 +405,187 @@ export class FormsProvider {
       resolve();
     });
   }
-  deleteOldAnswersArrayBeforeSave()
+  saveArrAnswers(Forms)
+  {
+    this.saveArrayAnswers(Forms).then(ans => {
+      console.log(ans);
+      let hierarchiesAnswers = this.db.collection("hierarchies_answers");
+      console.log(typeof ans);
+      console.log(typeof JSON.stringify(ans));
+      console.log(JSON.parse(JSON.stringify(ans)));
+      const a =  JSON.stringify(ans);
+      this.deleteOldAnswersArrayBeforeSave(Forms[0].Id_form).then(ans =>{
+        
+        hierarchiesAnswers.doc().set({
+          id_form: Forms[0].Id_form,
+          answers: a,
+          sync: false,
+        })
+        console.log('answers saved sucess!');
+
+      })
+
+    })
+  }
+  saveArrayAnswers(Forms)
+  {
+    let ion = this;
+
+    return new Promise((resolve, reject) => {
+      
+      let hierarchiesAnswers = ion.db.collection("hierarchies_answers");
+      console.log(Forms[0].Id_form);
+      
+      // ion.deleteOldAnswersArrayBeforeSave(Forms[0].Id_form).then(ans =>{
+        
+      //   hierarchiesAnswers.doc().set({
+      //     id_form: Forms[0].Id_form,
+      //     answers: [{asd: 'ss', sss: 'www'}, {asd: 'ss', sss: 'www'}, {asd: 'ss', sss: 'www'}],
+      //     sync: false,
+      //   })
+      //   console.log('answers saved sucess!');
+
+      // })
+      let formArray = []
+      Forms.forEach(form => {
+        form.questions.forEach(question => {
+          let hasQuestion = question.answer ? true : false;
+          let hasNa = typeof question.na !== 'undefined' ? true : false;
+          let hasNaTrue = question.na == true ? true : false;
+          let hasNaFalse = question.na == false ? true : false;
+          let hasOtherOption = typeof question.otherOption !== 'undefined' ? true : false;
+          let hasOtherOptionTrue = question.otherOption == true ? true : false;
+          let hasOtherOptionFalse = question.otherOption == false ? true : false;
+          let otherBool
+
+          let ans;
+          if (hasQuestion) {
+            //hay que cambiar cosas de aquí agregar el other option if con question.type
+            if(question.type === 3 || question.type === 4){
+              if (hasNa && hasNaTrue) {
+                ans ={
+                    id_form: form.$key,
+                    id_question: question.$key,
+                    answer: '',
+                    otherAnswer: '',
+                    otherOption: false,
+                    na: true
+                  }
+              } else {
+                ans ={
+                    id_form: form.$key,
+                    id_question: question.$key,
+                    answer: question.answer,
+                    otherAnswer: question.otherAnswer,
+                    otherOption: otherBool,
+                    na: false
+                  }
+              }
+              
+            }else{
+              if (hasNa && hasNaTrue) {
+                ans ={
+                    id_form: form.$key,
+                    id_question: question.$key,
+                    answer: '',
+                    // otherOption: otherBool,
+                    na: true
+                  }
+              } else {
+                ans = {
+                    id_form: form.$key,
+                    id_question: question.$key,
+                    answer: question.answer,
+                    // otherOption: otherBool,
+                    na: false
+                  }
+              } 
+  
+            }
+          } else if (hasNa) {
+            if(question.type === 3 || question.type === 4){
+              if (hasNaTrue) {
+                  ans ={
+                    id_form: form.$key,
+                    id_question: question.$key,
+                    otherOption: false,
+                    answer: '',
+                    otherAnswer: '',
+                    na: true
+                  };
+              } else if (hasNaFalse) {
+                ans = {
+                    id_form: form.$key,
+                    id_question: question.$key,
+                    otherOption: false,
+                    answer: '',
+                    otherAnswer: '',
+                    na: false
+                  }
+              }
+            }else{
+  
+              if (hasNaTrue) {
+                ans ={
+                    id_form: form.$key,
+                    id_question: question.$key,
+                    // otherOption: otherBool,
+                    answer: '',
+                    na: true
+                  }
+              } else if (hasNaFalse) {
+                ans = {
+                    id_form: form.$key,
+                    id_question: question.$key,
+                    // otherOption: otherBool,
+                    answer: '',
+                    na: false
+                  }
+              }
+            }
+          } else {
+            console.log(' no answers saved!');
+          }
+          
+          formArray.push(ans)
+        })
+        
+      })
+      console.log("ajskdjask ", formArray, Forms[0].Id_form)
+        
+      // ion.deleteOldAnswersArrayBeforeSave('Forms[0].Id_form').then(ans =>{
+        
+      //   hierarchiesAnswers.doc().set({
+      //     id_form: Forms[0].Id_form,
+      //     answers: formArray,
+      //     sync: false,
+      //   })
+      //   console.log('answers saved sucess!');
+
+      // }).catch((e) => {
+      //   console.log(e);
+      //   hierarchiesAnswers.doc().set({
+      //     id_form: Forms[0].Id_form,
+      //     answers: formArray,
+      //     sync: false,
+      //   })
+        
+        
+      // })
+      resolve(formArray);
+    });
+  }
+  deleteOldAnswersArrayBeforeSave(Id_form)
   {
     let ion = this
     return new Promise (resolve =>{
       let hierarchiesAnswers = ion.db.collection("hierarchies_answers");
-      hierarchiesAnswers.where("id_form", "==", '123123')
+      hierarchiesAnswers.where("id_form", "==", Id_form)
+      .where("sync", "==", false)
       .get()
       .then((snapShot) => {
         snapShot.forEach(function (doc) {
+          
           hierarchiesAnswers.doc(doc.id).delete().then(function() {
             console.log("Document successfully deleted!");
             resolve();
