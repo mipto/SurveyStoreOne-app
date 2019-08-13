@@ -112,14 +112,14 @@ export class HomePage {
     }else{
       //Data de pantalla de Home
   
+      loadingPopupHome.dismiss();
       //Versión online
       ion.loadHomeDataOnline()
-     
       // //Versión offline
       // //ion.loadHomeDataOffline(loadingPopupHome)
   
       // //Data de pantalla de Cards
-      ion.loadFormDataOnline(loadingPopupHome)
+      //ion.loadFormDataOnline(loadingPopupHome)
       
 
     }
@@ -199,14 +199,14 @@ export class HomePage {
         console.log(error);
         
       })
-      ion.dashboard.getTotalDataEntities().then(AllEnt =>{
-        //Estan los datos de cada entidad 
-        console.log(AllEnt)
-        this.storage.set('entitiesByUser', AllEnt)
-      }).catch((error)=>{
-        console.log(error);
+      // ion.dashboard.getTotalDataEntities().then(AllEnt =>{
+      //   //Estan los datos de cada entidad 
+      //   console.log(AllEnt)
+      //   this.storage.set('entitiesByUser', AllEnt)
+      // }).catch((error)=>{
+      //   console.log(error);
         
-      })
+      // })
 
       // loadingPopupHome.dismiss();
         

@@ -117,8 +117,8 @@ export class FormsPage {
   saveAllAnswersOnline() {
     let ion = this
     //if status == 2
-    this.saveAllAnswersOffline()
-    this.FormsProvider.saveArrAnswers(ion.forms)
+    // this.saveAllAnswersOffline()
+    //this.FormsProvider.saveArrAnswers(ion.forms)
     this.FormsProvider.saveAllAnswers(ion.forms).then(res => {
       // console.log('va a guardar');
       this.forms = null;
@@ -237,11 +237,14 @@ export class FormsPage {
     let ion = this;
     this.FormsProvider.getAllDocuments(this.idForm).then(docs => {
       this.forms = docs;
-      // console.log('orderder forms', this.forms);
+      console.log('orderder forms', this.forms);
 
       this.storage.get('allFormsQA').then(all =>{
         this.allForms = all;
         this.formIndex = all.findIndex(k => k[0].Id_form === this.idForm)
+      }).catch((err)=>{
+        console.log(err);
+        
       });
        ion.loadingForm.dismiss();
        ion.createArrayFamiliar();

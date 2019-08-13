@@ -14,7 +14,8 @@
     </ion-item> -->
 
     <ion-card class="adv-map" *ngFor="let form of forms">
-    <div *ngIf="form.userStatus != 3">
+    <!-- <div *ngIf="form.userStatus != 3"> -->
+        <div>
         <div class="image-bg" style="position: relative">
             <img *ngIf="form.FormType == 's'" src="./assets/img/store.png">
             <img *ngIf="form.FormType == 'p'" src="./assets/img/person.png">

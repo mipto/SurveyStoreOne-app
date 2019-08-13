@@ -132,6 +132,7 @@ export class CardsProvider {
     }
 
 
+    //For maptoEntity page
     getAllFormsByClientAndEntitie(searchData): Promise<any> {
         let arrForms = [];
         return new Promise((resolve, reject) => {
@@ -159,6 +160,7 @@ export class CardsProvider {
         });
     }
 
+    //For cards page
     getAllFormsByUserClientAndEntity(searchData): Promise<any> {
         let ion = this;
         let arr = [];
@@ -169,8 +171,11 @@ export class CardsProvider {
             try {
                 let authUser = ion.authData.getAuthUser();
                 var forms_users = this.db.collection("forms_users");
-                forms_users.where("id_user", "==", authUser.uid).get()
-                .then((formsUsersSnapShot) => {
+                forms_users.where("id_user", "==", authUser.uid)
+                //intento de cambiar base de datos a que el id de entidad y de cliente estén en forms_usersd
+                .where("IdClient", "==", searchData.client)
+                .where("IdEntitie", "==", searchData.entity)
+                .get().then((formsUsersSnapShot) => {
                     formsUsersSnapShot.forEach(function (doc) {
                         var obj = JSON.parse(JSON.stringify(doc.data()));
                         obj.$key = doc.id

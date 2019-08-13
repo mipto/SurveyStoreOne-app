@@ -123,7 +123,7 @@ export class CardsPage {
     let ion = this
     //console.log('new view', this.search);
     ion.cardsList.getAllFormsByUserClientAndEntity(this.search).then(AllForms => {
-        //console.log('new view forms', AllForms);
+        console.log('new view forms', AllForms);
         ion.forms = AllForms;
         this.allForms = this.forms
 

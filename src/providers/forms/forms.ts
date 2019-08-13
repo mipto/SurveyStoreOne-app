@@ -164,13 +164,13 @@ export class FormsProvider {
     });
   }
 
-  getFormAnswers(formID, questionID) {
+  getFormAnswers(hierarchyFormID, questionID) {
     return new Promise((resolve, reject) => {
       console.log('entro en get answers');
       let ion = this;
       let hierarchiesAnswers = ion.db.collection("hierarchies_answers");
 
-      hierarchiesAnswers.where("id_form", "==", formID)
+      hierarchiesAnswers.where("id_hierarchy_form", "==", hierarchyFormID)
           .where("id_question", "==", questionID).get()
           .then((snapShot) => {
             snapShot.forEach(function (doc) {
@@ -201,7 +201,7 @@ export class FormsProvider {
           })
     });
   }
-  getFormSelectAnswers(formID, questionID) {
+  getFormSelectAnswers(hierarchyFormID, questionID) {
     // console.log('select answer');
     
     return new Promise((resolve, reject) => {
@@ -209,7 +209,7 @@ export class FormsProvider {
       let ion = this;
       let hierarchiesAnswers = ion.db.collection("hierarchies_answers");
 
-      hierarchiesAnswers.where("id_form", "==", formID)
+      hierarchiesAnswers.where("id_hierarchy_form", "==", hierarchyFormID)
           .where("id_question", "==", questionID).get()
           .then((snapShot) => {
             snapShot.forEach(function (doc) {
@@ -266,8 +266,8 @@ export class FormsProvider {
       //   console.log('answers saved sucess!');
 
       // })
-      Forms.forEach(form => {
-        form.questions.forEach(question => {
+      Forms.forEach(hierarchy_form => {
+        hierarchy_form.questions.forEach(question => {
           let hasQuestion = question.answer ? true : false;
           let hasNa = typeof question.na !== 'undefined' ? true : false;
           let hasNaTrue = question.na == true ? true : false;
@@ -292,9 +292,9 @@ export class FormsProvider {
           //hay que cambiar cosas de aquí agregar el other option if con question.type
           if(question.type === 3 || question.type === 4){
             if (hasNa && hasNaTrue) {
-              ion.deleteOldAnswersBeforeSave(form.$key, question.$key).then(res => {
+              ion.deleteOldAnswersBeforeSave(hierarchy_form.$key, question.$key).then(res => {
                 hierarchiesAnswers.doc().set({
-                  id_form: form.$key,
+                  id_hierarchy_form: hierarchy_form.$key,
                   id_question: question.$key,
                   answer: '',
                   otherAnswer: '',
@@ -304,9 +304,10 @@ export class FormsProvider {
                 console.log('answers saved sucess!');
               });
             } else {
-              ion.deleteOldAnswersBeforeSave(form.$key, question.$key).then(res => {
+              ion.deleteOldAnswersBeforeSave(hierarchy_form.$key, question.$key).then(res => {
                 hierarchiesAnswers.doc().set({
-                  id_form: form.$key,
+                  //id_hierarchy_form
+                  id_hierarchy_form: hierarchy_form.$key,
                   id_question: question.$key,
                   answer: question.answer,
                   otherAnswer: question.otherAnswer,
@@ -319,9 +320,9 @@ export class FormsProvider {
             
           }else{
             if (hasNa && hasNaTrue) {
-              ion.deleteOldAnswersBeforeSave(form.$key, question.$key).then(res => {
+              ion.deleteOldAnswersBeforeSave(hierarchy_form.$key, question.$key).then(res => {
                 hierarchiesAnswers.doc().set({
-                  id_form: form.$key,
+                  id_hierarchy_form: hierarchy_form.$key,
                   id_question: question.$key,
                   answer: '',
                   // otherOption: otherBool,
@@ -330,9 +331,9 @@ export class FormsProvider {
                 console.log('answers saved sucess!');
               });
             } else {
-              ion.deleteOldAnswersBeforeSave(form.$key, question.$key).then(res => {
+              ion.deleteOldAnswersBeforeSave(hierarchy_form.$key, question.$key).then(res => {
                 hierarchiesAnswers.doc().set({
-                  id_form: form.$key,
+                  id_hierarchy_form: hierarchy_form.$key,
                   id_question: question.$key,
                   answer: question.answer,
                   // otherOption: otherBool,
@@ -346,9 +347,9 @@ export class FormsProvider {
         } else if (hasNa) {
           if(question.type === 3 || question.type === 4){
             if (hasNaTrue) {
-              ion.deleteOldAnswersBeforeSave(form.$key, question.$key).then(res => {
+              ion.deleteOldAnswersBeforeSave(hierarchy_form.$key, question.$key).then(res => {
                 hierarchiesAnswers.doc().set({
-                  id_form: form.$key,
+                  id_hierarchy_form: hierarchy_form.$key,
                   id_question: question.$key,
                   otherOption: false,
                   answer: '',
@@ -358,9 +359,9 @@ export class FormsProvider {
                 console.log('answers saved sucess!');
               });
             } else if (hasNaFalse) {
-              ion.deleteOldAnswersBeforeSave(form.$key, question.$key).then(res => {
+              ion.deleteOldAnswersBeforeSave(hierarchy_form.$key, question.$key).then(res => {
                 hierarchiesAnswers.doc().set({
-                  id_form: form.$key,
+                  id_hierarchy_form: hierarchy_form.$key,
                   id_question: question.$key,
                   otherOption: false,
                   answer: '',
@@ -373,9 +374,9 @@ export class FormsProvider {
           }else{
 
             if (hasNaTrue) {
-              ion.deleteOldAnswersBeforeSave(form.$key, question.$key).then(res => {
+              ion.deleteOldAnswersBeforeSave(hierarchy_form.$key, question.$key).then(res => {
                 hierarchiesAnswers.doc().set({
-                  id_form: form.$key,
+                  id_hierarchy_form: hierarchy_form.$key,
                   id_question: question.$key,
                   // otherOption: otherBool,
                   answer: '',
@@ -384,9 +385,9 @@ export class FormsProvider {
                 console.log('answers saved sucess!');
               });
             } else if (hasNaFalse) {
-              ion.deleteOldAnswersBeforeSave(form.$key, question.$key).then(res => {
+              ion.deleteOldAnswersBeforeSave(hierarchy_form.$key, question.$key).then(res => {
                 hierarchiesAnswers.doc().set({
-                  id_form: form.$key,
+                  id_hierarchy_form: hierarchy_form.$key,
                   id_question: question.$key,
                   // otherOption: otherBool,
                   answer: '',
@@ -447,8 +448,8 @@ export class FormsProvider {
 
       // })
       let formArray = []
-      Forms.forEach(form => {
-        form.questions.forEach(question => {
+      Forms.forEach(hierarchy_form => {
+        hierarchy_form.questions.forEach(question => {
           let hasQuestion = question.answer ? true : false;
           let hasNa = typeof question.na !== 'undefined' ? true : false;
           let hasNaTrue = question.na == true ? true : false;
@@ -464,7 +465,7 @@ export class FormsProvider {
             if(question.type === 3 || question.type === 4){
               if (hasNa && hasNaTrue) {
                 ans ={
-                    id_form: form.$key,
+                    id_hierarchy_form: hierarchy_form.$key,
                     id_question: question.$key,
                     answer: '',
                     otherAnswer: '',
@@ -473,7 +474,7 @@ export class FormsProvider {
                   }
               } else {
                 ans ={
-                    id_form: form.$key,
+                    id_hierarchy_form: hierarchy_form.$key,
                     id_question: question.$key,
                     answer: question.answer,
                     otherAnswer: question.otherAnswer,
@@ -485,7 +486,7 @@ export class FormsProvider {
             }else{
               if (hasNa && hasNaTrue) {
                 ans ={
-                    id_form: form.$key,
+                    id_hierarchy_form: hierarchy_form.$key,
                     id_question: question.$key,
                     answer: '',
                     // otherOption: otherBool,
@@ -493,7 +494,7 @@ export class FormsProvider {
                   }
               } else {
                 ans = {
-                    id_form: form.$key,
+                    id_hierarchy_form: hierarchy_form.$key,
                     id_question: question.$key,
                     answer: question.answer,
                     // otherOption: otherBool,
@@ -506,7 +507,7 @@ export class FormsProvider {
             if(question.type === 3 || question.type === 4){
               if (hasNaTrue) {
                   ans ={
-                    id_form: form.$key,
+                    id_hierarchy_form: hierarchy_form.$key,
                     id_question: question.$key,
                     otherOption: false,
                     answer: '',
@@ -515,7 +516,7 @@ export class FormsProvider {
                   };
               } else if (hasNaFalse) {
                 ans = {
-                    id_form: form.$key,
+                    id_hierarchy_form: hierarchy_form.$key,
                     id_question: question.$key,
                     otherOption: false,
                     answer: '',
@@ -527,7 +528,7 @@ export class FormsProvider {
   
               if (hasNaTrue) {
                 ans ={
-                    id_form: form.$key,
+                    id_hierarchy_form: hierarchy_form.$key,
                     id_question: question.$key,
                     // otherOption: otherBool,
                     answer: '',
@@ -535,7 +536,7 @@ export class FormsProvider {
                   }
               } else if (hasNaFalse) {
                 ans = {
-                    id_form: form.$key,
+                    id_hierarchy_form: hierarchy_form.$key,
                     id_question: question.$key,
                     // otherOption: otherBool,
                     answer: '',
@@ -580,7 +581,7 @@ export class FormsProvider {
     let ion = this
     return new Promise (resolve =>{
       let hierarchiesAnswers = ion.db.collection("hierarchies_answers");
-      hierarchiesAnswers.where("id_form", "==", Id_form)
+      hierarchiesAnswers.where("id_hierarchy_form", "==", Id_form)
       .where("sync", "==", false)
       .get()
       .then((snapShot) => {
@@ -600,7 +601,7 @@ export class FormsProvider {
     let ion = this;
     return new Promise(resolve => {
       let hierarchiesAnswers = ion.db.collection("hierarchies_answers");
-      hierarchiesAnswers.where("id_form", "==", form)
+      hierarchiesAnswers.where("id_hierarchy_form", "==", form)
       .where("id_question", "==", question).get()
       .then((snapShot) => {
         snapShot.forEach(function (doc) {
@@ -689,7 +690,7 @@ export class FormsProvider {
           if(element.status == 1)
           {
             ion.getAllDocuments(element.$key).then(doc =>{
-              //+console.log(doc);
+              //console.log(doc);
               if(doc !== null)
               {
                 //doc.$key = element.$key
