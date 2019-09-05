@@ -95,8 +95,8 @@ export class CardsPage {
     //Versión Online
     this.getAllFormsOnline()
       
-    //Versión Offline
-    this.getAllFormsOffline()
+    // //Versión Offline
+    // this.getAllFormsOffline()
     
   }
   // //Test GeoLocation
@@ -121,7 +121,7 @@ export class CardsPage {
 
   getAllFormsOnline(){
     let ion = this
-    //console.log('new view', this.search);
+    console.log('new view', this.search);
     ion.cardsList.getAllFormsByUserClientAndEntity(this.search).then(AllForms => {
         console.log('new view forms', AllForms);
         ion.forms = AllForms;
@@ -130,6 +130,8 @@ export class CardsPage {
         //console.log('resolved view', AllForms);
         
     }).catch(err => {
+      console.log(err);
+      
       ion.toastCtrl.create({
         message: 'This entity doesnt have any form, please select another.',
         duration: 3000

@@ -116,7 +116,7 @@ export class HomePage {
       //Versión online
       ion.loadHomeDataOnline()
       // //Versión offline
-      // //ion.loadHomeDataOffline(loadingPopupHome)
+      // ion.loadHomeDataOffline(loadingPopupHome)
   
       // //Data de pantalla de Cards
       //ion.loadFormDataOnline(loadingPopupHome)
@@ -277,6 +277,20 @@ export class HomePage {
 
     })
   }
+  async parserSet(set){
+    let entity = [];
+    console.log(set);
+    
+    for (let iterator of set) {
+   await console.log(JSON.parse(iterator));
+//      entity.push(JSON.parse(iterator));
+     console.log(iterator);
+    }
+    set.forEach(element => {
+      console.log(element);
+      
+    });
+  }
   getEntitiesOnline(selectedValue) {
     let ion = this
     let loadingPopupHome = ion.loadingCtrl.create({
@@ -284,21 +298,23 @@ export class HomePage {
       content: ''
     });
     loadingPopupHome.present();
-
-    ion.cardsList.getAllEntitiesByUser(selectedValue).then(AllEntities => {
-      ion.entities = AllEntities;
-      // console.log(AllEntities);
-      
-      loadingPopupHome.dismiss();
-    }).catch(err => {
+    
+    ion.cardsList.getAllEntitiesByUser(selectedValue).then(all =>{
+        console.log(all);
+        ion.entities = all;
+        loadingPopupHome.dismiss();
+     
+    }).catch(err =>{
+      console.log(err);
       ion.entities = null;
       ion.toastCtrl.create({
-          message: 'This client doesnt have entities, please select another.',
-          duration: 3000
-        }).present();
+              message: 'This client doesnt have entities, please select another.',
+              duration: 3000
+            }).present();
       loadingPopupHome.dismiss();
-
-    });
+      
+    })
+    
 
   }
   ionViewDidEnter() {
@@ -319,9 +335,10 @@ export class HomePage {
 
   searchForm() {
     let ion = this;
-    // console.log(ion.search);
+    console.log(ion.search);
 
     let entity = this.entities.find(x => x.$key === ion.search.entity);
+    console.log(entity);
     
     ion.navCtrl.push('CardsPage', {
       data: {

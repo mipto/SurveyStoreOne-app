@@ -46,43 +46,91 @@ export class CardsProvider {
             }
         });
     }
-
-    getAllEntitiesByUser(clientId): Promise<any> {
+    async getAllEntitiesByUser(clientId): Promise<any> {
         let ion = this;
         let arr = [];
+        let EntitieArrKey = [];
         let EntitieArr = [];
+        let EntitieSet = [];
+        console.log(clientId);
         
-        return new Promise((resolve, reject) => {
-            try {
-                let authUser = ion.authData.getAuthUser();
-                var entities_user = this.db.collection("entities_users");
-                entities_user.where("IdClient", "==", clientId).where("IdUser", "==", authUser.uid).get()
-                .then((entitiesSnapShot) => {
+        return await new Promise(async (resolve, reject) => {
+            try{
+                var itemsProcessed = 0;
+                let authUser = await ion.authData.getAuthUser();
+                var forms = await this.db.collection("forms");
+                forms.where("IdClient", "==", clientId).get()
+                .then(async (entitiesSnapShot) => {
+                    if(entitiesSnapShot.size == 0)
+                    {
+                        console.log("entro aqui");
+                        
+                        reject();
+                    }
                     entitiesSnapShot.forEach(function (doc) {
                         var obj = JSON.parse(JSON.stringify(doc.data()));
                         obj.$key = doc.id
                         arr.push(obj);
-                    });
-                    arr[0].Id_entity.forEach(element => {
-                        var entitie = this.db.collection("entities").doc(element.entity_id)
-                        entitie.get().then(function(doc) {
-                            //console.log(doc.data());
-                            var objEntitie = JSON.parse(JSON.stringify(doc.data()));
-                            objEntitie.$key = doc.id
-                            EntitieArr.push(objEntitie);
+                    })
+                    console.log(arr);
+                    // debugger
+                    for await (const form of arr) {
+                        let itemsProcessedFormUser = 0;
+                        var form_user = await this.db.collection("forms_users");
+                        form_user.where("id_form", "==", form.$key).where("id_user", "==", authUser.uid).get()
+                        .then(async (entitiesSnapShot) => {
+                            itemsProcessed++;
+                            entitiesSnapShot.forEach(async function (doc) {
+                                // EntitieArrKey.push(doc.data());
+                                
+                                var obj = await JSON.parse(JSON.stringify(doc.data()));
+                                // obj.$key = doc.id
+                                var ent = {
+                                    Name: obj.entity_name,
+                                    // id_entity: obj.id_entity,
+                                    $key: obj.id_entity
+                                }
+                                console.log(ent);
+                                if(EntitieSet.find( entity => entity.$key === ent.$key ) === undefined)
+                                    EntitieSet.push(ent);
+                            })
+                            
+                            if(itemsProcessed === arr.length) {
+                                
+                                if (EntitieSet.length >= 1) {
+                                    console.log(EntitieSet);
+                                    await resolve(EntitieSet);
+                                } else {
+                                    await reject();
+                                }
+                            }
+                        }).catch(async err => {
+                            console.log(err);
+                            
+                            await reject(err);
                         });
-                    });
-                    resolve(EntitieArr);
-                }).catch(err => {
-                    reject(err);
-                });
-            } catch (error) {
-                reject(error);
+                        
+                        
+                    }
+                    //  console.log(EntitieSet);
+                    
+                    //  resolve(EntitieSet);
+                  
+                }).catch((err)=>{
+                    console.log(err);
+
+                    reject(err)
+                })
+                // await reject();
             }
-        });
+            catch(err){
+                    console.log(err);
+                    reject(err);
+            }
+        })
+
     }
-
-
+    
     getAllEntitiesAndAllClientByUser(): Promise<any> {
         let ion = this;
         let arr = [];
@@ -172,27 +220,28 @@ export class CardsProvider {
                 let authUser = ion.authData.getAuthUser();
                 var forms_users = this.db.collection("forms_users");
                 forms_users.where("id_user", "==", authUser.uid)
-                //intento de cambiar base de datos a que el id de entidad y de cliente estén en forms_usersd
-                .where("IdClient", "==", searchData.client)
-                .where("IdEntitie", "==", searchData.entity)
+                .where("id_entity", "==", searchData.entity)
                 .get().then((formsUsersSnapShot) => {
                     formsUsersSnapShot.forEach(function (doc) {
                         var obj = JSON.parse(JSON.stringify(doc.data()));
                         obj.$key = doc.id
                         arr.push(obj);
                     });
+                    console.log(arr);
+                    
                     arr.forEach(element => {
                         var forms = this.db.collection("forms").doc(element.id_form).get()
                         .then(function(doc) {
                             itemsProcessed++;
+
                             var objForm = JSON.parse(JSON.stringify(doc.data()));
-                            if (objForm.status == 1 && objForm.IdClient==searchData.client && objForm.IdEntitie==searchData.entity) {
+                            if (objForm.status == 1 && objForm.IdClient==searchData.client) {
                                 objForm.$key = doc.id
                                 objForm.userStatus = element.status
                                 
                                 FormArr.push(objForm);
                             }
-                            if (objForm.status == 2 && objForm.IdClient==searchData.client && objForm.IdEntitie==searchData.entity) {
+                            if (objForm.status == 2 && objForm.IdClient==searchData.client) {
                                
                                 objForm.$key = doc.id
                                 objForm.userStatus = element.status
@@ -200,12 +249,16 @@ export class CardsProvider {
                                 FormArr.push(objForm);
                             } 
                             if(itemsProcessed === arr.length) {
+                                
                                 if (FormArr.length >= 1) {
                                  resolve(FormArr);
                                 } else {
                                  reject();
                                 }
                             }
+                        }).catch(err =>{
+                            console.log(err);
+                            reject(err);
                         });
                     });
                 }).catch(err => {

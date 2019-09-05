@@ -175,19 +175,7 @@ export class FormsPage {
       }
     } else
     {
-      if (this.statusForm === 1) {
-        //Versión online
-        
          this.getDocumentsOnline()
-        
-      } else {
-        //Versión offline
-        this.getDocumentsOffline()
-        
-      }
-      
-  
-
     }
     
   }
