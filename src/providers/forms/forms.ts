@@ -277,7 +277,33 @@ export class FormsProvider {
             if(hasOtherOptionFalse)
               question.otherAnswer = '' 
           }
-        
+          var docAnswer2: any;
+        if(question.type === 3 || question.type === 4)
+        {
+          docAnswer2={
+            id_hierarchy_form: hierarchy_form.$key,
+            id_question: question.$key,
+            answer: '',
+            otherAnswer: '',
+            otherOption: false,
+            na: false
+          };
+          if(hasQuestion)
+          {
+            if(hasNa){
+              docAnswer.na = true;
+              if (hasNaFalse) {
+                docAnswer.answer = question.answer;
+                docAnswer.otherAnswer = question.otherAnswer;
+                docAnswer.otherOption = otherBool;
+                docAnswer.na = false;
+              }
+            }
+          }
+          else{
+            //answer empty
+          }
+        }
         if (hasQuestion) {
           // Question select simple or multiple
           if(question.type === 3 || question.type === 4)
