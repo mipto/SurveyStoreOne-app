@@ -13,6 +13,8 @@ import { Globals } from '../../../services/globals.service';
 })
 export class FormsPage {
   public forms: any;
+  public search: any;
+  public entityName: any;
   public idForm: any;
   public nameForm: any;
   public statusForm: any;
@@ -56,6 +58,7 @@ export class FormsPage {
   ionViewWillLeave(){
     let ion = this;
     console.log('Formulario: ',this.forms);
+
     if(this.isOnDevice())
     {
       if(this.isOnline())
@@ -248,7 +251,7 @@ export class FormsPage {
       }
     });
   }
-
+  
   sincronizeForm(){
     console.log('sincronize enter');
     if(!this.validForm()){
@@ -319,30 +322,31 @@ export class FormsPage {
               {
                 //Online
                 this.FormsProvider.updateFormStatus(this.idForm, 3).then(res => {
-                  console.log('updated form status.');
-                  
+                console.log('updated form status.');
+                this.navCtrl.pop(); 
               })  
               }else
               {
                 //Offline
-                this.storage.get('allForms').then( all => {
-                  let auxInd = all.findIndex(k => k.$key === this.idForm)
-                  all[auxInd].userStatus = 3
-                })
+                // this.storage.get('allForms').then( all => {
+                //   let auxInd = all.findIndex(k => k.$key === this.idForm)
+                //   all[auxInd].userStatus = 3
+                // })
 
               }
 
             }
             else{
               //Offline
-              this.storage.get('allForms').then( all => {
-                let auxInd = all.findIndex(k => k.$key === this.idForm)
-                all[auxInd].userStatus = 3
-              })
+              // this.storage.get('allForms').then( all => {
+              //   let auxInd = all.findIndex(k => k.$key === this.idForm)
+              //   all[auxInd].userStatus = 3
+              // })
               //Online
               //se agrega un nuevo campo, es la fecha actual
               this.FormsProvider.updateFormStatus(this.idForm, 3).then(res => {
                 console.log('updated form status.');
+                this.navCtrl.pop(); 
                 
               })
 
@@ -355,15 +359,15 @@ export class FormsPage {
   }
 
   openSelect()
-    {
-        this.selectRef.open();
-    }
+  {
+      this.selectRef.open();
+  }
 
-    scrollToEl(id) {
-      console.log(`scrolling to ${id}`);
-      let el = document.getElementById(id);
-      el.scrollIntoView();
-    }
+  scrollToEl(id) {
+    console.log(`scrolling to ${id}`);
+    let el = document.getElementById(id);
+    el.scrollIntoView();
+  }
     createArrayFamiliar(){
       for (const key in this.forms) {
         if (this.forms.hasOwnProperty(key)) {

@@ -282,11 +282,9 @@ export class FormsProvider {
             if(hasOtherOptionFalse)
               question.otherAnswer = '' 
           }
-            // else {
-          //   console.log(question.otherOption)
-          //   otherBool = false
-            
-          // }
+          
+          
+
           console.log(question.otherOption)
         if (hasQuestion) {
           //hay que cambiar cosas de aquí agregar el other option if con question.type
