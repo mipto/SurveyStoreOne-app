@@ -249,7 +249,7 @@ export class FormsProvider {
   deleteChildrens(array, elem) {
     return array.filter(e => e.Parent_key !== elem.Parent_key);
   }
-  getDocAnswer(question, hierarchy_form)
+  getDocAnswer(question, hierarchy_form, id)
   {
     return new Promise((resolve, reject) =>{
       
@@ -268,12 +268,14 @@ export class FormsProvider {
         if(hasOtherOptionFalse)
           question.otherAnswer = '' 
         }
-        var docAnswer2: any;
-        console.log(hasQuestion, question);
+      console.log(hasQuestion, question);
       if(question.type === 3 || question.type === 4)
       {
-        docAnswer2={
-          id_hierarchy_form: hierarchy_form.$key,
+        docAnswer={
+          id_form: id.form,
+          id_entitie: id.entitie,
+          id_user: id.user,
+          id_hierarchy_form: hierarchy_form,
           id_question: question.$key,
           answer: '',
           otherAnswer: '',
@@ -284,27 +286,41 @@ export class FormsProvider {
         if(hasQuestion)
         {
           //debugger
-          docAnswer2.answer = question.answer;
-          docAnswer2.otherAnswer = question.otherAnswer;
-          docAnswer2.otherOption = otherBool;
+          docAnswer.answer = question.answer;
+          docAnswer.otherAnswer = question.otherAnswer;
+          docAnswer.otherOption = otherBool;
           if(hasNa && hasNaTrue){
-              docAnswer2.answer = '';
-              docAnswer2.otherAnswer = '';
-              docAnswer2.na = true;
+              docAnswer.answer = '';
+              docAnswer.otherAnswer = '';
+              docAnswer.na = true;
           }
         }else if(hasNa)
         {
           if(hasNaTrue){
-            docAnswer2.na = true;
+            docAnswer.na = true;
           }
         }else{
           reject();
         }
-        resolve(docAnswer2);
+        resolve(docAnswer);
       }else
       {
-        docAnswer2={
-          id_hierarchy_form: hierarchy_form.$key,
+        docAnswer={
+          id_form: id.form,
+          id_entitie: id.entitie,
+          id_user: id.user,
+          id_hierarchy_form: hierarchy_form,
+          id_question: question.$key,
+          answer: '',
+          otherAnswer: '',
+          otherOption: false,
+          na: false
+        };
+        docAnswer={
+          id_form: id.form,
+          id_entitie: id.entitie,
+          id_user: id.user,
+          id_hierarchy_form: hierarchy_form,
           id_question: question.$key,
           answer: '',
           na: false
@@ -312,197 +328,170 @@ export class FormsProvider {
         //debugger
         if(hasQuestion)
         {
-          docAnswer2.answer = question.answer;
+          docAnswer.answer = question.answer;
           if(hasNa && hasNaTrue) 
           {
-              docAnswer2.na = true;
-              docAnswer2.answer ='';
+              docAnswer.na = true;
+              docAnswer.answer ='';
           }
         }else if(hasNa)
         {
           if(hasNaTrue){
-            docAnswer2.na = true;
+            docAnswer.na = true;
           }
         }else{
           reject();
         }
-        //console.log(docAnswer2);
-        resolve(docAnswer2);
+        //console.log(docAnswer);
+        resolve(docAnswer);
       }
       
     })
   }
-  saveAllAnswers(Forms) {
+  getDocAnswerSync(question, hierarchy_form, id, dateTime)
+  {
+    return new Promise((resolve, reject) =>{
+      
+      var docAnswer: any;
+      let hasQuestion = question.answer ? true : false;
+      let hasNa = typeof question.na !== 'undefined' ? true : false;
+      let hasNaTrue = question.na == true ? true : false;
+      let hasNaFalse = question.na == false ? true : false;
+      let hasOtherOption = typeof question.otherOption !== 'undefined' ? true : false;
+      let hasOtherOptionTrue = question.otherOption == true ? true : false;
+      let hasOtherOptionFalse = question.otherOption == false ? true : false;
+      let otherBool
+  
+        if (hasOtherOption) {
+          otherBool = question.otherOption
+        if(hasOtherOptionFalse)
+          question.otherAnswer = '' 
+        }
+        var docAnswer: any;
+        console.log(hasQuestion, question);
+      if(question.type === 3 || question.type === 4)
+      {
+        docAnswer={
+          date: dateTime,
+          id_form: id.form,
+          id_entitie: id.entitie,
+          id_user: id.user,
+          id_hierarchy_form: hierarchy_form,
+          id_question: question.$key,
+          answer: '',
+          otherAnswer: '',
+          otherOption: false,
+          na: false
+        };
+        
+        if(hasQuestion)
+        {
+          //debugger
+          docAnswer.answer = question.answer;
+          docAnswer.otherAnswer = question.otherAnswer;
+          docAnswer.otherOption = otherBool;
+          if(hasNa && hasNaTrue){
+              docAnswer.answer = '';
+              docAnswer.otherAnswer = '';
+              docAnswer.na = true;
+          }
+        }else if(hasNa)
+        {
+          if(hasNaTrue){
+            docAnswer.na = true;
+          }
+        }else{
+          reject();
+        }
+        resolve(docAnswer);
+      }else
+      {
+        docAnswer={
+          date: dateTime,
+          id_form: id.form,
+          id_entitie: id.entitie,
+          id_user: id.user,
+          id_hierarchy_form: hierarchy_form,
+          id_question: question.$key,
+          answer: '',
+          na: false
+        };
+       
+        if(hasQuestion)
+        {
+          docAnswer.answer = question.answer;
+          if(hasNa && hasNaTrue) 
+          {
+              docAnswer.na = true;
+              docAnswer.answer ='';
+          }
+        }else if(hasNa)
+        {
+          if(hasNaTrue){
+            docAnswer.na = true;
+          }
+        }else{
+          reject();
+        }
+        //console.log(docAnswer);
+        resolve(docAnswer);
+      }
+      
+    })
+  }
+  saveAllAnswers(Forms, idEntity, sync) {
     let ion = this;
     return new Promise((resolve, reject) => {
       let hierarchiesAnswers = ion.db.collection("hierarchies_answers");
-      var today = new Date();
       
-      var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-      var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-      var dateTime = date+' '+time;
+      let authUser = ion.authData.getAuthUser();
 
-      Forms.forEach(hierarchy_form => {
-        hierarchy_form.questions.forEach(question => {
-          var docAnswer: any;
-          let hasQuestion = question.answer ? true : false;
-          let hasNa = typeof question.na !== 'undefined' ? true : false;
-          let hasNaTrue = question.na == true ? true : false;
-          let hasNaFalse = question.na == false ? true : false;
-          let hasOtherOption = typeof question.otherOption !== 'undefined' ? true : false;
-          let hasOtherOptionTrue = question.otherOption == true ? true : false;
-          let hasOtherOptionFalse = question.otherOption == false ? true : false;
-          let otherBool
-
-          if (hasOtherOption) {
-            otherBool = question.otherOption
-            if(hasOtherOptionFalse)
-              question.otherAnswer = '' 
-          }
-          this.getDocAnswer(question, hierarchy_form).then((doc)=>{
-            console.log(doc)
-            ion.deleteOldAnswersBeforeSave(hierarchy_form.$key, question.$key).then(res => {
-              hierarchiesAnswers.doc().set(doc);
-              console.log(doc);
-              
-              console.log('answers saved sucess!');
+      var id={
+        form: Forms[0].Id_form,
+        entitie: idEntity,
+        user: authUser.uid
+      };
+      
+      if(!sync)
+      {
+        Forms.forEach(hierarchy_form => {
+          hierarchy_form.questions.forEach(question => {
+            this.getDocAnswer(question, hierarchy_form.$key, id).then((doc)=>{
+              console.log(doc)
+              ion.deleteOldAnswersBeforeSave(hierarchy_form.$key, question.$key).then(res => {
+                hierarchiesAnswers.doc().set(doc);
+                console.log(doc);
+                
+                console.log('answers saved sucess!');
+              });
+            }).catch((e)=>{
+              console.log('no answers saved');
             });
-          }).catch((e)=>{
-            console.log('no answers saved');
-          })
-         
-        // if (hasQuestion) {
-        //   // Question select simple or multiple
-        //   if(question.type === 3 || question.type === 4)
-        //   {
-        //     docAnswer = {
-        //       id_hierarchy_form: hierarchy_form.$key,
-        //       id_question: question.$key,
-        //       answer: '',
-        //       otherAnswer: '',
-        //       otherOption: false,
-        //       na: true
-        //     };
-        //     if (hasNa && hasNaTrue) {
-        //       ion.deleteOldAnswersBeforeSave(hierarchy_form.$key, question.$key).then(res => {
-        //         hierarchiesAnswers.doc().set(docAnswer);
-        //         console.log(docAnswer);
-                
-        //         console.log('answers saved sucess!');
-        //       });
-        //     } else {
-        //       docAnswer.answer = question.answer;
-        //       docAnswer.otherAnswer = question.otherAnswer;
-        //       docAnswer.otherOption = otherBool;
-        //       docAnswer.na = false;
-
-        //       ion.deleteOldAnswersBeforeSave(hierarchy_form.$key, question.$key).then(res => {
-        //         hierarchiesAnswers.doc().set(docAnswer);
-        //         console.log(docAnswer);
-                
-        //         console.log('answers saved sucess!');
-        //     });
-        //     }
-            
-        //   }
-        //   //!hasQuestion
-        //   else{
-        //     docAnswer = {
-        //       id_hierarchy_form: hierarchy_form.$key,
-        //       id_question: question.$key,
-        //       answer: '',
-        //       na: true
-        //     }
-        //     if (hasNa && hasNaTrue) {
-        //       ion.deleteOldAnswersBeforeSave(hierarchy_form.$key, question.$key).then(res => {
-        //         hierarchiesAnswers.doc().set(docAnswer);
-        //         console.log(docAnswer);
-                
-        //         console.log('answers saved sucess!');
-        //       });
-        //     } else {
-        //       docAnswer.answer = question.answer;
-        //       docAnswer.na = false;
-              
-        //       ion.deleteOldAnswersBeforeSave(hierarchy_form.$key, question.$key).then(res => {
-        //         hierarchiesAnswers.doc().set(docAnswer);
-        //         console.log(docAnswer);
-                
-        //         console.log('answers saved sucess!');
-        //     });
-        //     } 
-
-        //   }
-        // } 
-        // else if (hasNa) 
-        // {
-        //   if(question.type === 3 || question.type === 4) 
-        //   {
-        //     docAnswer = {
-        //       id_hierarchy_form: hierarchy_form.$key,
-        //       id_question: question.$key,
-        //       otherOption: false,
-        //       answer: '',
-        //       otherAnswer: '',
-        //       na: true
-        //     }
-        //     if (hasNaTrue) {
-        //       ion.deleteOldAnswersBeforeSave(hierarchy_form.$key, question.$key).then(res => {
-        //         hierarchiesAnswers.doc().set(docAnswer);
-        //         console.log(docAnswer);
-                
-        //         console.log('answers saved sucess!');
-        //       });
-        //     } else if (hasNaFalse) 
-        //     {
-        //       docAnswer.na = false;
-            
-        //       ion.deleteOldAnswersBeforeSave(hierarchy_form.$key, question.$key).then(res => {
-        //         hierarchiesAnswers.doc().set(docAnswer);
-        //   console.log(docAnswer);
-                
-        //         console.log('answers saved sucess!');
-        //       });
-        //     }
-        //   }else
-        //   {
-        //     docAnswer = {
-        //       id_hierarchy_form: hierarchy_form.$key,
-        //       id_question: question.$key,
-        //       answer: '',
-        //       na: true
-        //     };
-        //     if (hasNaTrue) 
-        //     {
-        //       ion.deleteOldAnswersBeforeSave(hierarchy_form.$key, question.$key).then(res => {
-        //         hierarchiesAnswers.doc().set(docAnswer);
-        //         console.log(docAnswer);
-                
-        //         console.log('answers saved sucess!');
-        //       });
-        //     } else if (hasNaFalse) 
-        //     {
-        //       docAnswer.na = false;
-        //       ion.deleteOldAnswersBeforeSave(hierarchy_form.$key, question.$key).then(res => {
-        //         hierarchiesAnswers.doc().set(docAnswer);
-
-        //         console.log(docAnswer);
-                
-        //         console.log('answers saved sucess!');
-        //       });
-        //     }
-        //   }
-        //   // ion.deleteOldAnswersBeforeSave(hierarchy_form.$key, question.$key).then(res => {
-        //   //   hierarchiesAnswers.doc().set(docAnswer);
-
-        //   //   console.log('answers saved sucess!');
-        //   // });
-        // } else {
-        //   console.log(' no answers saved!');
-        // }
-        
+          });
         });
-      });
+      }else{
+        var today = new Date();
+      
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        var dateTime = date+' '+time;
+
+        Forms.forEach(hierarchy_form => {
+          hierarchy_form.questions.forEach(question => {
+            this.getDocAnswerSync(question, hierarchy_form.$key, id, dateTime).then((doc)=>{
+              //console.log(doc)
+              ion.deleteOldAnswersBeforeSave(hierarchy_form.$key, question.$key).then(res => {
+                hierarchiesAnswers.doc().set(doc);
+                console.log(doc);
+                
+                console.log('answers saved sucess!');
+              });
+            }).catch((e)=>{
+              console.log('no answers saved');
+            });
+          });
+        });
+      }
       resolve();
     });
   }

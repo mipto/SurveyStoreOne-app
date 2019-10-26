@@ -157,6 +157,7 @@ export class CardsPage {
         idForm: idForm,
         nameForm: nameForm,
         statusForm: status,
+        idEntity:this.search.entity
       }
     });
   }
