@@ -12,49 +12,125 @@
 
 <ion-content>
     <ion-list>
-      <div *ngFor="let form of forms">
-          <ion-list-header [id]="form.$key" *ngIf="form.Level == '1'" class="level-one-text level-one-margin">{{form.Name}}</ion-list-header>
-          <ion-list-header [id]="form.$key" *ngIf="form.Level == '2'" class="level-two-text level-two-margin">{{form.Name}}</ion-list-header>
-          <ion-list-header [id]="form.$key" *ngIf="form.Level == '3'" class="level-three-text level-three-margin">{{form.Name}}</ion-list-header>
+        <div *ngFor="let form of forms">
+        <!-- hacer una lista con los parent key a los cuales se les hizo clic -->
+        <div  *ngIf="form.Level == '1' || activeParent(form.$key)"
+        [class.level-one-background]="form.Level == '1'"
+        [class.level-two-background]="form.Level == '2'"
+        [class.level-three-background]="form.Level == '3'"
+        [class.level-four-background]="form.Level == '4'"
+        [class.level-five-background]="form.Level == '5'"
+        [class.level-six-background]="form.Level == '6'"
+        [class.level-seven-background]="form.Level == '7'"
+        [class.level-last-background]="greaterThan8(form.Level)">
 
-          <!-- inputs -->
-          <ion-item [class.level-one-padding]="form.Level == '1'"
-          [class.level-two-padding]="form.Level == '2'"
-          [class.level-three-padding]="form.Level == '3'"
-           text-wrap *ngFor="let question of form.questions">
-           
-                <!-- QUESTION -->
-              <ion-label [id]="question.$key" fixed right [style.opacity]="question.na ? '.4' : '1'">{{question.Question}}</ion-label>
+                <ion-list-header [id]="form.$key" *ngIf="form.Level == '1'" class="text-header level-one-text level-one-margin">
+                    {{form.Name}}
+                    <button *ngIf="isAdd(form.$key)" class="button-desplegar" (click)="changeStateShowQ(form.$key)" item-end ion-button icon-only>
+                        <ion-icon name="add"></ion-icon>
+                    </button>
+                    <button *ngIf="!isAdd(form.$key)" class="button-desplegar" (click)="changeStateShowQ(form.$key)" item-end ion-button icon-only>
+                        <ion-icon name="remove"></ion-icon>
+                    </button>
+                </ion-list-header>
+                <!-- <ion-list-header [id]="form.$key" *ngIf="form.Level == '2'" class="text-header level-two-text level-two-margin">{{form.Name}}</ion-list-header>
+                <ion-list-header [id]="form.$key" *ngIf="form.Level == '3'" class="text-header level-three-text level-three-margin">{{form.Name}}</ion-list-header> -->
+                <ion-list-header [id]="form.$key" class="text-header level-last-text"
+                *ngIf="form.Level != '1'"
+                [class.level-two-text]="form.Level == '2'"
+                [class.level-three-text]="form.Level == '3'"
+                [class.level-four-text]="form.Level == '4'"
+                [class.level-five-text]="form.Level == '5'"
+                [class.level-six-text]="form.Level == '6'"
+                [class.level-seven-text]="form.Level == '7'"
+                [class.level-last-text]="greaterThan8(form.Level)">{{form.Name}}</ion-list-header>
+                
+                <!-- <button *ngIf="form.Level == '1'" ion-button round icon-start (click)="changeStateShowQ(form.$key)">asd</button> -->
+                <!-- inputs -->
+                <div text-wrap *ngFor="let question of form.questions">
+                    <ion-item no-lines style="
+                    border-bottom-color: transparent;
+                    box-shadow: none;">
 
-              <!-- Input level 0 (text) -->
-              <ion-input *ngIf="question.type == 0" type="text" [(ngModel)]="question.answer" [disabled]="question.na"></ion-input>
-              <!-- Input level 1 (number) -->
-              <ion-input *ngIf="question.type == 1" type="number" [(ngModel)]="question.answer" [disabled]="question.na"></ion-input>
-              <!-- Input level 2 (yes/no) -->
-              <ion-select *ngIf="question.type == 2" [(ngModel)]="question.answer" [disabled]="question.na">
-                <ion-option *ngFor="let bool of question.bool" [value]="bool">{{bool}}</ion-option>
-              </ion-select>
-              <!-- Input level 3 (simple selection) -->
-              <ion-select *ngIf="question.type == 3" [(ngModel)]="question.answer" [disabled]="question.na">
-                <ion-option *ngFor="let simple of question.simple" [value]="simple">{{simple}}</ion-option>
-              </ion-select>
-              <!-- Input level 4 (multiple selection) -->
-              <ion-select *ngIf="question.type == 4" multiple="true" [(ngModel)]="question.answer" [disabled]="question.na">
-                <ion-option *ngFor="let multiple of question.multiple" [value]="multiple">{{multiple}}</ion-option>
-              </ion-select>
-              <!-- N/A -->
-                <ion-checkbox color="blue" item-right [(ngModel)]="question.na"></ion-checkbox>
-                <ion-label fixed right class="no-apply-text">N/A</ion-label>
-          </ion-item>
-      </div>
+                        <!-- QUESTION -->
+                      <ion-label [id]="question.$key" [style.opacity]="question.na ? '.4' : '1'">{{question.Question}}</ion-label>
+        
+                      <!-- Input level 0 (text) -->
+                      <ion-input *ngIf="question.type == 0" type="text" [(ngModel)]="question.answer" [disabled]="question.na"></ion-input>
+                      <!-- Input level 1 (number) -->
+                      <ion-input *ngIf="question.type == 1" type="number" [(ngModel)]="question.answer" [ngModel]="ans" [disabled]="question.na" (ngModelChange)="question.error = valideInput($event, 'number', question.max_value, question.min_value)" ></ion-input>
+                      <!-- Input level 2 (yes/no) -->
+                      <ion-select *ngIf="question.type == 2" [(ngModel)]="question.answer" [disabled]="question.na">
+                        <ion-option *ngFor="let bool of question.bool" [value]="bool">{{bool}}</ion-option>
+                      </ion-select>
+                      <!-- Input level 3 (simple selection) -->
+                      <ion-select *ngIf="question.type == 3" [(ngModel)]="question.answer" [disabled]="question.na" >
+                            <!-- (ionChange)="question.otherOption = onChange($event)" -->
+                        <ion-option *ngFor="let simple of question.simple" [value]="simple" (ionSelect)="question.otherOption = onChange($event)">{{simple}}</ion-option>
+                        <ion-option *ngIf="question.other" (ionSelect)="question.otherOption = onChange($event)">{{globals.LANG.OTHER}}</ion-option>
+                      </ion-select>
+                  
+                      <!-- Input level 4 (multiple selection) -->
+                      <ion-select *ngIf="question.type == 4" multiple="true" [(ngModel)]="question.answer" [disabled]="question.na">
+                        <ion-option *ngFor="let multiple of question.multiple" [value]="multiple" (ionSelect)="question.otherOption = onChange($event)">{{multiple}}</ion-option>
+                        <ion-option [value]="multiple" (ionSelect)="question.otherOption = onChange($event)">{{globals.LANG.OTHER}}</ion-option>
+                      </ion-select>
+                      <!-- N/A -->
+                      <ion-label fixed right class="no-apply-text">N/A</ion-label>
+                      <!-- <ion-label fixed right class="no-apply-text"> -->
+                          <ion-checkbox class="asd" color="blue" item-right [(ngModel)]="question.na"></ion-checkbox>
+                          <!-- N/A
+                      </ion-label> -->
+
+                    </ion-item>
+                    <!-- Input Other option (Select simple) -->
+                    <ion-item no-lines style="
+                    border-bottom-color: transparent;
+                    box-shadow: none;"
+                    *ngIf="question.type == 3 && question.otherOption">
+                    <ion-label>{{globals.LANG.OTHER_OPTION}}:</ion-label>
+                      <ion-input type="text" style='margin-top:5px;' [(ngModel)]="question.otherAnswer" [disabled]="question.na"></ion-input>
+                      <!-- <ion-input type="text" style='margin-top:5px;' [(ngModel)]="question.otherAnswer" (ngModelChange)="question.answer = $event;" [disabled]="question.na"></ion-input> -->
+                    </ion-item>
+                    <!-- Input Other option (Select multiple) -->
+                    <ion-item no-lines style="
+                    border-bottom-color: transparent;
+                    box-shadow: none;"
+                    *ngIf="question.type == 4 && question.otherOption">
+                    <ion-label>{{globals.LANG.OTHER_OPTION}}:</ion-label>
+                      <ion-input type="text" style='margin-top:5px;' [(ngModel)]="question.otherAnswer" [disabled]="question.na"></ion-input>
+                      <!-- <ion-input type="text" style='margin-top:5px;' [(ngModel)]="question.otherAnswer" (ngModelChange)="question.answer = $event;" [disabled]="question.na"></ion-input> -->
+                    </ion-item>
+                    <!-- Error message -->
+                    <ion-item no-lines style="
+                    border-bottom-color: transparent;
+                    border-top-color: transparent;
+                    box-shadow: none;" 
+                    *ngIf= "(question.error == 1 || valideInput(question.answer, 'number', question.max_value, question.min_value))&& !question.na">
+                        <span class="error-message" *ngIf="question.type == 1">* {{globals.LANG.VALID_NUMBER}}</span>
+                    </ion-item>
+                    <ion-item no-lines style="
+                    border-bottom-color: transparent;
+                    border-top-color: transparent;
+                    box-shadow: none;" 
+                    *ngIf= "answerEmpty(question.answer) && !question.na">
+                        <span class="error-message">* {{globals.LANG.EMPTY_FIELD}}</span>
+                    </ion-item>
+                    
+                </div>
+            </div>
+
+        </div>
     </ion-list>
     <ion-fab right bottom edge>
-        <button ion-fab mini (click)="openSelect()"><ion-icon name="add"></ion-icon></button>
+        <button class="fab-button" ion-fab mini (click)="openSelect()"><ion-icon name="add"></ion-icon></button>
       </ion-fab>
 
       <ion-select style="display:none;" [(ngModel)]="scrollSelect" #mySelect (ngModelChange)="scrollToEl(mySelect.value)">
         <div *ngFor="let form of forms">
+            <div *ngIf="form.Level == '2'">
             <ion-option [value]="form.$key">{{form.Name}}</ion-option>
+            </div>
             <!-- <ion-option [value]="question.$key" *ngFor="let question of form.questions">{{question.Question}}</ion-option> -->
         </div>
     </ion-select>
@@ -62,7 +138,7 @@
 </ion-content>
 
 <ion-footer>
-  <button ion-button round mode="ios" icon-start (click)="sincronizeForm()">
+  <button class="footer-b" ion-button round mode="ios" icon-start (click)="sincronizeForm()">
     Sincronize
   </button>
 </ion-footer>

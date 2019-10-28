@@ -5,7 +5,9 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 //************** ionic ******************/
 import { IonicStorageModule } from '@ionic/storage';
 
+
 //*********** ionic Native **************/
+
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -41,6 +43,8 @@ import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { FormsProvider } from '../providers/forms/forms';
 import { PhotosProvider } from '../providers/forms/photos';
 import { CardsProvider } from '../providers/forms/cards-list';
+import { NetworkProvider } from '../providers/network';
+import { Network } from "@ionic-native/network";
 
 /*HTTP CLIENT */
 import { HttpClientModule } from '@angular/common/http';
@@ -49,33 +53,34 @@ import { DashboardProvider } from '../providers/dashboard/dashboard';
 @NgModule({
   declarations: [
     MyApp,
+    
   ],
   imports: [
     BrowserModule,
-    ionicGalleryModal.GalleryModalModule,
     IonicModule.forRoot(MyApp),
+    ionicGalleryModal.GalleryModalModule,
     HttpClientModule,
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
+    // AngularFirestoreModule.enablePersistence(),
     AngularFirestoreModule,
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(), 
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    
   ],
   providers: [
     StatusBar,
-    SplashScreen,
+    Globals,
+    AuthData,
     Geolocation,
     {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: ionicGalleryModal.GalleryModalHammerConfig,
     },
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
-    Globals,
-    AuthData,
     UserService,
     Helpers,
     Facebook,
@@ -85,7 +90,11 @@ import { DashboardProvider } from '../providers/dashboard/dashboard';
     FormsProvider,
     CardsProvider,
     DashboardProvider,
-    PhotosProvider
+    PhotosProvider,
+    NetworkProvider,
+    Network,
+    SplashScreen,
+    {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
 export class AppModule {}

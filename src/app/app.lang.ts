@@ -13,6 +13,7 @@ export class APP_LANG {
         LOGOUT: 'Logout',
         VALID_EMAIL: 'Please enter a valid email',
         VALID_PASSWORD: 'Password needs more than 6 characters',
+        VALID_NUMBER: 'Enter a valid number',
         BACK: 'Back',
         YOUR_EMAIL: 'Your email address',
         RESET_PASSWORD: 'Reset your password',
@@ -51,7 +52,13 @@ export class APP_LANG {
         VISITED:'Visited',
         NO_VISITED:'No visited',
         BY_FILL: 'By fill',
-        BY_SAVE: 'Save'
+        BY_SAVE: 'Save',
+        CONNEC_TRIGGER: 'Connection detected, updating forms.',
+        OTHER: 'Other',
+        OTHER_OPTION: 'Write the other option',
+        EMPTY_FIELD: 'Empty field (Required)',
+        SINC_ERROR:'Any field have an error or it\'s empty. Please verify before synchronice.',
+
       },
       SPANISH: {
         EMAIL: 'Email',
@@ -65,6 +72,7 @@ export class APP_LANG {
         LOGOUT: 'Cerrar sesión',
         VALID_EMAIL: 'Por favor introduce un email válido',
         VALID_PASSWORD: 'La contraseña necesita más de 6 caracteres',
+        VALID_NUMBER: 'Ingrese un numero válido',
         BACK: 'Atras',
         YOUR_EMAIL: 'Tu dirección de email',
         RESET_PASSWORD: 'Reestablece tu contraseña',
@@ -103,7 +111,12 @@ export class APP_LANG {
         VISITED:'Visitado',
         NO_VISITED:'Sin visitar',
         BY_FILL: 'Por llenar',
-        BY_SAVE: 'Guardado'
+        BY_SAVE: 'Guardado',
+        CONNEC_TRIGGER: 'Conexión detectada, actualizando formularios.',
+        OTHER: 'Otro',
+        OTHER_OPTION: 'Escriba la otra opción',
+        EMPTY_FIELD: 'Campo vacío (Requerido)',
+        SINC_ERROR:'Algún o algunos campos tiene un error y/o está vacío. Por favor verifique antes de sincronizar.',
       },
       FRENCH: {
 

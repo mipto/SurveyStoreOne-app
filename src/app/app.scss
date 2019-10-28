@@ -1,4 +1,4 @@
-// http://ionicframework.com/docs/v2/theming/
+// http://ionicframework.com/docs/theming/
 
 
 // App Global Sass
@@ -15,9 +15,6 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
-//*************** for sidemenu  ***************//
-// Material Design Sidemenu
-@import '../theme/animations';
 
 
 #menu-material {
@@ -29,7 +26,7 @@
     // background-image: url('../assets/md-bg6.jpg');
     background-image: linear-gradient(color($colors, blue-gradient), color($colors, blue-gradient-dark)) !important;  
     background-size: cover;
-    background-color: color($colors, blue2);
+    //background-color: color($colors, blue2);
     text-align: center;
     color: white;
     .name {
@@ -51,7 +48,7 @@
     }
   }
   h3,
-  .label,
+  .label
   {
     color: #616161;
     font-weight: 400;
@@ -68,7 +65,8 @@
     // margin-top: 10px;
     margin-bottom: 20px;
     padding: 5px 15px;
-    background-color: #fff;
+    background-image: linear-gradient(color($colors, blue-gradient), color($colors, blue-gradient-dark)) !important;  
+    //background-color: #fff;
     color:#000;
     .name {
       margin-top:8px;
@@ -101,7 +99,8 @@
     margin-bottom: 20px;
     padding: 5px 15px;
     background-size: cover;
-    background-color: color($colors, ios-gray);
+    background-image: linear-gradient(color($colors, blue-gradient), color($colors, blue-gradient-dark)) !important;      
+    //background-color: color($colors, ios-gray);
     color: #ffffff;
     .name {
       margin-top:8px;
@@ -122,7 +121,7 @@
   }
 
   h3,
-  .label,
+  .label
   {
     color: #616161;
     font-weight: 400;
@@ -142,7 +141,14 @@
 .toolbar-background {
   background-color:#2980b9 !important;
  }
-
+ ion-content {
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-color: transparent;
+  // background-color: #2980b9 !important;
+  //  background-image: linear-gradient(to bottom, #21567b, #217ca9) !important;
+  background-image: linear-gradient(to bottom, rgba(33,124,169,1) 5%, rgba(33,124,169,1) 70%, rgba(33,86,123,1) 100%) !important;  
+}
 .bar-button-default-wp, 
 .bar-button-clear-wp-default, 
 .bar-button-wp-default,
@@ -233,4 +239,11 @@ color: #ffffff !important;
   width: 24px;
   height: 24px;
   margin: 0px auto 0 auto;
+}
+
+.login-button{
+  background-color: #db9b30 !important;
+  border-radius: 7px;
+  box-shadow: 0px 0px 20px 0px rgba(24,70,100,1);
+  font-size: 1.1em;
 }

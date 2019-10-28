@@ -31,10 +31,16 @@ page-cards {
         border-radius: 10px;
         box-shadow: none !important;
     }
-    .ion-card, .card-ios, .card-md {
-      margin: 10px !important;
-    }
-      
+    // .ion-card, .card-ios, .card-md,  {
+    //   margin: 10px !important;
+    // }
+    ion-searchbar .button {
+      background-color: transparent !important
+    } 
+      .card-content-md {
+        padding-top: 5px;
+      }
+
       button[fab].fab-map {
         top: calc(100% - 35px);
         z-index: 50;
@@ -42,8 +48,9 @@ page-cards {
       
       .item-bold {
         font-weight: bold;
+        font-size: 18px !important;
       }
-      
+
       // .button {
       //   background-color: transparent !important;
       // }
@@ -58,7 +65,9 @@ page-cards {
         background-color: #f4f4f7;
         
       }
-
+      ion-card-content{
+        padding-top: 5px !important;
+      } 
       ion-content{
         background-size: cover;
         background-repeat: no-repeat;
@@ -71,5 +80,35 @@ page-cards {
       }
       .button{
         box-shadow: none !important;
+        border-radius: 7px;
       }
+      .icon-small{
+        background-size: contain;
+        width: 18px;
+        height: 18px;
+        margin-right: 5px;
+
+      }
+      .form-img {
+        background: url(../assets/img/store.png) no-repeat top left !important;
+      }
+      .icon-new {
+        background-image: url(../assets/icon/new.png) !important;
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+      .icon-draft {
+        background: url(../assets/icon/draft.png) no-repeat top left  !important;
+      }
+      .button-new{
+        background-color: color($colors, blue-gradient-dark) !important;
+      }
+      .label-new{
+        color: color($colors, blue-gradient-dark) !important;
+      }
+      
+      .label-draft{
+        color: color($colors, orange-survey) !important;
+      }
+      
 }

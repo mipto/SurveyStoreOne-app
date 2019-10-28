@@ -1,48 +1,62 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, ToastController, AlertController, MenuController  } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
+import { Nav, Platform, ToastController, AlertController, MenuController, Events, LoadingController  } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthData } from '../providers/auth-data';
 import { Helpers } from '../providers/helpers';
+import { FormsProvider } from '../providers/forms/forms';
 import { DashboardProvider } from '../providers/dashboard/dashboard';
 import { Globals } from '../services/globals.service';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { APP_LANG } from './app.lang';
 import { APP_CONFIG } from './app.config';
+import { NetworkProvider } from '../providers/network';
+import { Network } from '@ionic-native/network';
+import { Storage } from '@ionic/storage';
+import { Observable } from 'rxjs/Observable';
+import { storage } from 'firebase/app';
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-
   @ViewChild(Nav) nav: Nav;
-  rootPage: string = 'LoginPage';
-  menu: Array<any> = [];
-  pages: Array<any>;
-  appConfig: any = APP_CONFIG.Constants;
 
+  rootPage: any = 'LoginPage';
+
+  pages: Array<{icon: any, title: string, component: any}>;
+  appConfig: any = APP_CONFIG.Constants;
+  menu: Array<any>
+  appIsOnDevice: any;
   constructor(public platform: Platform,
-    public statusBar: StatusBar,
-    public splashScreen: SplashScreen,
+    public globals: Globals,
+    public statusBar: StatusBar, 
+    public storage: Storage,
     public authDataModule: AuthData,
     public helpers: Helpers,
+    public loadingCtrl: LoadingController,
+    public FormsProvider: FormsProvider,
     public alertCtrl: AlertController,
     public afAuth: AngularFireAuth,
     private toastCtrl: ToastController,
     public menuCtrl: MenuController,
-    public globals: Globals,
-    public storage: Storage,
-    public dashboard: DashboardProvider) {
-    let ion = this;
-    
+    public dashboard: DashboardProvider,
+    public events: Events,
+    public network: Network,
+    public networkProvider: NetworkProvider,
+    public splashScreen: SplashScreen) {
+      let ion = this
+        // DETECT DEVICE/BROWSER:
+    ion.appIsOnDevice = !this.platform.url().startsWith('http');
     ion.initializeApp();
+      
+      //this.storage.set('changeForms', [])
 
-    
+    // used for an example of ngFor and navigation
     ion.pages = [
       { icon: 'user-icon', title: 'Home', component: 'HomePage' },
       { icon: 'dashboard-icon', title: 'Dashboard', component: 'DashboardPage' },
-      { icon: 'user-icon', title: 'Profile', component: 'ProfilePage' },
+      { icon: 'user-icon', title: 'Profile', component: 'ProfilePage' }
     ];
 
     ion.menu = [
@@ -131,52 +145,27 @@ export class MyApp {
       }
     ];
 
+
   }
 
   initializeApp() {
-    let ion = this;
-    var db: any;
-    ion.platform.ready().then(() => {
-      ion.statusBar.styleDefault();
-      ion.splashScreen.hide();
-      ion.changueLanguage();
+    let langs = APP_LANG.Constants;
+
+    this.platform.ready().then(() => {
+      // Okay, so the platform is ready and our plugins are available.
+      // Here you can do any higher level native things you might need.
+      this.splashScreen.show();
+      this.statusBar.styleDefault();
+      this.globals.LANG = langs.SPANISH;
+      this.initNetworkMonitor()
+      this.splashScreen.hide();
     });
+
     
-    ion.platform.resume.subscribe((result)=>{
-      
-      console.log('Platform Resume Event');
-      var actualDate = new Date();
-      var dd = actualDate.getDate();
-      var mm = actualDate.getMonth()+1; 
-      var date = [(dd>9 ? '' : '0') + dd, '/',
-        (mm>9 ? '' : '0') + mm, '/',
-        actualDate.getFullYear()
-      ].join('');
 
-      console.log(date);
-
-      ion.authDataModule.getLastConnection().then(lastC => {
-          //console.log(lastC);
-          //Save the last connection
-          if(!lastC)
-          {
-            this.storage.set('last_connection', date);
-          }else{
-            this.storage.set('last_connection', lastC);
-          }
-          //Update new last_connection
-          ion.authDataModule.updateLastConnection(date);
-      }).catch((e) =>{
-          console.log(e);
-      });  
-      
-      
-
-    });
   }
 
-
-
+  
   changueLanguage() {
     let ion = this;
     let navLang = ion.helpers.checkNavigatorLanguage();
@@ -217,7 +206,6 @@ export class MyApp {
       menu.icon = 'ios-remove-outline';
     }
   }
-
   openPage(page) {
     let ion = this;
     if (ion.authDataModule.isAuth()) {
@@ -226,7 +214,7 @@ export class MyApp {
       ion.nav.setRoot('LoginPage');
     }
   }
-
+  
   presentToast(position: string,message: string) {
     let toast = this.toastCtrl.create({
       message: message,
@@ -243,5 +231,105 @@ export class MyApp {
     });
     alert.present();
   }
+  updateData()
+  {
+    //Save forms
+  }
+  saveAllAnswersOnConnect()
+  {
+    let loadingPopupHome = this.loadingCtrl.create({
+      spinner: 'crescent', 
+      content: ''
+    });
+    loadingPopupHome.present();
+    Promise.all([this.storage.get('changeForms'), this.storage.get('allFormsQA')]).then(([changeForm, allForms]) =>{
+      console.log(changeForm, allForms);
+  
+        for (let ii = 0; ii < changeForm.length; ii++) {
+          const element = changeForm[ii];
+          console.log(allForms[element]);
+          let idForm = allForms[element][0].Id_form
+          console.log(idForm);
+          
+          // this.FormsProvider.saveAllAnswers(allForms[element], false).then(res => {
+          //   // console.log('va a guardar');
+          //   // this.forms = null;
+          //   this.FormsProvider.getFormUserByFormID(idForm).then(userForm => {
+          //     let form: any;
+          //     form = userForm;
+          //     if (form.status == 1) {
+          //       this.FormsProvider.updateFormStatus(idForm, 2).then(res => {
+          //         // console.log('updated form status.');
+                  
+          //       })
+          //     } else {
+          //       // console.log('form is already draft.');
+                
+          //     }
+          //   })
+          // })
+          
+        }
 
+        
+      }).then(a =>{
+        console.log('done!');
+        this.storage.set('changeForms', [])
+        loadingPopupHome.dismiss();
+       
+      })
+  }
+    // INIT NETWORK MONITOR:
+    initNetworkMonitor() {
+      // check if we are on device or if its a browser
+      if (this.platform.is('mobile') || this.platform.is('tablet')) {
+        // watch network for a disconnect
+        
+     
+        let disconnectSubscription = this.network
+          .onDisconnect()
+          .subscribe(() => {
+            console.log("network disconnected :(");
+            // do alert here
+            this.toastCtrl.create({
+              message: 'Offline mode.',
+              duration: 3000
+            }).present();
+          });
+
+        // watch network for a connection
+        let connectSubscription = this.network.onConnect().subscribe(() => {
+          console.log("network connected!");
+          // app got back online, do logic here
+          this.toastCtrl.create({
+            message: this.globals.LANG.CONNEC_TRIGGER,
+            duration: 3000
+          }).present();
+          
+          //Guardamos los formularios cambiados
+          this.saveAllAnswersOnConnect()
+          //Actualizamos los datos
+          if (this.network.type === "wifi") {
+            console.log("we got a wifi connection, woohoo!");
+          }
+        });
+      } else {
+        console.log("navegador");
+        
+        let browserOffline = Observable.fromEvent(window, "offline").subscribe(
+          () => {
+            console.log("Offline trigger");
+            // go offline logic here
+          }
+        );
+        let browserOnline = Observable.fromEvent(window, "online").subscribe(
+          () => {
+            // go back online
+            console.log(this.globals.LANG.CONNEC_TRIGGER);
+            this.saveAllAnswersOnConnect()
+          }
+        );
+        
+      }
+    }
 }

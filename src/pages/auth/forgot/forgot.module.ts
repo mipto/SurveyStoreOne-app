@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-import { ForgotPage } from './forgot';
 import { IonicPageModule } from 'ionic-angular';
+import { ForgotPage } from './forgot';
 
 @NgModule({
   declarations: [
@@ -9,8 +9,5 @@ import { IonicPageModule } from 'ionic-angular';
   imports: [
     IonicPageModule.forChild(ForgotPage),
   ],
-  exports: [
-    ForgotPage
-  ]
 })
 export class ForgotPageModule {}

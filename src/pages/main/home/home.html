@@ -1,5 +1,5 @@
 <ion-header no-border>
-  <ion-navbar id = "transparent-toolbar" color="primary">
+  <ion-navbar transparent id = "transparent-toolbar" color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu" color="light"></ion-icon>
     </button>
@@ -11,7 +11,9 @@
     <div class="profile-box">
         <div text-center>
             <img *ngIf="userData.user.photo" src="{{userData.user.photo}}" class="edit-avatar pop-in" alt="">
-            <img  *ngIf="!userData.user.photo" src = "https://pbs.twimg.com/profile_images/834457277830541312/bYMCvtHD.jpg" class="edit-avatar pop-in" alt="">
+            <!-- <img  *ngIf="!userData.user.photo" src = "https://pbs.twimg.com/profile_images/834457277830541312/bYMCvtHD.jpg" class="edit-avatar pop-in" alt=""> -->
+            <img *ngIf="userData.user.sex == 'M' && !userData.user.photo" id="profile1-image" class="pop-in" src="assets/icon/user-male.svg" item-left/>
+            <img *ngIf="userData.user.sex == 'F' && !userData.user.photo" id="profile1-image" class="pop-in" src="assets/icon/user-female.svg" item-left/>
             <p class="name-text">{{globals.LANG.HI}}, {{userData.user.first_name}} {{userData.user.last_name}}</p>
             <p class="last-connect-text">{{globals.LANG.LAST_CONNECTION}}: {{ lastConnect }}</p>
         </div>
@@ -22,7 +24,7 @@
                 <ion-col col-10>
                 <ion-item class="select">
                     <ion-label>{{globals.LANG.CLIENT}}</ion-label>
-                    <ion-select class="asd" [(ngModel)]="search.client" (ionChange)="onClientSelectChange($event)" cancelText={{globals.LANG.CANCEL}}>
+                    <ion-select [(ngModel)]="search.client" (ionChange)="onClientSelectChange($event)" cancelText={{globals.LANG.CANCEL}}>
                         <ion-option *ngFor="let client of clients" value="{{client.$key}}">{{client.Name}}</ion-option>
                     </ion-select>
                 </ion-item>      
@@ -33,7 +35,7 @@
                 <ion-item class="select">
                     <!-- Select -->
                     <ion-label>{{globals.LANG.ENTITY}}</ion-label>
-                    <ion-select class="asd" [(ngModel)]="search.entity" cancelText={{globals.LANG.CANCEL}} [disabled]="!entities">
+                    <ion-select [(ngModel)]="search.entity" cancelText={{globals.LANG.CANCEL}} [disabled]="!entities">
                         <ion-option *ngFor="let entitie of entities" value="{{entitie.$key}}">{{entitie.Name}}</ion-option>
                     </ion-select>
                 </ion-item>
@@ -41,8 +43,8 @@
                 <ion-col>
                     <!-- Button -->
                     <button class="search-button" ion-button icon-only round [disabled]="!entities" (click)="searchEntity()">
-                        <!-- <ion-icon class="asd" name="search"></ion-icon> -->
-                        <img src="../../../assets/icon/button-search.png" alt="">
+                        <!-- <ion-icon name="search"></ion-icon> -->
+                        <img src="assets/icon/button-search.png" alt="">
                     </button>
                 </ion-col>
             </ion-row>
@@ -51,8 +53,9 @@
 </ion-content>
 
 <ion-footer class="footer" padding no-border>
- <button class="footer-button" ion-button round mode="ios" (click)="searchForm()" icon-start>
+ <button class="footer-button" ion-button round mode="ios" (click)="searchForm()" icon-start [disabled]="!search.entity">
     <!-- <ion-icon name="search"></ion-icon> -->
     {{globals.LANG.SEARCH}}
 </button>
 </ion-footer>
+

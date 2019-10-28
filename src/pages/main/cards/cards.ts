@@ -3,6 +3,8 @@ import { IonicPage, NavController, NavParams, LoadingController, AlertController
 import { AuthData } from '../../../providers/auth-data';
 import { CardsProvider } from '../../../providers/forms/cards-list';
 import { Globals } from '../../../services/globals.service';
+import { Network } from '@ionic-native/network';
+import { Storage } from '@ionic/storage';
 
 import { AngularFireDatabase} from 'angularfire2/database-deprecated';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -19,23 +21,18 @@ import { Geolocation } from '@ionic-native/geolocation';
 })
 export class CardsPage {
 
-  public search: object = {
+  public search:  {
     client: '',
     entity: ''
   };
   public entityName: any;
   public forms: any;
+  public allForms: any;
   public imgForm: object = {
-    typeStore: {
-    0: "https://firebasestorage.googleapis.com/v0/b/survey-store.appspot.com/o/forms_images%2Fstore%201.png?alt=media&token=58a92fff-b89f-47e1-8122-89ae899bfa79",
-    1: "https://firebasestorage.googleapis.com/v0/b/survey-store.appspot.com/o/forms_images%2Fstore%202.png?alt=media&token=75c4abe8-5140-470c-b573-22634062940c",
-    2: "https://firebasestorage.googleapis.com/v0/b/survey-store.appspot.com/o/forms_images%2Fstore%203.png?alt=media&token=212f12e9-fa5a-48c1-b918-1e3cb8d588c3",
-    },
-    typePerson: {
-      0: "https://firebasestorage.googleapis.com/v0/b/survey-store.appspot.com/o/forms_images%2Fpersonas%203.png?alt=media&token=a3f0e59a-f3d6-4767-a29d-3dc7f0749c1c",
-      1: "https://firebasestorage.googleapis.com/v0/b/survey-store.appspot.com/o/forms_images%2Fpersonas%202.png?alt=media&token=b093458c-bb49-4e63-a05b-1d853c55e3d0",
-      2: "https://firebasestorage.googleapis.com/v0/b/survey-store.appspot.com/o/forms_images%2Fpersonas%201.png?alt=media&token=484b573d-3517-44ad-b5e6-ea88d4acefe9",
-      }
+    // typeStore: "https://firebasestorage.googleapis.com/v0/b/survey-store.appspot.com/o/forms_images%2Fstore%203.png?alt=media&token=212f12e9-fa5a-48c1-b918-1e3cb8d588c3",
+    // typePerson: "https://firebasestorage.googleapis.com/v0/b/survey-store.appspot.com/o/forms_images%2Fpersonas%201.png?alt=media&token=484b573d-3517-44ad-b5e6-ea88d4acefe9",
+    typeStore: "..\assets\img\store.png",
+    typePerson: "..\assets\img\person.png",
   };
   
   constructor(public navCtrl: NavController, 
@@ -48,8 +45,10 @@ export class CardsPage {
     public globals: Globals,
     public userData: UserService,
     public navParams: NavParams,
+    public network: Network,
     public cardsList: CardsProvider,
-    private geolocation: Geolocation) {
+    private geolocation: Geolocation,
+    public storage: Storage) {
     
       let data = navParams.get('data');
 
@@ -58,21 +57,48 @@ export class CardsPage {
 
   }
 
-  ionViewWillEnter(){
-    let ion = this;
-   console.log('new view', this.search);
-   ion.cardsList.getAllFormsByUserClientAndEntity(this.search).then(AllForms => {
-    console.log('new view forms', AllForms);
-      ion.forms = AllForms;
-      console.log('resolved view', AllForms);
-      
-  }).catch(err => {
-    ion.toastCtrl.create({
-      message: 'This entity doesnt have any form, please select another.',
-      duration: 3000
-    }).present();
-  });
+  
+  getForms(ev: any){
+    // set val to the value of the searchbar
+    const val = ev.target.value;
+    
+    //incializamos nuevamente con todos los formularios
+    this.forms = this.allForms
+    // if the value is an empty string don't filter the items
+    
+    if (val && val.trim() != '') {
+      this.forms = this.forms.filter((form) => {
+        return (form.Title.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      })
+    }
+    
+    
+  }
 
+  ionViewWillEnter(){
+  let ion = this;
+  
+  if (ion.isOnDevice()) 
+  {
+    if (ion.isOnline()) 
+    {
+      //Versión Online
+      this.getAllFormsOnline()
+    } else {
+      //Versión Offline
+      this.getAllFormsOffline()
+    }
+  } else 
+  {  
+    console.log('Is on browser!');
+    
+    //Versión Online
+    this.getAllFormsOnline()
+      
+    // //Versión Offline
+    // this.getAllFormsOffline()
+    
+  }
   // //Test GeoLocation
   // this.geolocation.getCurrentPosition().then((resp) => {
   //   // resp.coords.latitude
@@ -85,13 +111,53 @@ export class CardsPage {
     
   }
 
-  goForm(idForm, nameForm) {
+  isOnline(): boolean {
+    return  this.network.type !== 'none'
+  }
+  
+  isOnDevice():boolean {
+    return this.network.type !== null
+  }
+
+  getAllFormsOnline(){
+    let ion = this
+    console.log('new view', this.search);
+    ion.cardsList.getAllFormsByUserClientAndEntity(this.search).then(AllForms => {
+        console.log('new view forms', AllForms);
+        ion.forms = AllForms;
+        this.allForms = this.forms
+
+        //console.log('resolved view', AllForms);
+        
+    }).catch(err => {
+      console.log(err);
+      
+      ion.toastCtrl.create({
+        message: 'This entity doesnt have any form, please select another.',
+        duration: 3000
+      }).present();
+    });
+  }
+
+  getAllFormsOffline() {
+    this.storage.get('allForms').then((AllForms) => {
+      //console.log('todos: ', AllForms.filter(form => form.IdClient == this.search.client && form.IdEntitie == this.search.entity));
+      this.forms = AllForms.filter(form => form.IdClient == this.search.client && form.IdEntitie == this.search.entity && form.userStatus != 3);
+      this.allForms = this.forms
+    }).catch((er) =>{
+        console.log(er);
+    });
+  }
+
+  goForm(idForm, nameForm, status) {
     let ion = this;
-    
+   
     ion.navCtrl.push('FormsPage', {
       data: {
         idForm: idForm,
-        nameForm: nameForm
+        nameForm: nameForm,
+        statusForm: status,
+        idEntity:this.search.entity
       }
     });
   }

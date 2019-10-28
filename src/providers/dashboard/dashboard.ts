@@ -25,9 +25,37 @@ export class DashboardProvider {
         this.db = firebase.firestore();
     }
 
+    getEntitieData(entId): Promise<any> {
+        let ion = this;
+        let arr = [];
+        
+        return new Promise((resolve, reject) => {
+            arr = []
+            try {
+                var ent = this.db.collection("entities").doc(entId).get()
+                .then(function(enti){
+                    var en = JSON.parse(JSON.stringify(enti.data()));
+    
+                    //console.log(en);
+                    arr.push(en)
+
+                })
+
+                resolve(arr)                
+            } catch (error) {
+                reject(error)
+            }
+
+        })
+    }
+    
+    //Retorna un arreglo con los id de las entidades asociadas a un id de cliente
+    //Para que se puedan desplegar en el select podríamos tener un arreglo que tenga las
+    //los ids asociados al nombre de la entidad y descripcion
     getTotalEntitiesByUser(): Promise<any> {
         let ion = this;
         let arr = [];
+        var itemsProcessed = 0
         return new Promise((resolve, reject) => {
             try {
                 let authUser = ion.authData.getAuthUser();
@@ -36,12 +64,40 @@ export class DashboardProvider {
                 .get().then((entitiesSnapShot) => {
                     entitiesSnapShot.forEach(function (ii) {
                         var ent = JSON.parse(JSON.stringify(ii.data()));
+                        //console.log(ent);
+                        
                         //entities per client
                         ent.Id_entity.forEach(function (jj) {
+                        //var entitie = this.db.collection("entities").doc(jj.entity_id)
+                            
                             let entC = jj
-                            entC.$key = jj.id
+                            //console.log(jj);
+                            
+                            entC.$key = ent.IdClient
                             arr.push(entC);  
                         })
+/*
+                        var itemsProcessed = 0
+                        arr.forEach(async (element) =>{
+                            //var entitie = this.db.collection("entities").doc(element.entity_id)
+                            itemsProcessed++
+                            try {
+                                console.log(element.entity_id);
+                                
+                                let asd = await this.getEntitieData(element.entity_id)
+                                console.log(asd);
+                            } catch (error) {
+                                
+                                
+                                reject()
+                            }
+                            if (itemsProcessed == arr.length) {
+                                resolve(arr)
+                            }
+
+                        })
+                        */
+
                         //arr.push(ent.Id_entity);
                         //console.log(ent);
                     });
@@ -186,5 +242,64 @@ export class DashboardProvider {
         })
     }
 
-    
+     getTotalDataEntities(): Promise<any> {
+        
+        let ion = this;
+        let entUser = []; //Entities by user
+        let dataEnt = []; //Entities data
+        return new Promise((resolve, reject) => {
+           
+            try {
+                let authUser = ion.authData.getAuthUser();
+                var entities_users = this.db.collection("entities_users");
+                /* Obtain entities by User */
+                entities_users.where("IdUser", "==", authUser.uid)
+                .get().then((entitiesSnapShot) => {
+                    entitiesSnapShot.forEach(function (ii) {
+                        var ent = JSON.parse(JSON.stringify(ii.data()));
+                        //entities per client
+                        ent.Id_entity.forEach(function (jj) {
+                            entUser.push(jj);  
+                            //console.log(jj);
+                        })
+                        
+                    });
+                    var itemsProcessed = 0;
+                    
+                    entUser.forEach(ent => {
+                        var entities = this.db.collection("entities").doc(ent.entity_id).get()
+                        .then( function (doc) {
+                            itemsProcessed++;
+                            var entity = JSON.parse(JSON.stringify(doc.data()));
+                            
+                            entity.$key = ent.entity_id
+                            let find = dataEnt.find(k => k.$key === entity.$key);
+                            if (find === undefined) {
+                                dataEnt.push(entity)
+                            } else {
+                                //console.log(dataEnt) 
+                            }
+
+                            if(itemsProcessed === entUser.length) {
+                                if (dataEnt.length >= 1) {
+                                 resolve(dataEnt);
+                                }else{
+                                    reject()
+                                }
+                            } 
+                            
+                        })
+
+                        
+                    });
+                }).catch(err => {
+                    reject();
+                });
+            }catch(error)
+            {
+                console.log(error);
+                reject();
+            }
+        })
+    }
 }

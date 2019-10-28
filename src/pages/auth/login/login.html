@@ -1,8 +1,9 @@
+
 <ion-header no-border>
-  <ion-navbar id = "transparent-toolbar">
-    <!-- <button ion-button menuToggle>
+  <ion-navbar transparent id = "transparent-toolbar">
+     <!-- <button ion-button menuToggle>
       <ion-icon name="menu" color="light"></ion-icon>
-    </button> -->
+    </button>  -->
   </ion-navbar>
 </ion-header>
 
@@ -11,14 +12,14 @@
     <img class="logo" src="{{appConfig.APP_ICON}}" />
     
     <!--*********** Form ***********-->
-    <form [formGroup]="loginForm" (submit)="login()" novalidate>
-      <ion-item id="input">
+    <form [formGroup]="loginForm" (submit)="login()" novalidate no-lines>
+      <ion-item id="input-login">
         <!-- <ion-label floating>{{globals.LANG.EMAIL}}</ion-label> -->
         <ion-input tappable color="light" #email type="email" placeholder="{{globals.LANG.EMAIL}}" formControlName="email" [class.invalid]="!loginForm.controls.email.valid &&loginForm.controls.email.dirty">
         </ion-input>
       </ion-item>
 
-      <ion-item id="input">
+      <ion-item id="input-login">
         <!-- <ion-label floating>{{globals.LANG.PASSWORD}}</ion-label> -->
         <ion-input tappable #password type="password" formControlName="password" placeholder="{{globals.LANG.PASSWORD}}" [class.invalid]="!loginForm.controls.password.valid &&loginForm.controls.password.dirty">
         </ion-input>
@@ -32,7 +33,7 @@
       </ion-item>
 
       <div class="submit-box">
-        <button class="login-button" ion-button mode="ios" block type="submit" color="blue2">{{globals.LANG.LOG_IN}}</button>
+        <button class="login-button" ion-button mode="ios" block type="submit" color="orange">{{globals.LANG.LOG_IN}}</button>
       </div>
     </form>
     

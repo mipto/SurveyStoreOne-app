@@ -1,14 +1,21 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController , ToastController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController , ToastController, Platform} from 'ionic-angular';
 import { AuthData } from '../../../providers/auth-data';
 import { CardsProvider } from '../../../providers/forms/cards-list';
 import { Globals } from '../../../services/globals.service';
 import { Storage } from '@ionic/storage';
 
-import { AngularFireDatabase} from 'angularfire2/database-deprecated';
+import { AngularFireDatabase } from 'angularfire2/database-deprecated';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { Network } from '@ionic-native/network';
 
 import { UserService } from '../../../services/user.service';
+import { storage } from 'firebase';
+import { MapOperator } from 'rxjs/operators/map';
+import { DashboardProvider } from '../../../providers/dashboard/dashboard';
+import { FormsProvider } from '../../../providers/forms/forms';
+import { timeout } from 'rxjs/operators';
+import { timeoutWith } from 'rxjs/operator/timeoutWith';
 
 @IonicPage()
 @Component({
@@ -21,6 +28,7 @@ export class HomePage {
   public clients: any;
   public entities: any;
   public lastConnect: string;
+  public appIsOnDevice: any;
 
   constructor(public navCtrl: NavController, 
     public authData: AuthData,
@@ -32,10 +40,15 @@ export class HomePage {
     public globals: Globals,
     public userData: UserService,
     public navParams: NavParams,
+    public network: Network,
     public cardsList: CardsProvider,
-    public storage: Storage) {
+    public dashboard: DashboardProvider,
+    public storage: Storage,
+    public platform: Platform,
+    public formProvider: FormsProvider) {
 
       let ion = this;
+      ion.appIsOnDevice = !this.platform.url().startsWith('http');
 
       ion.search = {
         client: null,
@@ -51,12 +64,23 @@ export class HomePage {
     
   }
 
-  ionViewWillEnter(){
+  isOnline(): boolean {
+    return  this.network.type !== 'none'
+  }
+
+  isOnDevice():boolean {
+    return this.network.type !== null
+  }
+
+  ionViewCanEnter(){
     let ion = this;
     let loadingPopupHome = ion.loadingCtrl.create({
       spinner: 'crescent', 
       content: ''
     });
+    loadingPopupHome.present();
+    
+
     if (this.navParams.get('data')) {
       let data = this.navParams.get('data');
       if (data.selectedEntity && data.selectedClient) {
@@ -68,33 +92,236 @@ export class HomePage {
         ion.search.entity = data.selectedEntity;
       }
     };
-    ion.cardsList.getAllClients().then(Allclients => {
-      ion.clients = Allclients;
+    if(ion.isOnDevice())
+    {
+      if(ion.isOnline())
+      {
+        //Data de pantalla de Home
+  
+        //Versión online
+        ion.loadHomeDataOnline()
+        //Data de pantalla de Cards
+        ion.loadFormDataOnline(loadingPopupHome)
+        
+      }else{
+          //Versión offline
+          ion.loadHomeDataOffline(loadingPopupHome)
+        
+      }
+
+    }else{
+      //Data de pantalla de Home
+  
       loadingPopupHome.dismiss();
-    });
+      //Versión online
+      ion.loadHomeDataOnline()
+      // //Versión offline
+      // ion.loadHomeDataOffline(loadingPopupHome)
+  
+      // //Data de pantalla de Cards
+      //ion.loadFormDataOnline(loadingPopupHome)
+      
+
+    }
+  }
+  
+  loadFormDataOnline(loadingPopupHome) {
+    let ion = this
+    let aux
+    Promise.all([ ion.storage.get('changeForms')]).then(([change]) =>{
+      // console.log(change);
+      
+      if(change === null || change === undefined)
+        ion.storage.set('changeForms', [])
+
+    })
+    ion.formProvider.getAllDocumentPendient("KKucKKIlEUSiqTNiGivn").then(form =>{
+      // console.log(form);
+      
+    })
     
+    ion.cardsList.getAllFormsByUser().then(AllForms =>{
+      // console.log('allForms (consulta): ',AllForms)
+      
+      this.storage.set('allForms', AllForms)
+      //Data de pantalla de Formulario
+      ion.formProvider.getAllDocumentsForAllForms(AllForms)
+      .then(All =>{
+        // console.log('Questions (consulta):', All[0]);
+        setTimeout(() => {
+          //obtener aparte las posiciones de los formularios que son pendientes para que NO se pierdan
+          
+            //console.log(All);
+            
+            this.storage.set('allFormsQA',  All).then(elementsSaved => {
+              console.log('ressss', elementsSaved);
+            
+            }); 
+          
+        }, 3500);
+        //this.createQuestiosAnswerArray(All)
+        loadingPopupHome.dismiss();
+       
+  
+      }).catch(e =>{
+        console.log(e);  
+      })
+    }).catch(e =>{
+      console.log(e);  
+      loadingPopupHome.dismiss()
+      this.navCtrl.push('LoginPage')
+    })
+  }
+  loadHomeDataOffline(loadingPopupHome) {
+    let ion = this
+    this.storage.get('Allclients').then((clients) => {
+      //Usamos lo que está en el storage
+      ion.clients = clients;
+      loadingPopupHome.dismiss();
+      
+    }).catch((er) =>{
+        console.log(er);
+    });
   }
 
+  loadHomeDataOnline() {
+    let ion = this
+    ion.cardsList.getAllClients().then( Allclients => {
+      ion.clients = Allclients;
+      this.storage.set('Allclients', ion.clients);
+      
+     
+
+      ion.dashboard.getTotalEntitiesByUser().then(AllEnt =>{
+        //Solo tenemos los Id's asociados a un cliente
+        this.storage.set('entitiesByUserAndClient', AllEnt)
+      }).catch((error)=>{
+        console.log(error);
+        
+      })
+      // ion.dashboard.getTotalDataEntities().then(AllEnt =>{
+      //   //Estan los datos de cada entidad 
+      //   console.log(AllEnt)
+      //   this.storage.set('entitiesByUser', AllEnt)
+      // }).catch((error)=>{
+      //   console.log(error);
+        
+      // })
+
+      // loadingPopupHome.dismiss();
+        
+    });
+  }
+ 
   onClientSelectChange(selectedValue: any) {
     let ion = this;
+    
+    //console.log(ion.search);
+    if(ion.isOnDevice())
+    {
+          
+      if(ion.isOnline())
+      {
+        //Versión Online
+        ion.getEntitiesOnline(selectedValue)
+     
+      }else{
+        //versión Offline
+        ion.getEntitiesOffline(selectedValue)
+  
+      }
+    }else{
+      
+      //Versión Online
+      ion.getEntitiesOnline(selectedValue)
+      
+      //Versión Offline
+      // ion.getEntitiesOffline(selectedValue)
+    
+    }
+  }
+  getEntitiesOffline(selectedValue: any): any {
+    let ion = this
     let loadingPopupHome = ion.loadingCtrl.create({
       spinner: 'crescent', 
       content: ''
     });
-    console.log(ion.search);
+    loadingPopupHome.present()
+    this.storage.get('entitiesByUserAndClient').then(ent =>{
+      let entSelect = []
+      if (ent.length > 0) {
+        ent.forEach(element => {
+          if (element.$key == selectedValue) {
+            this.storage.get('entitiesByUser').then(data =>{
+              //Se buscan los datos de las entidades como tal
+              let find = data.find(k => k.$key === element.entity_id)
+              if (find !== undefined) {
+                entSelect.push(find);
+              } 
+            })
+          }
+        });
+        
+        ion.entities = entSelect
+        loadingPopupHome.dismiss();
+        
+      } else {
+        ion.entities = null;
+        ion.toastCtrl.create({
+            message: 'This client doesnt have entities, please select another.',
+            duration: 3000
+          }).present();
+        loadingPopupHome.dismiss();
+
+      }
+
+    })
+  }
+  async parserSet(set){
+    let entity = [];
+    console.log(set);
     
-    ion.cardsList.getAllEntitiesByUser(selectedValue).then(AllEntities => {
-      ion.entities = AllEntities;
-      loadingPopupHome.dismiss();
-    }).catch(err => {
-      ion.entities = null;
-      ion.toastCtrl.create({
-          message: 'This client doesnt have entities, please select another.',
-          duration: 3000
-        }).present();
+    for (let iterator of set) {
+   await console.log(JSON.parse(iterator));
+//      entity.push(JSON.parse(iterator));
+     console.log(iterator);
+    }
+    set.forEach(element => {
+      console.log(element);
+      
     });
   }
+  getEntitiesOnline(selectedValue) {
+    let ion = this
+    let loadingPopupHome = ion.loadingCtrl.create({
+      spinner: 'crescent', 
+      content: ''
+    });
+    loadingPopupHome.present();
+    
+    ion.cardsList.getAllEntitiesByUser(selectedValue).then(all =>{
+        console.log(all);
+        ion.entities = all;
+        loadingPopupHome.dismiss();
+     
+    }).catch(err =>{
+      console.log(err);
+      ion.entities = null;
+      ion.toastCtrl.create({
+              message: 'This client doesnt have entities, please select another.',
+              duration: 3000
+            }).present();
+      loadingPopupHome.dismiss();
+      
+    })
+    
 
+  }
+  ionViewDidEnter() {
+    
+   
+  }
+  
   searchEntity() {
     let ion = this;
     
@@ -111,6 +338,7 @@ export class HomePage {
     console.log(ion.search);
 
     let entity = this.entities.find(x => x.$key === ion.search.entity);
+    console.log(entity);
     
     ion.navCtrl.push('CardsPage', {
       data: {
