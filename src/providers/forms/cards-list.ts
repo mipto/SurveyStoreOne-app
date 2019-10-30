@@ -132,63 +132,89 @@ export class CardsProvider {
     }
     async getAllEntities(): Promise<any> {
         let ion = this;
-
+        let arr =[];
         let EntitieSet = [];
         
+         
         return await new Promise(async (resolve, reject) => {
             try{
                 var itemsProcessed = 0;
                 let authUser = await ion.authData.getAuthUser();
-                
-                var form_user = await this.db.collection("forms_users");
-                form_user.where("id_user", "==", authUser.uid).get()
+                var forms = await this.db.collection("forms");
+                forms.where("status", "==", "1").get()
                 .then(async (entitiesSnapShot) => {
-                    itemsProcessed++;
-                    entitiesSnapShot.forEach(async function (doc) {
-                        // EntitieArrKey.push(doc.data());
+                    if(entitiesSnapShot.size == 0)
+                    {
+                        console.log("entro aqui");
                         
-                        var obj = await JSON.parse(JSON.stringify(doc.data()));
-                        // obj.$key = doc.id
-                        var ent = {
-                            Name: obj.entity_name,
-                            id_entity: obj.id_entity,
-                            id_form: obj.id_form,
-                            $key: obj.id_entity
-                        }
-                        console.log(ent);
-                       // debugger
-                        // if(EntitieSet.find( entity => entity.$key === ent.$key ) === undefined)
-                            EntitieSet.push(ent);
+                        reject();
+                    }
+                    entitiesSnapShot.forEach(function (doc) {
+                        var obj = JSON.parse(JSON.stringify(doc.data()));
+                        obj.$key = doc.id
+                        arr.push(obj);
                     })
-                    
-                       
-                        if (EntitieSet.length >= 1) {
-                            debugger
-                            console.log(EntitieSet);
-                            await resolve(EntitieSet);
-                        } else {
-                            await reject();
-                        }
-                    
-                }).catch(async err => {
-                    console.log(err);
-                    
-                    await reject(err);
-                });
+                    console.log(arr);
+                    // debugger
+                    for await (const form of arr) {
+                        let itemsProcessedFormUser = 0;
+                        var form_user = await this.db.collection("forms_users");
+                        form_user.where("id_form", "==", form.$key).where("id_user", "==", authUser.uid).get()
+                        .then(async (entitiesSnapShot) => {
+                            itemsProcessed++;
+                            entitiesSnapShot.forEach(async function (doc) {
+                                // EntitieArrKey.push(doc.data());
+                                
+                                var obj = await JSON.parse(JSON.stringify(doc.data()));
+                                // obj.$key = doc.id
+                                
+                                var ent = {
+                                    Name: obj.entity_name,
+                                    client_name: form.clientName,
+                                    id_entity: obj.id_entity,
+                                    // id_form: obj.id_form,
+                                    id_client: form.IdClient,
+                                    $key: obj.id_entity
+                                }
+                                console.log(ent);
+                                //if(EntitieSet.find( entity => entity.$key === ent.$key ) === undefined)
+                                    EntitieSet.push(ent);
+                            })
+                            
+                            if(itemsProcessed === arr.length) {
+                                
+                                if (EntitieSet.length >= 1) {
+                                    console.log(EntitieSet);
+                                    await resolve(EntitieSet);
+                                } else {
+                                    await reject();
+                                }
+                            }
+                        }).catch(async err => {
+                            console.log(err);
+                            
+                            await reject(err);
+                        });
                         
                         
-                    
+                    }
                     //  console.log(EntitieSet);
                     
-                    //await resolve(EntitieSet);
+                    //  resolve(EntitieSet);
                   
-                
+                }).catch((err)=>{
+                    console.log(err);
+
+                    reject(err)
+                })
+                // await reject();
             }
             catch(err){
                     console.log(err);
                     reject(err);
             }
-        })
+        })   
+        
 
     }
     getAllEntitiesAndAllClientByUser(): Promise<any> {

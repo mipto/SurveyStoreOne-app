@@ -190,12 +190,10 @@ export class HomePage {
     console.log('hola');
     
     ion.cardsList.getAllEntities().then(All =>{
-      setTimeout(() => {
-        console.log(All);
-        
-      }, 4500);
-        
-        
+      
+      console.log(All);
+      this.storage.set('entitiesByUser', All)
+       
     }).catch((e) =>{
       console.log(e);
       
@@ -249,49 +247,50 @@ export class HomePage {
     }else{
       
       //Versión Online
-      ion.getEntitiesOnline(selectedValue)
+     ion.getEntitiesOnline(selectedValue)
       
       //Versión Offline
-      // ion.getEntitiesOffline(selectedValue)
+      ion.getEntitiesOffline(selectedValue)
     
     }
   }
+
+ 
   getEntitiesOffline(selectedValue: any): any {
     let ion = this
+    let arrEnt=[];
     let loadingPopupHome = ion.loadingCtrl.create({
       spinner: 'crescent', 
       content: ''
     });
     loadingPopupHome.present()
-    this.storage.get('entitiesByUserAndClient').then(ent =>{
-      let entSelect = []
-      if (ent.length > 0) {
-        ent.forEach(element => {
-          if (element.$key == selectedValue) {
-            this.storage.get('entitiesByUser').then(data =>{
-              //Se buscan los datos de las entidades como tal
-              let find = data.find(k => k.$key === element.entity_id)
-              if (find !== undefined) {
-                entSelect.push(find);
-              } 
-            })
+   
+        this.storage.get('entitiesByUser').then(data =>{
+          data = data.filter(k => k.id_client === selectedValue)
+          let sinRepetidos = data.filter((valorActual, indiceActual, arreglo) => {
+            //Podríamos omitir el return y hacerlo en una línea, pero se vería menos legible
+            return arreglo.findIndex(valorDelArreglo => JSON.stringify(valorDelArreglo) === JSON.stringify(valorActual)) === indiceActual
+           });
+          //Se buscan los datos de las entidades como tal
+          console.log(sinRepetidos);
+          if(sinRepetidos === []){
+            ion.entities = null;
+            ion.toastCtrl.create({
+                message: 'This client doesnt have entities, please select another.',
+                duration: 3000
+              }).present();
+          }else{
+            ion.entities = sinRepetidos;
+
           }
-        });
+          loadingPopupHome.dismiss();
+          
+        })
+        //loadingPopupHome.dismiss();
         
-        ion.entities = entSelect
-        loadingPopupHome.dismiss();
         
-      } else {
-        ion.entities = null;
-        ion.toastCtrl.create({
-            message: 'This client doesnt have entities, please select another.',
-            duration: 3000
-          }).present();
-        loadingPopupHome.dismiss();
 
-      }
-
-    })
+    
   }
   async parserSet(set){
     let entity = [];
