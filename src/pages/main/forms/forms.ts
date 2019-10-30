@@ -291,8 +291,6 @@ export class FormsPage {
           }        
           if(question.type == 1 && this.valideInput(question.answer, 'number', question.max_value, question.min_value) == 1)
             {
-              console.log('numero invalidoo ', question.answer);
-              
               valid = false
               break;
             }

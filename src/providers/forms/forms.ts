@@ -822,7 +822,7 @@ export class FormsProvider {
               }*/
               if(itemsProcessed == AllFormId.length && allForms.length > 0)
               {
-                //console.log(allForms);
+                console.log(allForms);
                 
                 resolve(allForms)
               }

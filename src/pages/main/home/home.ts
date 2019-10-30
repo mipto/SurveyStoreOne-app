@@ -112,11 +112,11 @@ export class HomePage {
     }else{
       //Data de pantalla de Home
   
-      loadingPopupHome.dismiss();
+      //loadingPopupHome.dismiss();
       //Versión online
       ion.loadHomeDataOnline()
       // //Versión offline
-      // ion.loadHomeDataOffline(loadingPopupHome)
+       ion.loadHomeDataOffline(loadingPopupHome)
   
       // //Data de pantalla de Cards
       //ion.loadFormDataOnline(loadingPopupHome)
@@ -135,10 +135,7 @@ export class HomePage {
         ion.storage.set('changeForms', [])
 
     })
-    ion.formProvider.getAllDocumentPendient("KKucKKIlEUSiqTNiGivn").then(form =>{
-      // console.log(form);
-      
-    })
+    
     
     ion.cardsList.getAllFormsByUser().then(AllForms =>{
       // console.log('allForms (consulta): ',AllForms)
@@ -177,20 +174,37 @@ export class HomePage {
     this.storage.get('Allclients').then((clients) => {
       //Usamos lo que está en el storage
       ion.clients = clients;
+      //console.log(ion.clients);
+      
       loadingPopupHome.dismiss();
       
     }).catch((er) =>{
         console.log(er);
+     // loadingPopupHome.dismiss();
+
     });
   }
 
   loadHomeDataOnline() {
     let ion = this
+    console.log('hola');
+    
+    ion.cardsList.getAllEntities().then(All =>{
+      setTimeout(() => {
+        console.log(All);
+        
+      }, 4500);
+        
+        
+    }).catch((e) =>{
+      console.log(e);
+      
+    });
     ion.cardsList.getAllClients().then( Allclients => {
       ion.clients = Allclients;
       this.storage.set('Allclients', ion.clients);
       
-     
+     /*
 
       ion.dashboard.getTotalEntitiesByUser().then(AllEnt =>{
         //Solo tenemos los Id's asociados a un cliente
@@ -199,6 +213,7 @@ export class HomePage {
         console.log(error);
         
       })
+      */
       // ion.dashboard.getTotalDataEntities().then(AllEnt =>{
       //   //Estan los datos de cada entidad 
       //   console.log(AllEnt)
@@ -211,6 +226,7 @@ export class HomePage {
       // loadingPopupHome.dismiss();
         
     });
+    
   }
  
   onClientSelectChange(selectedValue: any) {
