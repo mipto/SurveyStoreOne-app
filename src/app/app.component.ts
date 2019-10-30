@@ -251,23 +251,23 @@ export class MyApp {
           let idForm = allForms[element][0].Id_form
           console.log(idForm);
           
-          // this.FormsProvider.saveAllAnswers(allForms[element], false).then(res => {
-          //   // console.log('va a guardar');
-          //   // this.forms = null;
-          //   this.FormsProvider.getFormUserByFormID(idForm).then(userForm => {
-          //     let form: any;
-          //     form = userForm;
-          //     if (form.status == 1) {
-          //       this.FormsProvider.updateFormStatus(idForm, 2).then(res => {
-          //         // console.log('updated form status.');
+          this.FormsProvider.saveAllAnswers(allForms[element], allForms[element].id_entity, false).then(res => {
+            // console.log('va a guardar');
+            // this.forms = null;
+            this.FormsProvider.getFormUserByFormID(idForm).then(userForm => {
+              let form: any;
+              form = userForm;
+              if (form.status == 1) {
+                this.FormsProvider.updateFormStatus(idForm, 2).then(res => {
+                  // console.log('updated form status.');
                   
-          //       })
-          //     } else {
-          //       // console.log('form is already draft.');
+                })
+              } else {
+                // console.log('form is already draft.');
                 
-          //     }
-          //   })
-          // })
+              }
+            })
+          })
           
         }
 

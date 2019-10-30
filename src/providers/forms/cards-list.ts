@@ -383,7 +383,8 @@ export class CardsProvider {
                                 // && objForm.IdClient==searchData.client && objForm.IdEntitie==searchData.entity) {
                                 objForm.$key = doc.id
                                 objForm.userStatus = element.status
-                                
+                                objForm.id_entity = element.id_entity
+                                objForm.entity_name = element.entity_name
                                 FormArr.push(objForm);
                             } 
                             if(itemsProcessed === arr.length) {

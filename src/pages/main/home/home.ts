@@ -119,7 +119,7 @@ export class HomePage {
        ion.loadHomeDataOffline(loadingPopupHome)
   
       // //Data de pantalla de Cards
-      //ion.loadFormDataOnline(loadingPopupHome)
+      ion.loadFormDataOnline(loadingPopupHome)
       
 
     }
@@ -148,7 +148,7 @@ export class HomePage {
         setTimeout(() => {
           //obtener aparte las posiciones de los formularios que son pendientes para que NO se pierdan
           
-            //console.log(All);
+            console.log(All);
             
             this.storage.set('allFormsQA',  All).then(elementsSaved => {
               console.log('ressss', elementsSaved);
@@ -176,7 +176,7 @@ export class HomePage {
       ion.clients = clients;
       //console.log(ion.clients);
       
-      loadingPopupHome.dismiss();
+     // loadingPopupHome.dismiss();
       
     }).catch((er) =>{
         console.log(er);
