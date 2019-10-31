@@ -244,14 +244,13 @@ export class MyApp {
     loadingPopupHome.present();
     Promise.all([this.storage.get('changeForms'), this.storage.get('allFormsQA')]).then(([changeForm, allForms]) =>{
       console.log(changeForm, allForms);
-  
-        for (let ii = 0; ii < changeForm.length; ii++) {
-          const element = changeForm[ii];
-          console.log(allForms[element]);
-          let idForm = allForms[element][0].Id_form
-          console.log(idForm);
-          
-          this.FormsProvider.saveAllAnswers(allForms[element], allForms[element].id_entity, false).then(res => {
+      for (let ii = 0; ii < changeForm.length; ii++) {
+        const element = changeForm[ii].$key;
+        console.log(allForms[element]);
+        let idForm = allForms[element][0].Id_form
+        console.log(idForm);
+        
+          this.FormsProvider.saveAllAnswers(allForms[element], changeForm[ii].id_entity, changeForm[ii].sync).then(res => {
             // console.log('va a guardar');
             // this.forms = null;
             this.FormsProvider.getFormUserByFormID(idForm).then(userForm => {
@@ -274,16 +273,43 @@ export class MyApp {
         
       }).then(a =>{
         console.log('done!');
-        this.storage.set('changeForms', [])
+        //Update variables
+        //Actualizar allFormsQA quitando los formularios sync
+        let formUpdated = []
+        Promise.all([this.storage.get('changeForms'), this.storage.get('allFormsQA')]).then(([changeForm, allForms])=>{
+          formUpdated = [];
+          changeForm = changeForm.filter(k => k.sync === true);
+          
+          allForms.forEach(element => {
+            if (changeForm.find(k => k.id_form === element[0].Id_form) !== undefined) {
+              console.log(formUpdated);
+              
+              formUpdated.push(element);
+            }           
+          });
+          //debugger
+        }).then(() =>{
+          this.storage.set('allFormsQA', formUpdated);
+
+        }).catch((e) =>{
+          console.log(e);
+        });
+        this.storage.set('changeForms', []);
         loadingPopupHome.dismiss();
        
+      }).catch((e)=>{
+        console.log(e);
+        
       })
   }
     // INIT NETWORK MONITOR:
     initNetworkMonitor() {
+      console.log('network monitor');
+      
       // check if we are on device or if its a browser
       if (this.platform.is('mobile') || this.platform.is('tablet')) {
         // watch network for a disconnect
+        console.log('movil');
         
      
         let disconnectSubscription = this.network
@@ -313,6 +339,21 @@ export class MyApp {
             console.log("we got a wifi connection, woohoo!");
           }
         });
+
+        //Only for test
+        let browserOffline = Observable.fromEvent(window, "offline").subscribe(
+          () => {
+            console.log("Offline trigger");
+            // go offline logic here
+          }
+        );
+        let browserOnline = Observable.fromEvent(window, "online").subscribe(
+          () => {
+            // go back online
+            console.log(this.globals.LANG.CONNEC_TRIGGER);
+            this.saveAllAnswersOnConnect()
+          }
+        );
       } else {
         console.log("navegador");
         

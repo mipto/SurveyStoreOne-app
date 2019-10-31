@@ -93,10 +93,10 @@ export class CardsPage {
     console.log('Is on browser!');
     
     //Versión Online
-    this.getAllFormsOnline()
+    //this.getAllFormsOnline()
       
     // //Versión Offline
-    // this.getAllFormsOffline()
+     this.getAllFormsOffline()
     
   }
   // //Test GeoLocation
@@ -141,8 +141,8 @@ export class CardsPage {
 
   getAllFormsOffline() {
     this.storage.get('allForms').then((AllForms) => {
-      //console.log('todos: ', AllForms.filter(form => form.IdClient == this.search.client && form.IdEntitie == this.search.entity));
-      this.forms = AllForms.filter(form => form.IdClient == this.search.client && form.IdEntitie == this.search.entity && form.userStatus != 3);
+      console.log('todos: ', AllForms.filter(form => form.IdClient == this.search.client && form.id_entity == this.search.entity));
+      this.forms = AllForms.filter(form => form.IdClient == this.search.client && form.id_entity == this.search.entity && form.userStatus != 3);
       this.allForms = this.forms
     }).catch((er) =>{
         console.log(er);

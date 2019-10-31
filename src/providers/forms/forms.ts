@@ -268,7 +268,7 @@ export class FormsProvider {
         if(hasOtherOptionFalse)
           question.otherAnswer = '' 
         }
-      console.log(hasQuestion, question);
+      //console.log(hasQuestion, question);
       if(question.type === 3 || question.type === 4)
       {
         docAnswer={
@@ -368,7 +368,7 @@ export class FormsProvider {
           question.otherAnswer = '' 
         }
         var docAnswer: any;
-        console.log(hasQuestion, question);
+        //console.log(hasQuestion, question);
       if(question.type === 3 || question.type === 4)
       {
         docAnswer={
@@ -457,10 +457,10 @@ export class FormsProvider {
         Forms.forEach(hierarchy_form => {
           hierarchy_form.questions.forEach(question => {
             this.getDocAnswer(question, hierarchy_form.$key, id).then((doc)=>{
-              console.log(doc)
+              //console.log(doc)
               ion.deleteOldAnswersBeforeSave(hierarchy_form.$key, question.$key).then(res => {
                 hierarchiesAnswers.doc().set(doc);
-                console.log(doc);
+                //console.log(doc);
                 
                 console.log('answers saved sucess!');
               });

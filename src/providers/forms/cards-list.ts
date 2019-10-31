@@ -90,7 +90,7 @@ export class CardsProvider {
                                     // id_entity: obj.id_entity,
                                     $key: obj.id_entity
                                 }
-                                console.log(ent);
+                                //console.log(ent);
                                 if(EntitieSet.find( entity => entity.$key === ent.$key ) === undefined)
                                     EntitieSet.push(ent);
                             })

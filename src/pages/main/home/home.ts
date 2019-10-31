@@ -116,7 +116,7 @@ export class HomePage {
       //Versión online
       ion.loadHomeDataOnline()
       // //Versión offline
-       ion.loadHomeDataOffline(loadingPopupHome)
+       //ion.loadHomeDataOffline(loadingPopupHome)
   
       // //Data de pantalla de Cards
       ion.loadFormDataOnline(loadingPopupHome)
@@ -187,7 +187,6 @@ export class HomePage {
 
   loadHomeDataOnline() {
     let ion = this
-    console.log('hola');
     
     ion.cardsList.getAllEntities().then(All =>{
       
@@ -250,7 +249,7 @@ export class HomePage {
      ion.getEntitiesOnline(selectedValue)
       
       //Versión Offline
-      ion.getEntitiesOffline(selectedValue)
+      //ion.getEntitiesOffline(selectedValue)
     
     }
   }

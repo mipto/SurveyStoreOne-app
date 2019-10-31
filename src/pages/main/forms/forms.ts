@@ -79,8 +79,9 @@ export class FormsPage {
       }
     }else{
       //Offline (ver si se guardaron bien los cambios en el storage)
-      // ion.saveAllAnswersOffline()  
-      // ion.saveAllAnswersOnConnect()
+      //ion.saveAllAnswersOffline()  
+      //ion.saveAllAnswersOnConnect()
+      
       //Parte online
       ion.saveAllAnswersOnline() 
       
@@ -94,7 +95,7 @@ export class FormsPage {
     console.log(this.changeForm);
 
       for (let ii = 0; ii < this.changeForm.length; ii++) {
-        const element = this.changeForm[ii];
+        const element = this.changeForm[ii].$key;
         console.log(this.allForms[element]);
         console.log(this.forms);
         
@@ -123,7 +124,7 @@ export class FormsPage {
   saveAllAnswersOnline() {
     let ion = this
     //if status == 2
-    // this.saveAllAnswersOffline()
+    this.saveAllAnswersOffline()
     //this.FormsProvider.saveArrAnswers(ion.forms)
     this.FormsProvider.saveAllAnswers(ion.forms, this.idEntity, this.sync).then(res => {
       // console.log('va a guardar');
@@ -181,7 +182,9 @@ export class FormsPage {
       }
     } else
     {
-         this.getDocumentsOnline()
+        this.getDocumentsOnline()
+        //this.getDocumentsOffline()
+
     }
     
   }
@@ -202,19 +205,26 @@ export class FormsPage {
         // console.log(form);
         
         this.changeForm = form;
+        let formC = {
+          $key: this.formIndex,
+          id_form: this.idForm,
+          id_entity: this.idEntity,
+          sync: false
+        }
+        console.log(formC);
+        //debugger
         if(this.changeForm !== undefined && this.changeForm !== null)
         {
-          // console.log(this.changeForm);
+          console.log(this.changeForm);
           
           // arr = this.changeForm
-          if ( this.changeForm.indexOf(this.formIndex) === -1) {
-            this.changeForm.push(this.formIndex)
-           
+          if ( this.changeForm.find(k => k.$key === this.formIndex) === undefined) {
+            this.changeForm.push(formC)
           }
         }else{
           // console.log('vaciooo ',this.changeForm);
           this.changeForm = []
-          this.changeForm.push(this.formIndex)
+          this.changeForm.push(formC)
 
          // this.storage.set('changeForms', [])
 
@@ -340,10 +350,11 @@ export class FormsPage {
             }
             else{
               //Offline
-              // this.storage.get('allForms').then( all => {
-              //   let auxInd = all.findIndex(k => k.$key === this.idForm)
-              //   all[auxInd].userStatus = 3
-              // })
+              this.storage.get('allForms').then( all => {
+                let auxInd = all.findIndex(k => k.$key === this.idForm)
+                all[auxInd].userStatus = 3
+
+              })
               //Online
               //se agrega un nuevo campo, es la fecha actual
               this.FormsProvider.updateFormStatus(this.idForm, 3).then(res => {
