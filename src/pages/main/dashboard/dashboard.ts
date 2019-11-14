@@ -105,8 +105,8 @@ export class DashboardPage {
         
       }
     }else {
-      // ion.getDashboardDataOnline(loadingPopupHome)
-      ion.getDashboardDataOffline(loadingPopupHome)
+      ion.getDashboardDataOnline(loadingPopupHome)
+      //ion.getDashboardDataOffline(loadingPopupHome)
 
     }
   }
@@ -125,7 +125,7 @@ export class DashboardPage {
       console.log('bySave: ', forms.filter(f => f.userStatus === 2))
       console.log('bySinc: ', forms.filter(f => f.userStatus === 3))
 
-      let formBySave = forms.filter(f => f.userStatus === 2).length
+      let formBySave = forms.filter(f => f.userStatus === 2 || f.userStatus === 3).length
       let formByFill = forms.filter(f => f.userStatus === 1).length
       console.log(formBySave);
       
@@ -229,6 +229,10 @@ export class DashboardPage {
                 break;
                 case 2:
                     totalForm.formBySinc++;     
+                    totalForm.formBySave++;     
+                break;
+                case 3:
+                        
                     totalForm.formBySave++;     
                 break;
                 default:

@@ -351,9 +351,17 @@ export class FormsPage {
             else{
               //Offline
               this.storage.get('allForms').then( all => {
-                let auxInd = all.findIndex(k => k.$key === this.idForm)
-                all[auxInd].userStatus = 3
+                let auxInd = all.findIndex(k => k.$key === this.idForm);
+                all[auxInd].userStatus = 3;
 
+              })
+              let aux;
+              debugger
+              this.storage.get('allFormsQA').then(all => {
+                aux = all.filter(k => k[0].Id_form !== this.idForm);
+                console.log(aux);
+                debugger
+                this.storage.set('allFormsQA', aux);
               })
               //Online
               //se agrega un nuevo campo, es la fecha actual
