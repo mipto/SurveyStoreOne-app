@@ -123,8 +123,8 @@ export class FormsPage {
   }
   saveAllAnswersOnline() {
     let ion = this
-    //if status == 2
-    this.saveAllAnswersOffline()
+    if(this.statusForm !== 3) 
+      this.saveAllAnswersOffline()
     //this.FormsProvider.saveArrAnswers(ion.forms)
     this.FormsProvider.saveAllAnswers(ion.forms, this.idEntity, this.sync).then(res => {
       // console.log('va a guardar');
@@ -150,9 +150,7 @@ export class FormsPage {
     let arr = []
     this.allForms[this.formIndex] = this.forms
     //this.allForms[this.formIndex].change = true
-   
     console.log(this.changeForm);
-    
     this.storage.set('changeForms',  this.changeForm)
 
     // console.log(this.allForms);
@@ -193,13 +191,13 @@ export class FormsPage {
     
   }
   getDocumentsOffline() {
-   let ion= this
+    let ion= this
     this.storage.get('allFormsQA').then(all =>{
       this.allForms = all;
       // console.log(this.allForms.filter(k => k[0].Id_form === this.idForm)[0]);
       this.formIndex = all.findIndex(k => k[0].Id_form === this.idForm)
       
-       this.forms =all.filter(k => k[0].Id_form === this.idForm)[0];
+      this.forms =all.filter(k => k[0].Id_form === this.idForm)[0];
       // console.log(this.forms);
       this.storage.get('changeForms').then(form =>{
         // console.log(form);
@@ -250,8 +248,8 @@ export class FormsPage {
         console.log(err);
         
       });
-       ion.loadingForm.dismiss();
-       ion.createArrayFamiliar();
+      ion.loadingForm.dismiss();
+      ion.createArrayFamiliar();
     })
   }
 
@@ -281,7 +279,6 @@ export class FormsPage {
   }
   validForm() {
     let valid=true
-   
     for (let ii = 0; ii < this.forms.length; ii++) {
       const form = this.forms[ii];
       for (let jj = 0; jj < form.questions.length; jj++) {
@@ -326,7 +323,7 @@ export class FormsPage {
           text: 'Sincronize',
           handler: () => {
             console.log('Sincronized clicked');
-
+            this.statusForm = 3;
             if(this.isOnDevice())
             {
               if(this.isOnline())
@@ -356,12 +353,20 @@ export class FormsPage {
 
               })
               let aux;
-              debugger
-              this.storage.get('allFormsQA').then(all => {
+              //debugger
+              Promise.all([this.storage.get('allFormsQA')]).then(([all])=>{
                 aux = all.filter(k => k[0].Id_form !== this.idForm);
                 console.log(aux);
                 debugger
                 this.storage.set('allFormsQA', aux);
+                debugger
+                
+              }).then(()=>{
+
+                this.storage.get('allFormsQA').then(all => {
+                  console.log(all);
+                  
+                })
               })
               //Online
               //se agrega un nuevo campo, es la fecha actual

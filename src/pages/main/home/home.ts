@@ -158,8 +158,6 @@ export class HomePage {
         }, 3500);
         //this.createQuestiosAnswerArray(All)
         loadingPopupHome.dismiss();
-       
-  
       }).catch(e =>{
         console.log(e);  
       })

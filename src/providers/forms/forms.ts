@@ -482,7 +482,7 @@ export class FormsProvider {
               //console.log(doc)
               ion.deleteOldAnswersBeforeSave(hierarchy_form.$key, question.$key).then(res => {
                 hierarchiesAnswers.doc().set(doc);
-                console.log(doc);
+                //console.log(doc);
                 
                 console.log('answers saved sucess!');
               });
@@ -779,9 +779,18 @@ export class FormsProvider {
         //console.log(AllFormId);
         var itemsProcessed = 0;
         AllFormId.forEach(element => {
-          //console.log(element.$key);
+          console.log(element.$key);
           itemsProcessed++
-          if(element.status == 1)
+          if(element.userStatus == 3)
+          {
+            if(itemsProcessed == AllFormId.length)
+            {
+              console.log(allForms);
+              
+              resolve(allForms)
+            }
+          }
+          else if(element.status == 1)
           {
             ion.getAllDocuments(element.$key).then(doc =>{
               //console.log(doc);

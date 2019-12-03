@@ -93,11 +93,14 @@ export class CardsPage {
     console.log('Is on browser!');
     
     //Versión Online
-    //this.getAllFormsOnline()
+    this.getAllFormsOnline()
       
     // //Versión Offline
      this.getAllFormsOffline()
-    
+     this.storage.get('allFormsQA').then(all => {
+      console.log(all);
+      
+    })
   }
   // //Test GeoLocation
   // this.geolocation.getCurrentPosition().then((resp) => {
