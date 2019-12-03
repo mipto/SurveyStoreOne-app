@@ -149,10 +149,8 @@ export class FormsPage {
   saveAllAnswersOffline() {
     let arr = []
     this.allForms[this.formIndex] = this.forms
-    //this.allForms[this.formIndex].change = true
     console.log(this.changeForm);
     this.storage.set('changeForms',  this.changeForm)
-
     // console.log(this.allForms);
     this.storage.set('allFormsQA', this.allForms)
   }
@@ -337,13 +335,18 @@ export class FormsPage {
               }else
               {
                 //Offline
-                // this.storage.get('allForms').then( all => {
-                //   let auxInd = all.findIndex(k => k.$key === this.idForm)
-                //   all[auxInd].userStatus = 3
-                // })
+                this.storage.get('allForms').then( all => {
+                  let auxInd = all.findIndex(k => k.$key === this.idForm)
+                  all[auxInd].userStatus = 3
+                })
 
               }
-
+              let aux;
+              Promise.all([this.storage.get('allFormsQA')]).then(([all])=>{
+                aux = all.filter(k => k[0].Id_form !== this.idForm);
+                console.log(aux);
+                this.storage.set('allFormsQA', aux);
+              })
             }
             else{
               //Offline
@@ -353,20 +356,10 @@ export class FormsPage {
 
               })
               let aux;
-              //debugger
               Promise.all([this.storage.get('allFormsQA')]).then(([all])=>{
                 aux = all.filter(k => k[0].Id_form !== this.idForm);
                 console.log(aux);
-                debugger
                 this.storage.set('allFormsQA', aux);
-                debugger
-                
-              }).then(()=>{
-
-                this.storage.get('allFormsQA').then(all => {
-                  console.log(all);
-                  
-                })
               })
               //Online
               //se agrega un nuevo campo, es la fecha actual
@@ -476,7 +469,6 @@ export class FormsPage {
     valideInput(evento,  typeInput, max, min)
     {
         //console.log(' estoy escribiendo esto', evento);
-     
         if (typeInput == 'number') {
           let re = new RegExp("^([0-9])*$");
           if (re.test(evento)) {

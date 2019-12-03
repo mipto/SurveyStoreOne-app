@@ -27,8 +27,7 @@ export class FormsProvider {
     return new Promise((resolve, reject) => {
         this.storage.get('allFormsQA').then(sd=>{
           console.log(sd);
-          resolve(sd.filter(k => k[0].Id_form === idForm)[0])
-          
+          resolve(sd.filter(k => k[0].Id_form === idForm)[0]);
       }).catch(e=>{
         console.log(e);
         reject(e);
@@ -722,7 +721,7 @@ export class FormsProvider {
             let formUser = doc.data();
             formUser.$key = doc.id;
             resolve(formUser);
-         });
+        });
         })
         .catch(err => {
           console.log('doc form not found.');
@@ -737,7 +736,7 @@ export class FormsProvider {
       ion.getFormUserByFormID(idForm).then(userForm => {
         let formRes: any;
         formRes = userForm;
-         this.db.collection("forms_users").doc(formRes.$key).update({status: userStatus}).then(result => {
+        this.db.collection("forms_users").doc(formRes.$key).update({status: userStatus}).then(result => {
           resolve();
         });
       })
@@ -762,7 +761,7 @@ export class FormsProvider {
             let formUser = doc.data();
             formUser.$key = doc.id;
             resolve(formUser);
-         });
+        });
         })
         .catch(err => {
           console.log('doc form not found.');
