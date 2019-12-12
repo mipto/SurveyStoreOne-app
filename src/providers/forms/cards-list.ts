@@ -134,8 +134,6 @@ export class CardsProvider {
         let ion = this;
         let arr =[];
         let EntitieSet = [];
-        
-         
         return await new Promise(async (resolve, reject) => {
             try{
                 var itemsProcessed = 0;

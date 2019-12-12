@@ -229,7 +229,6 @@ export class DashboardProvider {
                         }).catch((err) =>{
                             console.log(err);
                         });
-                         
                     });
                 }).catch(err => {
                     reject();
@@ -242,59 +241,59 @@ export class DashboardProvider {
         })
     }
 
-     getTotalDataEntities(): Promise<any> {
-        
+    getTotalDataEntities(): Promise<any> {    
         let ion = this;
         let entUser = []; //Entities by user
         let dataEnt = []; //Entities data
         return new Promise((resolve, reject) => {
-           
             try {
                 let authUser = ion.authData.getAuthUser();
-                var entities_users = this.db.collection("entities_users");
-                /* Obtain entities by User */
-                entities_users.where("IdUser", "==", authUser.uid)
-                .get().then((entitiesSnapShot) => {
-                    entitiesSnapShot.forEach(function (ii) {
-                        var ent = JSON.parse(JSON.stringify(ii.data()));
-                        //entities per client
-                        ent.Id_entity.forEach(function (jj) {
-                            entUser.push(jj);  
-                            //console.log(jj);
-                        })
-                        
-                    });
-                    var itemsProcessed = 0;
-                    
-                    entUser.forEach(ent => {
-                        var entities = this.db.collection("entities").doc(ent.entity_id).get()
-                        .then( function (doc) {
-                            itemsProcessed++;
-                            var entity = JSON.parse(JSON.stringify(doc.data()));
+                Promise.all([this.cardsList.getAllEntities()]).then(([entities_users])=>{
+                    // var entities_users = this.db.collection("entities_users");
+                    /* Obtain entities by User */
+                    entities_users.where("IdUser", "==", authUser.uid)
+                    .get().then((entitiesSnapShot) => {
+                        entitiesSnapShot.forEach(function (ii) {
+                            var ent = JSON.parse(JSON.stringify(ii.data()));
+                            //entities per client
+                            ent.Id_entity.forEach(function (jj) {
+                                entUser.push(jj);  
+                                console.log(jj);
+                            })
                             
-                            entity.$key = ent.entity_id
-                            let find = dataEnt.find(k => k.$key === entity.$key);
-                            if (find === undefined) {
-                                dataEnt.push(entity)
-                            } else {
-                                //console.log(dataEnt) 
-                            }
-
-                            if(itemsProcessed === entUser.length) {
-                                if (dataEnt.length >= 1) {
-                                 resolve(dataEnt);
-                                }else{
-                                    reject()
+                        });
+                        var itemsProcessed = 0;
+                        
+                        entUser.forEach(ent => {
+                            var entities = this.db.collection("entities").doc(ent.entity_id).get()
+                            .then( function (doc) {
+                                itemsProcessed++;
+                                var entity = JSON.parse(JSON.stringify(doc.data()));
+                                
+                                entity.$key = ent.entity_id
+                                let find = dataEnt.find(k => k.$key === entity.$key);
+                                if (find === undefined) {
+                                    dataEnt.push(entity)
+                                } else {
+                                    //console.log(dataEnt) 
                                 }
-                            } 
+    
+                                if(itemsProcessed === entUser.length) {
+                                    if (dataEnt.length >= 1) {
+                                     resolve(dataEnt);
+                                    }else{
+                                        reject()
+                                    }
+                                } 
+                                
+                            })
+    
                             
-                        })
-
-                        
+                        });
+                    }).catch(err => {
+                        reject();
                     });
-                }).catch(err => {
-                    reject();
-                });
+                })
             }catch(error)
             {
                 console.log(error);

@@ -235,6 +235,7 @@ export class MyApp {
   {
     //Save forms
   }
+  // Trigger para guardar respuestas, y los formularios sincronizados en bd
   saveAllAnswersOnConnect()
   {
     let loadingPopupHome = this.loadingCtrl.create({

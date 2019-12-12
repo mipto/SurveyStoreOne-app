@@ -415,7 +415,6 @@ export class FormsProvider {
           answer: '',
           na: false
         };
-       
         if(hasQuestion)
         {
           docAnswer.answer = question.answer;
@@ -444,7 +443,6 @@ export class FormsProvider {
       let hierarchiesAnswers = ion.db.collection("hierarchies_answers");
       
       let authUser = ion.authData.getAuthUser();
-
       var id={
         form: Forms[0].Id_form,
         entitie: idEntity,
@@ -460,7 +458,6 @@ export class FormsProvider {
               ion.deleteOldAnswersBeforeSave(hierarchy_form.$key, question.$key).then(res => {
                 hierarchiesAnswers.doc().set(doc);
                 //console.log(doc);
-                
                 console.log('answers saved sucess!');
               });
             }).catch((e)=>{
@@ -470,11 +467,9 @@ export class FormsProvider {
         });
       }else{
         var today = new Date();
-      
         var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         var dateTime = date+' '+time;
-
         Forms.forEach(hierarchy_form => {
           hierarchy_form.questions.forEach(question => {
             this.getDocAnswerSync(question, hierarchy_form.$key, id, dateTime).then((doc)=>{
@@ -482,7 +477,6 @@ export class FormsProvider {
               ion.deleteOldAnswersBeforeSave(hierarchy_form.$key, question.$key).then(res => {
                 hierarchiesAnswers.doc().set(doc);
                 //console.log(doc);
-                
                 console.log('answers saved sucess!');
               });
             }).catch((e)=>{
@@ -494,6 +488,7 @@ export class FormsProvider {
       resolve();
     });
   }
+
   saveArrAnswers(Forms)
   {
     this.saveArrayAnswers(Forms).then(ans => {

@@ -179,7 +179,6 @@ export class HomePage {
     }).catch((er) =>{
         console.log(er);
      // loadingPopupHome.dismiss();
-
     });
   }
 
@@ -190,7 +189,6 @@ export class HomePage {
       
       console.log(All);
       this.storage.set('entitiesByUser', All)
-       
     }).catch((e) =>{
       console.log(e);
       
@@ -199,7 +197,7 @@ export class HomePage {
       ion.clients = Allclients;
       this.storage.set('Allclients', ion.clients);
       
-     /*
+    /*
 
       ion.dashboard.getTotalEntitiesByUser().then(AllEnt =>{
         //Solo tenemos los Id's asociados a un cliente
@@ -209,21 +207,21 @@ export class HomePage {
         
       })
       */
-      // ion.dashboard.getTotalDataEntities().then(AllEnt =>{
-      //   //Estan los datos de cada entidad 
-      //   console.log(AllEnt)
-      //   this.storage.set('entitiesByUser', AllEnt)
-      // }).catch((error)=>{
-      //   console.log(error);
+      ion.dashboard.getTotalDataEntities().then(AllEnt =>{
+        //Estan los datos de cada entidad 
+        console.log(AllEnt)
+        this.storage.set('entitiesByUser', AllEnt)
+      }).catch((error)=>{
+        console.log(error);
         
-      // })
+      })
 
       // loadingPopupHome.dismiss();
         
     });
     
   }
- 
+
   onClientSelectChange(selectedValue: any) {
     let ion = this;
     
@@ -235,7 +233,6 @@ export class HomePage {
       {
         //Versión Online
         ion.getEntitiesOnline(selectedValue)
-     
       }else{
         //versión Offline
         ion.getEntitiesOffline(selectedValue)
@@ -244,7 +241,7 @@ export class HomePage {
     }else{
       
       //Versión Online
-     ion.getEntitiesOnline(selectedValue)
+    ion.getEntitiesOnline(selectedValue)
       
       //Versión Offline
       //ion.getEntitiesOffline(selectedValue)
@@ -252,7 +249,6 @@ export class HomePage {
     }
   }
 
- 
   getEntitiesOffline(selectedValue: any): any {
     let ion = this
     let arrEnt=[];
@@ -261,13 +257,12 @@ export class HomePage {
       content: ''
     });
     loadingPopupHome.present()
-   
         this.storage.get('entitiesByUser').then(data =>{
           data = data.filter(k => k.id_client === selectedValue)
           let sinRepetidos = data.filter((valorActual, indiceActual, arreglo) => {
             //Podríamos omitir el return y hacerlo en una línea, pero se vería menos legible
             return arreglo.findIndex(valorDelArreglo => JSON.stringify(valorDelArreglo) === JSON.stringify(valorActual)) === indiceActual
-           });
+          });
           //Se buscan los datos de las entidades como tal
           console.log(sinRepetidos);
           if(sinRepetidos === []){
@@ -315,7 +310,6 @@ export class HomePage {
         console.log(all);
         ion.entities = all;
         loadingPopupHome.dismiss();
-     
     }).catch(err =>{
       console.log(err);
       ion.entities = null;
@@ -331,7 +325,6 @@ export class HomePage {
   }
   ionViewDidEnter() {
     
-   
   }
   
   searchEntity() {
