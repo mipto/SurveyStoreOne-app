@@ -207,7 +207,7 @@ export class HomePage {
         
       })
       */
-      ion.dashboard.getTotalDataEntities().then(AllEnt =>{
+     this.cardsList.getAllEntities().then(AllEnt =>{
         //Estan los datos de cada entidad 
         console.log(AllEnt)
         this.storage.set('entitiesByUser', AllEnt)
