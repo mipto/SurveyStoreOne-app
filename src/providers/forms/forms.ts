@@ -170,7 +170,9 @@ export class FormsProvider {
       let hierarchiesAnswers = ion.db.collection("hierarchies_answers");
 
       hierarchiesAnswers.where("id_hierarchy_form", "==", hierarchyFormID)
-          .where("id_question", "==", questionID).get()
+          .where("id_question", "==", questionID)
+          .where("date", "==", "")
+          .get()
           .then((snapShot) => {
             snapShot.forEach(function (doc) {
               let objAnswer = JSON.parse(JSON.stringify(doc.data()));
@@ -179,7 +181,6 @@ export class FormsProvider {
               // allForms[i].questions[i].answer = objAnswer.answer;
               //console.log('eaee');
               
-              //console.log('objAnswer', objAnswer);
               if (objAnswer.na) {
                 if (objAnswer.na == true) {
                   resolve(objAnswer.na);
@@ -209,7 +210,9 @@ export class FormsProvider {
       let hierarchiesAnswers = ion.db.collection("hierarchies_answers");
 
       hierarchiesAnswers.where("id_hierarchy_form", "==", hierarchyFormID)
-          .where("id_question", "==", questionID).get()
+          .where("id_question", "==", questionID)
+          .where("date", "==", "")
+          .get()
           .then((snapShot) => {
             snapShot.forEach(function (doc) {
               let objAnswer = JSON.parse(JSON.stringify(doc.data()));
@@ -271,6 +274,7 @@ export class FormsProvider {
       if(question.type === 3 || question.type === 4)
       {
         docAnswer={
+          date: '',
           id_form: id.form,
           id_entitie: id.entitie,
           id_user: id.user,
@@ -305,6 +309,7 @@ export class FormsProvider {
       }else
       {
         docAnswer={
+          date: '',
           id_form: id.form,
           id_entitie: id.entitie,
           id_user: id.user,
@@ -316,6 +321,7 @@ export class FormsProvider {
           na: false
         };
         docAnswer={
+          date: '',
           id_form: id.form,
           id_entitie: id.entitie,
           id_user: id.user,
@@ -684,13 +690,16 @@ export class FormsProvider {
       });
     })
   }
+  //hay que cambiar de modo de que NO borre las ya sincronizadas de BD
   deleteOldAnswersBeforeSave(form, question){
     //ya funciona no tocar xD
     let ion = this;
     return new Promise(resolve => {
       let hierarchiesAnswers = ion.db.collection("hierarchies_answers");
       hierarchiesAnswers.where("id_hierarchy_form", "==", form)
-      .where("id_question", "==", question).get()
+      .where("id_question", "==", question)
+      .where("date", "==", "")
+      .get()
       .then((snapShot) => {
         snapShot.forEach(function (doc) {
           hierarchiesAnswers.doc(doc.id).delete().then(function() {

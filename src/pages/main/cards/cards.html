@@ -71,6 +71,7 @@
                         <ion-icon item-start *ngIf="form.userStatus == 2">
                             <img class="icon-small" src="./assets/icon/draft.png">
                         </ion-icon>
+                        
                      </ion-col>
                      <ion-col>
                          
@@ -84,7 +85,7 @@
                         </ion-icon>
                             {{globals.LANG.START}}
                      </button>
-                     <button ion-button float-right icon-start (click)="goForm(form.$key, form.Title, form.status)" *ngIf="form.userStatus == 2">
+                     <button ion-button float-right icon-start (click)="goForm(form.$key, form.Title, form.status)" *ngIf="form.userStatus == 2 ||form.userStatus == 3">
                         <ion-icon>
                             <img src="./assets/icon/Icon empezar.png">
                         </ion-icon>
