@@ -85,11 +85,15 @@
                         </ion-icon>
                             {{globals.LANG.START}}
                      </button>
-                     <button ion-button float-right icon-start (click)="goForm(form.$key, form.Title, form.status)" *ngIf="form.userStatus == 2 ||form.userStatus == 3">
+                     <button ion-button float-right icon-start (click)="goForm(form.$key, form.Title, form.status)" *ngIf="form.userStatus == 2 ">
                         <ion-icon>
                             <img src="./assets/icon/Icon empezar.png">
                         </ion-icon>
                             {{globals.LANG.START}}
+                        </button>
+                        <button class="button-new" ion-button float-right icon-start (click)="goForm(form.$key, form.Title, form.status)" *ngIf="form.userStatus == 3 ">
+                            <ion-icon name="cloud-upload"></ion-icon>
+                                {{globals.LANG.START}}
                         </button>
                  </ion-col>
              </ion-row>
